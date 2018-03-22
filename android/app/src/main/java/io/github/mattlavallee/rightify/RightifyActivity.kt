@@ -1,13 +1,13 @@
-package io.github.mattlavallee.stem
+package io.github.mattlavallee.rightify
 
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.app.AppCompatActivity
 import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.activity_stem.*
+import kotlinx.android.synthetic.main.activity_rightify.*
 
-class StemActivity : AppCompatActivity() {
+class RightifyActivity : AppCompatActivity() {
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
@@ -30,7 +30,7 @@ class StemActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_stem)
+        setContentView(R.layout.activity_rightify)
 
         val bottomSheet = findViewById<LinearLayout>(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
