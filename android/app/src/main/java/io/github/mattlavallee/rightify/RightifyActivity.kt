@@ -16,9 +16,8 @@ class RightifyActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_join -> {
-                message.setText(R.string.nav_join)
                 bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
-                return@OnNavigationItemSelectedListener true
+                return@OnNavigationItemSelectedListener false
             }
             R.id.navigation_create -> {
                 message.setText(R.string.nav_create)
