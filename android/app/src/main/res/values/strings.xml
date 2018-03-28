@@ -4,5 +4,5 @@
     <string name="nav_join">Join</string>
     <string name="nav_create">Create</string>
 
-    <string name="join_code_placeholder">-----</string>
+    <string name="join_code_placeholder">Enter Code</string>
 </resources>
