@@ -5,7 +5,7 @@
     android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="170dp"
-    android:background="@color/eggshell"
+    android:background="@color/white_smoke"
     android:orientation="horizontal"
     app:behavior_hideable="true"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
