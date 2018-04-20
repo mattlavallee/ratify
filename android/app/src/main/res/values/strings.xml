@@ -5,4 +5,8 @@
     <string name="nav_create">Create</string>
 
     <string name="join_code_placeholder">Enter Code</string>
+
+    <string name="create_group_name_hint">Group Name</string>
+    <string name="create_group_name_description">Description</string>
+    <string name="create_group_results_label">Max Results</string>
 </resources>

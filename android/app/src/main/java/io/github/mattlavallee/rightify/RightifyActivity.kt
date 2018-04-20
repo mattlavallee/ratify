@@ -1,5 +1,6 @@
 package io.github.mattlavallee.rightify
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
@@ -17,8 +18,8 @@ import kotlinx.android.synthetic.main.activity_rightify.*
 class RightifyActivity : AppCompatActivity() {
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var joinViewModel: JoinView? = null
+    private var selectedFragment: Fragment? = null
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        var selectedFragment: Fragment? = null
         when (item.itemId) {
             R.id.navigation_home -> {
                 selectedFragment = HomeFragment()
@@ -72,9 +73,14 @@ class RightifyActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         if (bottomSheetBehavior != null && bottomSheetBehavior?.state == BottomSheetBehavior.STATE_EXPANDED) {
-            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN;
+            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
         } else {
-            super.onBackPressed();
+            super.onBackPressed()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
+        selectedFragment?.onActivityResult(requestCode, resultCode, data)
     }
 }

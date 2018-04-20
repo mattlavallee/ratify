@@ -1,13 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="io.github.mattlavallee.rightify.presentation.CreateFragment">
-    <TextView
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/create_group_name_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Create something!"/>
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/create_group_description_wrapper"
+        app:layout_constraintTop_toTopOf="parent">
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/create_group_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/create_group_name_hint"/>
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/create_group_description_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_group_name_wrapper"
+        app:layout_constraintBottom_toTopOf="@id/place_autocomplete_fragment">
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/create_group_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/create_group_name_description"/>
+    </android.support.design.widget.TextInputLayout>
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_group_description_wrapper"
+        app:layout_constraintBottom_toTopOf="@id/create_group_results_wrapper"/>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/create_group_results_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/place_autocomplete_fragment">
+        <TextView
+            android:id="@+id/create_group_max_results_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_group_results_label"
+            app:layout_constraintTop_toTopOf="@id/create_group_results_wrapper"
+            app:layout_constraintBottom_toBottomOf="@id/create_group_results_wrapper"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/create_group_max_results"/>
+        <NumberPicker
+            android:id="@+id/create_group_max_results"
+            android:layout_width="0dp"
+            android:layout_height="75dp"
+            android:layout_marginLeft="15dp"
+            app:layout_constraintTop_toTopOf="@id/create_group_results_wrapper"
+            app:layout_constraintBottom_toBottomOf="@id/create_group_results_wrapper"
+            app:layout_constraintLeft_toRightOf="@id/create_group_max_results_label"
+            app:layout_constraintRight_toRightOf="parent"></NumberPicker>
+    </android.support.constraint.ConstraintLayout>
+
 
 </android.support.constraint.ConstraintLayout>
