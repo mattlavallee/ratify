@@ -9,4 +9,5 @@
     <string name="create_group_name_hint">Group Name</string>
     <string name="create_group_name_description">Description</string>
     <string name="create_group_results_label">Max Results</string>
+    <string name="create_group_create_btn_text">Create</string>
 </resources>
