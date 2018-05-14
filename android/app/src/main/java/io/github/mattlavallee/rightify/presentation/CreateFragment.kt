@@ -3,10 +3,10 @@ package io.github.mattlavallee.rightify.presentation
 import android.support.v4.app.Fragment
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.Status
@@ -15,16 +15,16 @@ import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment
 import io.github.mattlavallee.rightify.R
-import android.app.Activity.RESULT_CANCELED
-import com.google.android.gms.location.places.ui.PlaceAutocomplete
-import android.app.Activity.RESULT_OK
 import android.widget.NumberPicker
+import io.github.mattlavallee.rightify.data.GroupViewModel
 
 class CreateFragment : Fragment() {
     private var autocompleteFragment: SupportPlaceAutocompleteFragment? = null
+    private var editGroup: GroupViewModel? = null
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        this.editGroup = GroupViewModel(view)
 
         var hasPlayServicesAccess = GoogleApiAvailability.getInstance()?.isGooglePlayServicesAvailable(activity.applicationContext)
         if (hasPlayServicesAccess != ConnectionResult.SUCCESS) {
@@ -38,7 +38,7 @@ class CreateFragment : Fragment() {
         autocompleteFragment?.setFilter(typeFilter)
         autocompleteFragment?.setOnPlaceSelectedListener(object: PlaceSelectionListener {
             override fun onPlaceSelected(p0: Place?) {
-                Log.i("Rightify", p0?.name.toString())
+                editGroup?.handlePlaceSelection(p0, null, null, null, true)
             }
             override fun onError(p0: Status?) {
                 SnackbarGenerator.generateSnackbar(view, "Error fetching location")?.show()
@@ -49,6 +49,11 @@ class CreateFragment : Fragment() {
         maxResults.maxValue = 30
         maxResults.minValue = 0
         maxResults.value = 20
+
+        var createBtn: Button = activity.findViewById(R.id.create_group_create_btn) as Button
+        createBtn.setOnClickListener {
+            this.editGroup?.createGroupHandler()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,18 +68,6 @@ class CreateFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         autocompleteFragment?.onActivityResult(requestCode, resultCode, data)
 
-        when (resultCode) {
-            RESULT_OK -> {
-                val place = PlaceAutocomplete.getPlace(this.context, data)
-                Log.i("Rightify", place.name.toString())
-            }
-            PlaceAutocomplete.RESULT_ERROR -> {
-                val status = PlaceAutocomplete.getStatus(this.context, data)
-                SnackbarGenerator.generateSnackbar(view, "Error fetching location: " + status.statusMessage)?.show()
-            }
-            RESULT_CANCELED -> {
-                Log.i("Rightify", "User cancelled place search")
-            }
-        }
+        this.editGroup?.handlePlaceSelection(null, this.context, resultCode, data, false)
     }
 }
