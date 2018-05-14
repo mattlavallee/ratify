@@ -67,8 +67,10 @@ class GroupViewModel {
 
         if (errors.hasErrors()) {
             SnackbarGenerator.generateSnackbar(this.createViewRef, errors.generateErrorMessage())?.show()
-        } else {
-            SnackbarGenerator.generateSnackbar(this.createViewRef, "Success!")?.show()
+            return
         }
+
+        SnackbarGenerator.generateSnackbar(this.createViewRef, "Success!")?.show()
+        //TODO: make request to create group
     }
 }

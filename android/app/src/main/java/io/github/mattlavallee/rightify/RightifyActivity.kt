@@ -7,6 +7,7 @@ import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -41,9 +42,10 @@ class RightifyActivity : AppCompatActivity() {
     }
 
     private fun initJoinView() {
+        val baseView = findViewById<View>(android.R.id.content)
         val joinEditText = findViewById<EditText>(R.id.join_code)
         val joinButton = findViewById<Button>(R.id.btn_join)
-        joinViewModel = JoinView(joinEditText, joinButton)
+        joinViewModel = JoinView(joinEditText, joinButton, baseView)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
