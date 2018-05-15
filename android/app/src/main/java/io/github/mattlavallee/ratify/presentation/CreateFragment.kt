@@ -22,16 +22,16 @@ class CreateFragment : Fragment() {
     private var autocompleteFragment: SupportPlaceAutocompleteFragment? = null
     private var editGroup: GroupViewModel? = null
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.editGroup = GroupViewModel(view)
 
-        var hasPlayServicesAccess = GoogleApiAvailability.getInstance()?.isGooglePlayServicesAvailable(activity.applicationContext)
+        var hasPlayServicesAccess = GoogleApiAvailability.getInstance()?.isGooglePlayServicesAvailable(activity?.applicationContext)
         if (hasPlayServicesAccess != ConnectionResult.SUCCESS) {
             GoogleApiAvailability.getInstance()?.getErrorDialog(activity, hasPlayServicesAccess!!, 9000)?.show()
         }
 
-        autocompleteFragment = activity.supportFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as? SupportPlaceAutocompleteFragment
+        autocompleteFragment = activity?.supportFragmentManager?.findFragmentById(R.id.place_autocomplete_fragment) as? SupportPlaceAutocompleteFragment
         val typeFilter: AutocompleteFilter = AutocompleteFilter.Builder()
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
                 .build()
@@ -45,12 +45,12 @@ class CreateFragment : Fragment() {
             }
         })
 
-        var maxResults: NumberPicker = activity.findViewById(R.id.create_group_max_results) as NumberPicker
+        var maxResults: NumberPicker = activity?.findViewById(R.id.create_group_max_results) as NumberPicker
         maxResults.maxValue = 30
         maxResults.minValue = 0
         maxResults.value = 20
 
-        var createBtn: Button = activity.findViewById(R.id.create_group_create_btn) as Button
+        var createBtn: Button = activity?.findViewById(R.id.create_group_create_btn) as Button
         createBtn.setOnClickListener {
             this.editGroup?.createGroupHandler()
         }
@@ -60,8 +60,8 @@ class CreateFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_create, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_create, container, false)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
