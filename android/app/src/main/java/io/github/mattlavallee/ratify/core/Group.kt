@@ -1,4 +1,4 @@
-package io.github.mattlavallee.rightify.core
+package io.github.mattlavallee.ratify.core
 
 import com.google.android.gms.location.places.Place
 

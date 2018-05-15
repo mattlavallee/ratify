@@ -1,9 +1,9 @@
 {
-    "name": "rightify-server",
+    "name": "ratify-server",
     "version": "1.0.0",
-    "description": "RESTful server for the Rightify application.",
+    "description": "RESTful server for the Ratify application.",
     "main": "index.ts",
-    "repository": "https://github.com/mattlavallee/rightify.git",
+    "repository": "https://github.com/mattlavallee/ratify.git",
     "author": "Matt Lavallee",
     "license": "MIT",
     "private": true,

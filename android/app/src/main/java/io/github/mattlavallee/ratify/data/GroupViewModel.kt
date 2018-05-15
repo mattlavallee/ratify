@@ -1,4 +1,4 @@
-package io.github.mattlavallee.rightify.data
+package io.github.mattlavallee.ratify.data
 
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
@@ -11,9 +11,9 @@ import android.widget.Button
 import android.widget.NumberPicker
 import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
-import io.github.mattlavallee.rightify.R
-import io.github.mattlavallee.rightify.core.FormError
-import io.github.mattlavallee.rightify.presentation.SnackbarGenerator
+import io.github.mattlavallee.ratify.R
+import io.github.mattlavallee.ratify.core.FormError
+import io.github.mattlavallee.ratify.presentation.SnackbarGenerator
 
 class GroupViewModel {
     private var createViewRef: View? = null
@@ -48,7 +48,7 @@ class GroupViewModel {
                     this.createGroupPlace = null
                 }
                 RESULT_CANCELED -> {
-                    Log.i("Rightify", "User cancelled place search")
+                    Log.i("Ratify", "User cancelled place search")
                 }
             }
         }

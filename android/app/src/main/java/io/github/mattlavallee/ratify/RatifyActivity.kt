@@ -1,4 +1,4 @@
-package io.github.mattlavallee.rightify
+package io.github.mattlavallee.ratify
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,12 +11,12 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
-import io.github.mattlavallee.rightify.presentation.CreateFragment
-import io.github.mattlavallee.rightify.presentation.HomeFragment
-import io.github.mattlavallee.rightify.presentation.JoinView
-import kotlinx.android.synthetic.main.activity_rightify.*
+import io.github.mattlavallee.ratify.presentation.CreateFragment
+import io.github.mattlavallee.ratify.presentation.HomeFragment
+import io.github.mattlavallee.ratify.presentation.JoinView
+import kotlinx.android.synthetic.main.activity_ratify.*
 
-class RightifyActivity : AppCompatActivity() {
+class RatifyActivity : AppCompatActivity() {
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var joinViewModel: JoinView? = null
     private var selectedFragment: Fragment? = null
@@ -50,7 +50,7 @@ class RightifyActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_rightify)
+        setContentView(R.layout.activity_ratify)
 
         //initialize the default home fragment
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()

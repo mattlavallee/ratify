@@ -1,4 +1,4 @@
-package io.github.mattlavallee.rightify
+package io.github.mattlavallee.ratify
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("io.github.mattlavallee.rightify", appContext.packageName)
+        assertEquals("io.github.mattlavallee.ratify", appContext.packageName)
     }
 }

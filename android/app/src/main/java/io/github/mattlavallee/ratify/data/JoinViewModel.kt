@@ -1,10 +1,10 @@
-package io.github.mattlavallee.rightify.data
+package io.github.mattlavallee.ratify.data
 
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import io.github.mattlavallee.rightify.R
-import io.github.mattlavallee.rightify.presentation.SnackbarGenerator
+import io.github.mattlavallee.ratify.R
+import io.github.mattlavallee.ratify.presentation.SnackbarGenerator
 
 class JoinViewModel {
     private var joinViewRef: View? = null

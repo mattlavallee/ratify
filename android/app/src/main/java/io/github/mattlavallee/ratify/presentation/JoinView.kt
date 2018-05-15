@@ -1,11 +1,11 @@
-package io.github.mattlavallee.rightify.presentation
+package io.github.mattlavallee.ratify.presentation
 
 import android.text.Editable
 import android.view.View
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
-import io.github.mattlavallee.rightify.data.JoinViewModel
+import io.github.mattlavallee.ratify.data.JoinViewModel
 
 class JoinView(val codeInput: EditText, val joinBtn: Button, val view: View?) {
     init {

@@ -1,4 +1,4 @@
-package io.github.mattlavallee.rightify.presentation
+package io.github.mattlavallee.ratify.presentation
 
 import android.support.v4.app.Fragment
 import android.content.Intent
@@ -14,9 +14,9 @@ import com.google.android.gms.location.places.AutocompleteFilter
 import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment
-import io.github.mattlavallee.rightify.R
+import io.github.mattlavallee.ratify.R
 import android.widget.NumberPicker
-import io.github.mattlavallee.rightify.data.GroupViewModel
+import io.github.mattlavallee.ratify.data.GroupViewModel
 
 class CreateFragment : Fragment() {
     private var autocompleteFragment: SupportPlaceAutocompleteFragment? = null

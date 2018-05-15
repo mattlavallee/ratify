@@ -1,4 +1,4 @@
-package io.github.mattlavallee.rightify.presentation
+package io.github.mattlavallee.ratify.presentation
 
 import android.graphics.Color
 import android.support.design.widget.Snackbar

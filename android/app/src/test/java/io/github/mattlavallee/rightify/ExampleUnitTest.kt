@@ -1,4 +1,4 @@
-package io.github.mattlavallee.rightify
+package io.github.mattlavallee.ratify
 
 import org.junit.Test
 
