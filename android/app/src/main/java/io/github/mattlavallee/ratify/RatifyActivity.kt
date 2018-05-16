@@ -13,18 +13,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import io.github.mattlavallee.ratify.core.Constants
 import io.github.mattlavallee.ratify.presentation.CreateFragment
 import io.github.mattlavallee.ratify.presentation.HomeFragment
 import io.github.mattlavallee.ratify.presentation.JoinView
 import io.github.mattlavallee.ratify.presentation.SnackbarGenerator
+import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 import kotlinx.android.synthetic.main.activity_ratify.*
 import java.util.*
 
 class RatifyActivity : AppCompatActivity() {
-    private val RC_SIGN_IN: Int = 123
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var joinViewModel: JoinView? = null
     private var selectedFragment: Fragment? = null
@@ -62,7 +62,8 @@ class RatifyActivity : AppCompatActivity() {
 
         //initialize the default home fragment
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.content_container, HomeFragment())
+        selectedFragment = HomeFragment()
+        transaction.replace(R.id.content_container, selectedFragment)
         transaction.commit()
 
         //initialize the join bottomsheet
@@ -84,7 +85,7 @@ class RatifyActivity : AppCompatActivity() {
                   .createSignInIntentBuilder()
                   .setAvailableProviders(providers)
                   .build(),
-            RC_SIGN_IN)
+            Constants.RC_SIGN_IN)
     }
 
     override fun onResume() {
@@ -104,12 +105,9 @@ class RatifyActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         selectedFragment?.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == RC_SIGN_IN) {
-            var response: IdpResponse = IdpResponse.fromResultIntent(data) as IdpResponse
+        if (requestCode == Constants.RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
-                var user: FirebaseUser = FirebaseAuth.getInstance().currentUser as FirebaseUser
-                val baseView = findViewById<View>(android.R.id.content)
-                SnackbarGenerator.generateSnackbar(baseView, "User: " + user.displayName)?.show()
+                (selectedFragment as UserAuthInterface?)?.onUserAuthSuccess()
             } else {
                 //sign in failed
                 val baseView = findViewById<View>(android.R.id.content)
