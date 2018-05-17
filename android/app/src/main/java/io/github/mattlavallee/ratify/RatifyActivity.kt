@@ -13,8 +13,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.firebase.ui.auth.AuthUI
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import io.github.mattlavallee.ratify.core.Constants
 import io.github.mattlavallee.ratify.presentation.CreateFragment
 import io.github.mattlavallee.ratify.presentation.HomeFragment

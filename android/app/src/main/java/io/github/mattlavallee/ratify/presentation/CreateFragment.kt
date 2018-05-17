@@ -16,15 +16,16 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment
 import io.github.mattlavallee.ratify.R
 import android.widget.NumberPicker
-import io.github.mattlavallee.ratify.data.GroupViewModel
+import io.github.mattlavallee.ratify.data.GroupView
+import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 
-class CreateFragment : Fragment() {
+class CreateFragment : Fragment(), UserAuthInterface {
     private var autocompleteFragment: SupportPlaceAutocompleteFragment? = null
-    private var editGroup: GroupViewModel? = null
+    private var editGroup: GroupView? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.editGroup = GroupViewModel(view)
+        this.editGroup = GroupView(view)
 
         var hasPlayServicesAccess = GoogleApiAvailability.getInstance()?.isGooglePlayServicesAvailable(activity?.applicationContext)
         if (hasPlayServicesAccess != ConnectionResult.SUCCESS) {
@@ -69,5 +70,13 @@ class CreateFragment : Fragment() {
         autocompleteFragment?.onActivityResult(requestCode, resultCode, data)
 
         this.editGroup?.handlePlaceSelection(null, this.context, resultCode, data, false)
+    }
+
+    override fun onUserAuthError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onUserAuthSuccess() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

@@ -15,7 +15,7 @@ import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.core.FormError
 import io.github.mattlavallee.ratify.presentation.SnackbarGenerator
 
-class GroupViewModel {
+class GroupView {
     private var createViewRef: View? = null
     private var createGroupName: TextInputEditText? = null
     private var createGroupDescription: TextInputEditText? = null

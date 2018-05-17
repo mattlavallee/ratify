@@ -5,7 +5,7 @@ import android.view.View
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
-import io.github.mattlavallee.ratify.data.JoinViewModel
+import io.github.mattlavallee.ratify.data.JoinView
 
 class JoinView(val codeInput: EditText, val joinBtn: Button, val view: View?) {
     init {
@@ -18,7 +18,7 @@ class JoinView(val codeInput: EditText, val joinBtn: Button, val view: View?) {
             }
         })
 
-        val viewModel: JoinViewModel = JoinViewModel(view)
+        val viewModel: JoinView = JoinView(view)
         joinBtn.setOnClickListener() {
             viewModel.handleJoinGroup()
         }
