@@ -6,7 +6,5 @@ class Constants {
             private set
         var RC_SIGN_IN: Int = 123
             private set
-        var API_BASE_URL: String = "https://us-central1-ratify-266f4.cloudfunctions.net/"
-            private set
     }
 }

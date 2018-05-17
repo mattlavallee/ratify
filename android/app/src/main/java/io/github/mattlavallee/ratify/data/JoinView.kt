@@ -6,7 +6,7 @@ import android.widget.EditText
 import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.presentation.SnackbarGenerator
 
-class JoinViewModel {
+class JoinView {
     private var joinViewRef: View? = null
     private var joinCode: EditText? = null
     private var joinButton: Button? = null

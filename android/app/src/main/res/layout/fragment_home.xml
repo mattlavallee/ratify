@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="io.github.mattlavallee.ratify.presentation.HomeFragment">
     <TextView
+        android:id="@+id/testData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="ET Phone Home"/>
