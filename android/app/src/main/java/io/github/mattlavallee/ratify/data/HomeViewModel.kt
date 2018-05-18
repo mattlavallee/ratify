@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel
 import com.google.firebase.functions.FirebaseFunctions
 
 class HomeViewModel: ViewModel {
+    private val fetchPending: MutableLiveData<Boolean> = MutableLiveData()
     private val testData: MutableLiveData<String> = MutableLiveData()
 
     public constructor(){}
@@ -14,7 +15,12 @@ class HomeViewModel: ViewModel {
         return testData
     }
 
+    fun getFetchIsPending(): LiveData<Boolean> {
+        return fetchPending
+    }
+
     fun fetch() {
+        fetchPending.value = true
         FirebaseFunctions.getInstance().getHttpsCallable("getGroups").call()
             .continueWith({ task ->
                 if (task.isSuccessful) {
@@ -22,6 +28,7 @@ class HomeViewModel: ViewModel {
                 } else {
                     testData.value = "Error getting groups!"
                 }
+                fetchPending.value = false
             })
     }
 }

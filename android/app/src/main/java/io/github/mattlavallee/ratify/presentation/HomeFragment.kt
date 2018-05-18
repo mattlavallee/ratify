@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.data.HomeViewModel
@@ -14,6 +15,7 @@ import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 
 class HomeFragment : Fragment(), UserAuthInterface {
     private var viewModel: HomeViewModel? = null
+    private var pendingFetchSpinner: ProgressBar? = null
     private var dummyView: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +23,9 @@ class HomeFragment : Fragment(), UserAuthInterface {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         viewModel?.getTestData()?.observe(this, Observer{
             text -> dummyView?.text = text
+        })
+        viewModel?.getFetchIsPending()?.observe(this, Observer{
+            isPending -> if (isPending == true) pendingFetchSpinner?.visibility = View.VISIBLE else pendingFetchSpinner?.visibility = View.GONE
         })
     }
 
@@ -31,6 +36,7 @@ class HomeFragment : Fragment(), UserAuthInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        pendingFetchSpinner = view.findViewById(R.id.group_list_spinner)
         dummyView = view.findViewById(R.id.testData)
         dummyView?.text = "initialized!"
     }
