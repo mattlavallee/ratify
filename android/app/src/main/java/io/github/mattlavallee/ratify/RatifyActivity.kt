@@ -9,8 +9,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import android.widget.LinearLayout
 import com.firebase.ui.auth.AuthUI
 import io.github.mattlavallee.ratify.core.Constants
@@ -49,9 +47,7 @@ class RatifyActivity : AppCompatActivity() {
 
     private fun initJoinView() {
         val baseView = findViewById<View>(android.R.id.content)
-        val joinEditText = findViewById<EditText>(R.id.join_code)
-        val joinButton = findViewById<Button>(R.id.btn_join)
-        joinViewModel = JoinView(joinEditText, joinButton, baseView)
+        joinViewModel = JoinView(baseView, this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +63,7 @@ class RatifyActivity : AppCompatActivity() {
         //initialize the join bottomsheet
         initJoinView()
 
-        //TODO: move this to JoinView
+        //TODO: move this to JoinViewModel
         val bottomSheet = findViewById<LinearLayout>(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
