@@ -1,6 +1,28 @@
 {
-  "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
-  }
+    "rules": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        "users": {
+            "$uid": {
+                ".read": "$uid === auth.uid",
+                ".write": "$uid === auth.uid"
+            }
+        },
+        "groups": {
+            "$groupId": {
+                ".read": "auth != null",
+                ".write": "data.child('expirationDate').val() > now && root.child('users/' + auth.uid + '/created_groups/$' + $groupId).exists()",
+                ".validate": "newData.hasChildren(['name', 'description', 'location', 'numberResults', 'matchDueDate', 'expirationDate']) && newData.child('name').isString() && newData.child('description').isString() && newData.child('numberResults').isNumber() && newData.child('matchDueDate').isNumber() && newData.child('expirationDate').isNumber()",
+                ".indexOn": ["matchDueDate", "expirationDate"]
+            }
+        },
+        "matches": {
+            "$matchId": {
+                ".read": "auth != null",
+                ".write": "auth != null",
+                ".validate": "newData.hasChildren(['fetchTime'])",
+                ".indexOn": ["fetchTime"]
+            }
+        }
+    }
 }
