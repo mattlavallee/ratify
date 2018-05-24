@@ -26,7 +26,7 @@ class HomeViewModel: ViewModel {
                 if (task.isSuccessful) {
                     testData.value = task.result.data.toString()
                 } else {
-                    testData.value = "Error getting groups!"
+                    testData.value = "Error getting groups! " + task.exception?.stackTrace.toString()
                 }
                 fetchPending.value = false
             })
