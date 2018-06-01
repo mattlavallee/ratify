@@ -1,5 +1,6 @@
 package io.github.mattlavallee.ratify.presentation
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
@@ -32,6 +33,10 @@ class JoinView(view: View?, activity: AppCompatActivity) {
             val code: String = this.joinCode?.text.toString()
             this.viewModel?.joinGroup(code)
         }
+
+        viewModel?.getGroup()?.observe(activity, Observer{
+            groupVal -> SnackbarGenerator.generateSnackbar(view, groupVal!!.first)?.show()
+        })
     }
 
     fun resetCodeInput() {
