@@ -1,6 +1,8 @@
 package io.github.mattlavallee.ratify.presentation
 
 import android.app.Activity
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.support.v4.app.Fragment
 import android.content.Intent
@@ -11,6 +13,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.DatePicker
+import android.widget.EditText
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.Status
@@ -24,6 +28,8 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import io.github.mattlavallee.ratify.core.FormError
 import io.github.mattlavallee.ratify.data.GroupViewModel
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CreateFragment : Fragment(), UserAuthInterface {
     private var groupViewModel: GroupViewModel? = null
@@ -33,6 +39,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
     private var createGroupPlace: Place? = null
     private var createMaxResults: NumberPicker? = null
     private var createCreateBtn: Button? = null
+    private var createGroupVoteConclusion: TextInputEditText? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -65,6 +72,27 @@ class CreateFragment : Fragment(), UserAuthInterface {
         maxResults.maxValue = 30
         maxResults.minValue = 0
         maxResults.value = 20
+
+        var voteConclusionCalendar: Calendar = Calendar.getInstance()
+        var timeListener: TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener { _, hours, minutes ->
+            voteConclusionCalendar.set(Calendar.HOUR_OF_DAY, hours)
+            voteConclusionCalendar.set(Calendar.MINUTE, minutes)
+            val dateFormat = SimpleDateFormat("M/dd/yyyy h:mm a", Locale.US)
+            this.createGroupVoteConclusion?.setText(dateFormat.format(voteConclusionCalendar.time))
+        }
+        var dateListener: DatePickerDialog.OnDateSetListener = DatePickerDialog.OnDateSetListener { v, year, monthOfYear, dayOfMonth ->
+            voteConclusionCalendar.set(Calendar.YEAR, year)
+            voteConclusionCalendar.set(Calendar.MONTH, monthOfYear)
+            voteConclusionCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+            TimePickerDialog(v.context, 0, timeListener, voteConclusionCalendar.get(Calendar.HOUR), voteConclusionCalendar.get(Calendar.MINUTE), false).show()
+        }
+
+        this.createGroupVoteConclusion = activity?.findViewById(R.id.create_group_vote_conclusion) as TextInputEditText
+        this.createGroupVoteConclusion?.setOnClickListener {
+            DatePickerDialog(context!!, 0, dateListener, voteConclusionCalendar.get(Calendar.YEAR),
+                    voteConclusionCalendar.get(Calendar.MONTH), voteConclusionCalendar.get(Calendar.DAY_OF_MONTH)).show()
+        }
 
         var createBtn: Button = activity?.findViewById(R.id.create_group_create_btn) as Button
         createBtn.setOnClickListener {
