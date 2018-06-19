@@ -25,6 +25,7 @@ import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragmen
 import io.github.mattlavallee.ratify.R
 import android.widget.NumberPicker
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment
 import io.github.mattlavallee.ratify.core.FormError
 import io.github.mattlavallee.ratify.data.GroupViewModel
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
@@ -55,18 +56,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
         this.createMaxResults = view.findViewById(R.id.create_group_max_results)
         this.createCreateBtn = view.findViewById(R.id.create_group_create_btn)
         autocompleteFragment = activity?.supportFragmentManager?.findFragmentById(R.id.place_autocomplete_fragment) as? SupportPlaceAutocompleteFragment
-        val typeFilter: AutocompleteFilter = AutocompleteFilter.Builder()
-                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
-                .build()
-        autocompleteFragment?.setFilter(typeFilter)
-        autocompleteFragment?.setOnPlaceSelectedListener(object: PlaceSelectionListener {
-            override fun onPlaceSelected(selectedPlace: Place?) {
-                createGroupPlace = selectedPlace
-            }
-            override fun onError(p0: Status?) {
-                SnackbarGenerator.generateSnackbar(view, "Error fetching location")?.show()
-            }
-        })
+        configureAutocompleteFragment()
 
         var maxResults: NumberPicker = activity?.findViewById(R.id.create_group_max_results) as NumberPicker
         maxResults.maxValue = 30
@@ -143,5 +133,20 @@ class CreateFragment : Fragment(), UserAuthInterface {
 
     override fun onUserAuthSuccess() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun configureAutocompleteFragment() {
+        val typeFilter: AutocompleteFilter = AutocompleteFilter.Builder()
+                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
+                .build()
+        autocompleteFragment?.setFilter(typeFilter)
+        autocompleteFragment?.setOnPlaceSelectedListener(object: PlaceSelectionListener {
+            override fun onPlaceSelected(selectedPlace: Place?) {
+                createGroupPlace = selectedPlace
+            }
+            override fun onError(p0: Status?) {
+                SnackbarGenerator.generateSnackbar(view, "Error fetching location")?.show()
+            }
+        })
     }
 }
