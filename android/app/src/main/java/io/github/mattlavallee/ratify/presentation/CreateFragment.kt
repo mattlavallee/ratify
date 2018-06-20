@@ -47,6 +47,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
     private var createGroupPlace: Place? = null
     private var createGroupMaxResults: Int = 20
     private var createGroupExpirationDays: Int = 7
+    private var createGroupVoteConclusionDateTime: Calendar = Calendar.getInstance()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -140,8 +141,10 @@ class CreateFragment : Fragment(), UserAuthInterface {
         var timeListener: TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener { _, hours, minutes ->
             voteConclusionCalendar.set(Calendar.HOUR_OF_DAY, hours)
             voteConclusionCalendar.set(Calendar.MINUTE, minutes)
+
+            this.createGroupVoteConclusionDateTime = voteConclusionCalendar
             val dateFormat = SimpleDateFormat("M/dd/yyyy h:mm a", Locale.US)
-            this.createGroupVoteConclusion?.setText(dateFormat.format(voteConclusionCalendar.time))
+            this.createGroupVoteConclusion?.setText(dateFormat.format(this.createGroupVoteConclusionDateTime.time))
         }
         var dateListener: DatePickerDialog.OnDateSetListener = DatePickerDialog.OnDateSetListener { v, year, monthOfYear, dayOfMonth ->
             voteConclusionCalendar.set(Calendar.YEAR, year)
@@ -157,6 +160,9 @@ class CreateFragment : Fragment(), UserAuthInterface {
         }
     }
 
+    /*
+     * Configure max results number picker dialog
+     */
     private fun configureMaxResults() {
         val maxResults = NumberPicker(activity)
         maxResults.maxValue = 30
@@ -173,13 +179,16 @@ class CreateFragment : Fragment(), UserAuthInterface {
         }
 
         builder.setPositiveButton("OK", listener)
-        builder.setNegativeButton("Cancel", listener)
+        builder.setNegativeButton("Cancel") { _, _ -> }
         val numberPickerDialog = builder.create() as AlertDialog
         this.createGroupMaxResultsDisplay?.setOnClickListener {
             numberPickerDialog.show()
         }
     }
 
+    /*
+     * Configure number picker for number of days after vote conclusion to expire the group (deactivate)
+     */
     private fun configureExpirationDialog() {
         val expirationTime = NumberPicker(activity)
         expirationTime.maxValue = 14
@@ -195,7 +204,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
             this.createGroupExpirationDisplay?.setText(this.createGroupExpirationDays.toString() + " days")
         }
         builder.setPositiveButton("OK", clickListener)
-        builder.setNegativeButton("Cancel", clickListener)
+        builder.setNegativeButton("Cancel") { _, _ -> }
         val expirationTimeDialog = builder.create() as AlertDialog
         this.createGroupExpirationDisplay?.setOnClickListener {
             expirationTimeDialog.show()
