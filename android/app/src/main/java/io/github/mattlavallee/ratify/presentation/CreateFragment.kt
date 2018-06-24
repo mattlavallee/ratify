@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.arch.lifecycle.ViewModelProviders
+import android.arch.lifecycle.Observer
 import android.content.DialogInterface
 import android.support.v4.app.Fragment
 import android.content.Intent
@@ -24,16 +25,20 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment
 import io.github.mattlavallee.ratify.R
 import android.widget.NumberPicker
+import android.widget.ProgressBar
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import io.github.mattlavallee.ratify.core.Group
 import io.github.mattlavallee.ratify.data.GroupViewModel
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 import java.text.SimpleDateFormat
 import java.util.*
+
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class CreateFragment : Fragment(), UserAuthInterface {
+    private var pendingSpinner: ProgressBar? = null
+
     private var groupViewModel: GroupViewModel? = null
     private var autocompleteFragment: SupportPlaceAutocompleteFragment? = null
     private var createGroupName: TextInputEditText? = null
@@ -51,14 +56,24 @@ class CreateFragment : Fragment(), UserAuthInterface {
 
     private var requiredFieldsToEditTextMap: HashMap<String, TextInputEditText?> = HashMap()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        this.groupViewModel = ViewModelProviders.of(this).get(GroupViewModel::class.java)
+        this.groupViewModel?.getCreatePending()?.observe(this, Observer{
+            isPending -> if (isPending == true) this.pendingSpinner?.visibility = View.VISIBLE else this.pendingSpinner?.visibility = View.GONE
+        })
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        this.groupViewModel = ViewModelProviders.of(this).get(GroupViewModel::class.java)
 
-        var hasPlayServicesAccess = GoogleApiAvailability.getInstance()?.isGooglePlayServicesAvailable(activity?.applicationContext)
+        val hasPlayServicesAccess = GoogleApiAvailability.getInstance()?.isGooglePlayServicesAvailable(activity?.applicationContext)
         if (hasPlayServicesAccess != ConnectionResult.SUCCESS) {
             GoogleApiAvailability.getInstance()?.getErrorDialog(activity, hasPlayServicesAccess!!, 9000)?.show()
         }
+
+        this.pendingSpinner = view.findViewById(R.id.create_group_spinner)
 
         this.createGroupName = view.findViewById(R.id.create_group_name)
         //this.createGroupName?.error = "Required!"
@@ -86,10 +101,6 @@ class CreateFragment : Fragment(), UserAuthInterface {
         this.requiredFieldsToEditTextMap["maxResults"] = this.createGroupMaxResultsDisplay
         this.requiredFieldsToEditTextMap["voteConclusion"] = this.createGroupVoteConclusion
         this.requiredFieldsToEditTextMap["expirationDays"] = this.createGroupExpirationDisplay
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -149,17 +160,17 @@ class CreateFragment : Fragment(), UserAuthInterface {
      */
     private fun configureVoteConclusion() {
         this.createGroupVoteConclusionDateTime.time = Date(Long.MIN_VALUE)
-        var voteConclusionCalendar: Calendar = Calendar.getInstance()
-        var timeListener: TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener { _, hours, minutes ->
+        val voteConclusionCalendar: Calendar = Calendar.getInstance()
+        val timeListener: TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener { _, hours, minutes ->
             voteConclusionCalendar.set(Calendar.HOUR_OF_DAY, hours)
             voteConclusionCalendar.set(Calendar.MINUTE, minutes)
 
             this.createGroupVoteConclusionDateTime = voteConclusionCalendar
             val dateFormat = SimpleDateFormat("M/dd/yyyy h:mm a", Locale.US)
             this.createGroupVoteConclusion?.setText(dateFormat.format(this.createGroupVoteConclusionDateTime.time))
-            this.createGroupVoteConclusion?.error = null;
+            this.createGroupVoteConclusion?.error = null
         }
-        var dateListener: DatePickerDialog.OnDateSetListener = DatePickerDialog.OnDateSetListener { v, year, monthOfYear, dayOfMonth ->
+        val dateListener: DatePickerDialog.OnDateSetListener = DatePickerDialog.OnDateSetListener { v, year, monthOfYear, dayOfMonth ->
             voteConclusionCalendar.set(Calendar.YEAR, year)
             voteConclusionCalendar.set(Calendar.MONTH, monthOfYear)
             voteConclusionCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -250,7 +261,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
                     }
                 }
             } else {
-                this.groupViewModel?.createGroup()
+                this.groupViewModel?.createGroup(newGroup)
             }
         }
     }

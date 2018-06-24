@@ -21,14 +21,13 @@ class HomeViewModel: ViewModel {
 
     fun fetch() {
         fetchPending.value = true
-        FirebaseFunctions.getInstance().getHttpsCallable("getGroups").call()
-            .continueWith({ task ->
-                if (task.isSuccessful) {
-                    testData.value = task.result.data.toString()
-                } else {
-                    testData.value = "Error getting groups! " + task.exception?.stackTrace.toString()
-                }
-                fetchPending.value = false
-            })
+        FirebaseFunctions.getInstance().getHttpsCallable("getGroups").call().continueWith { task ->
+            if (task.isSuccessful) {
+                testData.value = task.result.data.toString()
+            } else {
+                testData.value = "Error getting groups! " + task.exception?.stackTrace.toString()
+            }
+            fetchPending.value = false
+        }
     }
 }
