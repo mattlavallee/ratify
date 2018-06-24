@@ -1,11 +1,20 @@
 package io.github.mattlavallee.ratify.data
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.google.firebase.functions.FirebaseFunctions
 import io.github.mattlavallee.ratify.core.Group
 import java.util.*
 
 class GroupViewModel: ViewModel {
+    private val createPending: MutableLiveData<Boolean> = MutableLiveData()
+
     public constructor(){}
+
+    fun getCreatePending(): LiveData<Boolean> {
+        return createPending
+    }
 
     fun validateGroup(group: Group): ArrayList<String> {
         var errorFields = ArrayList<String>()
@@ -19,7 +28,10 @@ class GroupViewModel: ViewModel {
         return errorFields
     }
 
-    fun createGroup() {
-        //TODO: implement me
+    fun createGroup(group: Group) {
+        this.createPending.value = true
+        FirebaseFunctions.getInstance().getHttpsCallable("createGroup").call().continueWith() { task ->
+            this.createPending.value = false
+        }
     }
 }
