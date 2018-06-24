@@ -25,7 +25,7 @@ import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragmen
 import io.github.mattlavallee.ratify.R
 import android.widget.NumberPicker
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
-import io.github.mattlavallee.ratify.core.FormError
+import io.github.mattlavallee.ratify.core.Group
 import io.github.mattlavallee.ratify.data.GroupViewModel
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 import java.text.SimpleDateFormat
@@ -235,8 +235,10 @@ class CreateFragment : Fragment(), UserAuthInterface {
             val groupName: String = this.createGroupName?.text.toString()
             val groupDescription: String = this.createGroupDescription?.text.toString()
             val groupActivity: String = this.createGroupActivity?.text.toString()
-            var missingFields = this.groupViewModel?.validateGroup(groupName, groupActivity,
-                    this.createGroupPlace, this.createGroupMaxResults, this.createGroupVoteConclusionDateTime, this.createGroupExpirationDays)
+
+            val newGroup = Group(groupName, groupDescription, groupActivity, this.createGroupPlace,
+                    this.createGroupMaxResults, this.createGroupVoteConclusionDateTime.time, this.createGroupExpirationDays)
+            var missingFields = this.groupViewModel?.validateGroup(newGroup)
 
             if (missingFields == null) missingFields = ArrayList()
             if (missingFields.size > 0) {
