@@ -1,20 +1,20 @@
 package io.github.mattlavallee.ratify.data
 
 import android.arch.lifecycle.ViewModel
-import com.google.android.gms.location.places.Place
+import io.github.mattlavallee.ratify.core.Group
 import java.util.*
 
 class GroupViewModel: ViewModel {
     public constructor(){}
 
-    fun validateGroup(name: String, activity: String, place: Place?, numResults: Int, voteConclusion: Calendar?, expirationDays: Int): ArrayList<String> {
+    fun validateGroup(group: Group): ArrayList<String> {
         var errorFields = ArrayList<String>()
-        if (name.trim().isEmpty()) errorFields.add("name")
-        if (activity.trim().isEmpty()) errorFields.add("activity")
-        if (place == null) errorFields.add("place")
-        if (numResults < 0 || numResults > 30) errorFields.add("maxResults")
-        if (voteConclusion == null || voteConclusion.time.before(Date())) errorFields.add("voteConclusion")
-        if (expirationDays < 0 || expirationDays > 14) errorFields.add("expirationDays")
+        if (group.name.trim().isEmpty()) errorFields.add("name")
+        if (group.activity.trim().isEmpty()) errorFields.add("activity")
+        if (group.placeName.isEmpty() || group.placeName == null) errorFields.add("place")
+        if (group.maxResults < 0 || group.maxResults > 30) errorFields.add("maxResults")
+        if (group.voteConclusion == null || group.voteConclusion.before(Date())) errorFields.add("voteConclusion")
+        if (group.expirationDays < 0 || group.expirationDays > 14) errorFields.add("expirationDays")
 
         return errorFields
     }
