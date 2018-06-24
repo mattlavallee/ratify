@@ -15,8 +15,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.DatePicker
-import android.widget.EditText
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.Status
@@ -27,27 +25,31 @@ import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragmen
 import io.github.mattlavallee.ratify.R
 import android.widget.NumberPicker
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment
 import io.github.mattlavallee.ratify.core.FormError
 import io.github.mattlavallee.ratify.data.GroupViewModel
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class CreateFragment : Fragment(), UserAuthInterface {
     private var groupViewModel: GroupViewModel? = null
     private var autocompleteFragment: SupportPlaceAutocompleteFragment? = null
     private var createGroupName: TextInputEditText? = null
     private var createGroupDescription: TextInputEditText? = null
+    private var createGroupActivity: TextInputEditText? = null
     private var createGroupVoteConclusion: TextInputEditText? = null
     private var createGroupMaxResultsDisplay: TextInputEditText? = null
     private var createGroupExpirationDisplay: TextInputEditText? = null
     private var createCreateBtn: Button? = null
 
     private var createGroupPlace: Place? = null
-    private var createGroupMaxResults: Int = 20
-    private var createGroupExpirationDays: Int = 7
+    private var createGroupMaxResults: Int = -1
+    private var createGroupExpirationDays: Int = -1
     private var createGroupVoteConclusionDateTime: Calendar = Calendar.getInstance()
+
+    private var requiredFieldsToEditTextMap: HashMap<String, TextInputEditText?> = HashMap()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,7 +61,9 @@ class CreateFragment : Fragment(), UserAuthInterface {
         }
 
         this.createGroupName = view.findViewById(R.id.create_group_name)
+        //this.createGroupName?.error = "Required!"
         this.createGroupDescription = view.findViewById(R.id.create_group_description)
+        this.createGroupActivity = view.findViewById(R.id.create_group_activity)
         this.createCreateBtn = view.findViewById(R.id.create_group_create_btn)
         autocompleteFragment = activity?.supportFragmentManager?.findFragmentById(R.id.place_autocomplete_fragment) as? SupportPlaceAutocompleteFragment
         configureAutocompleteFragment()
@@ -75,6 +79,13 @@ class CreateFragment : Fragment(), UserAuthInterface {
 
         this.createCreateBtn = activity?.findViewById(R.id.create_group_create_btn) as Button
         configureCreate()
+
+        this.requiredFieldsToEditTextMap["name"] = this.createGroupName
+        this.requiredFieldsToEditTextMap["activity"] = this.createGroupActivity
+        this.requiredFieldsToEditTextMap["place"] = null
+        this.requiredFieldsToEditTextMap["maxResults"] = this.createGroupMaxResultsDisplay
+        this.requiredFieldsToEditTextMap["voteConclusion"] = this.createGroupVoteConclusion
+        this.requiredFieldsToEditTextMap["expirationDays"] = this.createGroupExpirationDisplay
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -137,6 +148,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
      * Updates local variable with the modified datetime associated with the dialogs
      */
     private fun configureVoteConclusion() {
+        this.createGroupVoteConclusionDateTime.time = Date(Long.MIN_VALUE)
         var voteConclusionCalendar: Calendar = Calendar.getInstance()
         var timeListener: TimePickerDialog.OnTimeSetListener = TimePickerDialog.OnTimeSetListener { _, hours, minutes ->
             voteConclusionCalendar.set(Calendar.HOUR_OF_DAY, hours)
@@ -145,6 +157,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
             this.createGroupVoteConclusionDateTime = voteConclusionCalendar
             val dateFormat = SimpleDateFormat("M/dd/yyyy h:mm a", Locale.US)
             this.createGroupVoteConclusion?.setText(dateFormat.format(this.createGroupVoteConclusionDateTime.time))
+            this.createGroupVoteConclusion?.error = null;
         }
         var dateListener: DatePickerDialog.OnDateSetListener = DatePickerDialog.OnDateSetListener { v, year, monthOfYear, dayOfMonth ->
             voteConclusionCalendar.set(Calendar.YEAR, year)
@@ -176,6 +189,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
         val listener = DialogInterface.OnClickListener { _, _ ->
             this.createGroupMaxResults = maxResults.value
             this.createGroupMaxResultsDisplay?.setText(this.createGroupMaxResults.toString())
+            this.createGroupMaxResultsDisplay?.error = null
         }
 
         builder.setPositiveButton("OK", listener)
@@ -202,6 +216,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
         val clickListener = DialogInterface.OnClickListener { _, _ ->
             this.createGroupExpirationDays = expirationTime.value
             this.createGroupExpirationDisplay?.setText(this.createGroupExpirationDays.toString() + " days")
+            this.createGroupExpirationDisplay?.error = null
         }
         builder.setPositiveButton("OK", clickListener)
         builder.setNegativeButton("Cancel") { _, _ -> }
@@ -219,10 +234,19 @@ class CreateFragment : Fragment(), UserAuthInterface {
         this.createCreateBtn?.setOnClickListener {
             val groupName: String = this.createGroupName?.text.toString()
             val groupDescription: String = this.createGroupDescription?.text.toString()
-            val errors: FormError? = this.groupViewModel?.validateGroup(groupName, groupDescription, this.createGroupMaxResults, this.createGroupPlace)
+            val groupActivity: String = this.createGroupActivity?.text.toString()
+            var missingFields = this.groupViewModel?.validateGroup(groupName, groupActivity,
+                    this.createGroupPlace, this.createGroupMaxResults, this.createGroupVoteConclusionDateTime, this.createGroupExpirationDays)
 
-            if (errors != null) {
-                SnackbarGenerator.generateSnackbar(view, errors.generateErrorMessage())?.show()
+            if (missingFields == null) missingFields = ArrayList()
+            if (missingFields.size > 0) {
+                for(field: String in missingFields) {
+                    if (field == "place") {
+                        SnackbarGenerator.generateSnackbar(view, "A starting location must be chosen")?.show()
+                    } else {
+                        this.requiredFieldsToEditTextMap[field]?.error = "Required field!"
+                    }
+                }
             } else {
                 this.groupViewModel?.createGroup()
             }
