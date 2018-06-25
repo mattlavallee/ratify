@@ -63,6 +63,12 @@ class CreateFragment : Fragment(), UserAuthInterface {
         this.groupViewModel?.getCreatePending()?.observe(this, Observer{
             isPending -> if (isPending == true) this.pendingSpinner?.visibility = View.VISIBLE else this.pendingSpinner?.visibility = View.GONE
         })
+        this.groupViewModel?.getGroupError()?.observe(this, Observer {
+            result -> SnackbarGenerator.generateSnackbar(view, result ?: "Unknown Error")?.show()
+        })
+        this.groupViewModel?.getGroupCode()?.observe(this, Observer {
+            code -> SnackbarGenerator.generateSnackbar(view, code ?: "Shucks, something went wrong generating the group code")?.show()
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
