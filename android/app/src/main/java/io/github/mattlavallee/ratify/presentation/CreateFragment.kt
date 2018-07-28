@@ -82,7 +82,6 @@ class CreateFragment : Fragment(), UserAuthInterface {
         this.pendingSpinner = view.findViewById(R.id.create_group_spinner)
 
         this.createGroupName = view.findViewById(R.id.create_group_name)
-        //this.createGroupName?.error = "Required!"
         this.createGroupDescription = view.findViewById(R.id.create_group_description)
         this.createGroupActivity = view.findViewById(R.id.create_group_activity)
         this.createCreateBtn = view.findViewById(R.id.create_group_create_btn)

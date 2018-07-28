@@ -19,7 +19,7 @@ function createNewUser(userRef: admin.database.Reference, context: any): Promise
 function processResolvedGroups(keys: string[], groups: any[]): any {
   const allGroups: any = {};
   for (let i = 0; i < keys.length; i++) {
-    allGroups[keys[i]] = groups[i];
+    allGroups[keys[i]] = groups[i].val();
   }
   return allGroups;
 }

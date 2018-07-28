@@ -36,7 +36,7 @@ class Group {
         params["activity"] = this.activity
         params["startingLocation"] = this.placeName
         params["latitude"] = this.placeLatitude
-        params["longitude"] = this.placeLatitude
+        params["longitude"] = this.placeLongitude
         params["results"] = this.maxResults
         params["expiration"] = this.expirationDays
         params["conclusion"] = this.voteConclusion.time
