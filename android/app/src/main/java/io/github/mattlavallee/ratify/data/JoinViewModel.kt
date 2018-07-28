@@ -17,20 +17,19 @@ class JoinViewModel: ViewModel {
 
     fun joinGroup(groupCode: String) {
         var params: MutableMap<String, String> = mutableMapOf()
-        params.put("groupCode", groupCode)
+        params["groupCode"] = groupCode
 
-        FirebaseFunctions.getInstance().getHttpsCallable("joinGroup").call(params)
-                .continueWith({ task ->
-                    if (task.isSuccessful) {
-                        val joinGroupResponse: HashMap<String, Object> = task.result.data as HashMap<String, Object>
-                        if (joinGroupResponse["error"] != null) {
-                            joinedGroup.value = Pair(joinGroupResponse["error"].toString(), null)
-                        } else {
-                            joinedGroup.value = Pair("", null)
-                        }
-                    } else {
-                        joinedGroup.value = Pair("Error getting groups! " + task.exception?.stackTrace.toString(), null)
-                    }
-                })
+        FirebaseFunctions.getInstance().getHttpsCallable("joinGroup").call(params).continueWith { task ->
+            if (task.isSuccessful) {
+                val joinGroupResponse: HashMap<String, Object> = task.result.data as HashMap<String, Object>
+                if (joinGroupResponse["error"] != null) {
+                    joinedGroup.value = Pair(joinGroupResponse["error"].toString(), null)
+                } else {
+                    joinedGroup.value = Pair("", null)
+                }
+            } else {
+                joinedGroup.value = Pair("Error getting groups! " + task.exception?.stackTrace.toString(), null)
+            }
+        }
     }
 }

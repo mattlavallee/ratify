@@ -30,5 +30,16 @@ class Group {
         this.expirationDays = expiration
     }
 
-
+    fun populateParams(params: MutableMap<String, Any>): MutableMap<String, Any> {
+        params["name"] = this.name
+        params["description"] = this.description
+        params["activity"] = this.activity
+        params["startingLocation"] = this.placeName
+        params["latitude"] = this.placeLatitude
+        params["longitude"] = this.placeLongitude
+        params["results"] = this.maxResults
+        params["expiration"] = this.expirationDays
+        params["conclusion"] = this.voteConclusion.time
+        return params
+    }
 }
