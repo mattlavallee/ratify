@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
+import android.support.v4.app.ShareCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -67,7 +68,17 @@ class CreateFragment : Fragment(), UserAuthInterface {
             result -> SnackbarGenerator.generateSnackbar(view, result ?: "Unknown Error")?.show()
         })
         this.groupViewModel?.getGroupCode()?.observe(this, Observer {
-            code -> SnackbarGenerator.generateSnackbar(view, code ?: "Shucks, something went wrong generating the group code")?.show()
+            code ->
+                if (code != null) {
+                    ShareCompat.IntentBuilder
+                            .from(activity)
+                            .setType("text/plain")
+                            .setChooserTitle("Share Group Code")
+                            .setText("Join my group on Ratify with code: $code")
+                            .startChooser()
+                } else {
+                    SnackbarGenerator.generateSnackbar(view, "Shucks, something went wrong generating the group code")?.show()
+                }
         })
     }
 
