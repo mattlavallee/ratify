@@ -14,6 +14,6 @@ export class YelpResult {
     this.businessImage = result.image_url;
     this.address = result.location.display_address.join('\n');
     this.rating = result.rating;
-    this.price = result.price;
+    this.price = result.price || '?';
   }
 }

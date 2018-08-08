@@ -47,22 +47,20 @@ export interface IMatch {
 }
 
 export interface IGroup {
-  [key: string]: {
-    name: string,
-    query: string,
-    description: string,
-    location: {
-      latitude: Number,
-      longitude: Number,
-    },
-    numberResults: Number,
-    voteConclusion: Date,
-    daysToExpire: Number,
-    members: {
-      [userId: string]: boolean
-    },
-    matches: {
-      [matchId: string]: boolean
-    }
+  name: string,
+  query: string,
+  description: string,
+  location: {
+    latitude: Number,
+    longitude: Number,
+  },
+  numberResults: Number,
+  voteConclusion: Date,
+  daysToExpire: Number,
+  members: {
+    [userId: string]: boolean
+  },
+  matches: {
+    [matchId: string]: boolean
   }
-}
+};

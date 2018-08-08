@@ -42,7 +42,7 @@ export function createGroupImpl(data: any, context: CallableContext) {
 
       return userRef.once('value').catch((userErr) => {
         return new HttpsError(userErr.message);
-      }).then((userSnapshot: DataSnapshot) => {
+      }).then((userSnapshot: DataSnapshot): any|Promise<any> => {
         const userInstance = userSnapshot.val();
         if (!userInstance) {
           return {
@@ -51,10 +51,7 @@ export function createGroupImpl(data: any, context: CallableContext) {
         }
 
         //Create Group Entry
-        const groupEntry: IGroup = {};
-        const newMatchVotes: IVote = {};
-        const newMatches: IMatch = {};
-        groupEntry[newGroupUuid] = {
+        const groupEntry: IGroup = {
           "name": newGroup.name,
           "query": newGroup.activity,
           "description": newGroup.description,
@@ -68,14 +65,17 @@ export function createGroupImpl(data: any, context: CallableContext) {
           "members": {},
           "matches": {},
         };
-        groupEntry[newGroupUuid].members[context.auth.uid] = true;
+        const newMatchVotes: IVote = {};
+        const newMatches: IMatch = {};
+        groupEntry.members[context.auth.uid] = true;
         for(const business of yelpMatches) {
           //add business match ids to the group listing
-          groupEntry[newGroupUuid].matches[business.id] = true;
+          groupEntry.matches[business.id] = true;
 
           //add the creator to the list of votes that need to happen
-          newMatchVotes[newGroupUuid + '|' + business.id] = {}
-          newMatchVotes[newGroupUuid + '|' + business.id][context.auth.uid] = false;
+          newMatchVotes[newGroupUuid + '|' + business.id] = {
+            [context.auth.uid]: false,
+          };
 
           //store details of the match in the database
           newMatches[newGroupUuid + '|' + business.id] = {
@@ -84,22 +84,44 @@ export function createGroupImpl(data: any, context: CallableContext) {
           };
         }
 
-        //Insert group, matches, and match votes into the DB
-        db.ref('groups/').set(groupEntry);
-        matchesRef.set(newMatches);
-        votesRef.set(newMatchVotes);
+        // Determine whether an insert or update needs to happen based on the presence
+        // of a group or not. If there is no group the "tables" must be created and an
+        // insert needs to happen. If there is a result, we need to update so that
+        // existing data does not get blown away
+        return db.ref('groups/').limitToFirst(1).once('value').catch((saveErr) => {
+          return new HttpsError(saveErr);
+        }).then((snapshot: DataSnapshot) => {
+          if (snapshot.val()) {
+            //There is already data, perform an update
+            db.ref('groups/').child(newGroupUuid).set(groupEntry);
+            const matchKeys = Object.keys(newMatches);
+            for (const key in newMatches) {
+              if (newMatches.hasOwnProperty(key)) {
+                matchesRef.child(key).set(newMatches[key]);
+                votesRef.child(key).set(newMatchVotes[key]);
+              }
+            }
+          } else {
+            //there is currently no data, perform a set
+            const newGroupEntry: {[key:string]: IGroup} = {};
+            newGroupEntry[newGroupUuid] = groupEntry;
+            db.ref('groups/').set(newGroupEntry);
+            matchesRef.set(newMatches);
+            votesRef.set(newMatchVotes);
+          }
 
-        //Add the group as a created group for the user
-        if (!userInstance.created_groups) {
-          userInstance.created_groups = {};
-        }
-        userInstance.created_groups[newGroupUuid] = true;
-        userRef.set(userInstance);
+          //Add the group as a created group for the user
+          if (!userInstance.created_groups) {
+            userInstance.created_groups = {};
+          }
+          userInstance.created_groups[newGroupUuid] = true;
+          userRef.set(userInstance);
 
-        return {
-          groupId: newGroupUuid,
-        };
-      })
+          return {
+            groupId: newGroupUuid,
+          };
+        });
+      });
     });
   } else {
     return {
