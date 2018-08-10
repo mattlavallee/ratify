@@ -1,7 +1,6 @@
+firebase/node_modules
 firebase/functions/lib
 firebase/functions/node_modules
 firebase/functions/ratify-service-key.json
 firebase/functions/ratify-yelp-key.json
 android/app/release
-server/node_modules
-server/dist

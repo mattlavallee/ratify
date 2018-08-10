@@ -1,3 +1,8 @@
+export interface IUserGroup {
+  created_groups: {[groupId: string]: Group},
+  joined_groups: {[groupId: string]: Group},
+};
+
 export class Group {
   public name: string;
   public description: string;

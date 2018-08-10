@@ -94,7 +94,6 @@ export function createGroupImpl(data: any, context: CallableContext) {
           if (snapshot.val()) {
             //There is already data, perform an update
             db.ref('groups/').child(newGroupUuid).set(groupEntry);
-            const matchKeys = Object.keys(newMatches);
             for (const key in newMatches) {
               if (newMatches.hasOwnProperty(key)) {
                 matchesRef.child(key).set(newMatches[key]);
