@@ -1,8 +1,11 @@
-import {getDatabase} from './db-instance';
+import { getDatabase } from './db-instance';
 import { User } from '../models/user';
+import { errorCodes } from '../utilities/firebase-error-codes';
 import { IUserGroup } from '../models/group';
 import { DataSnapshot } from '../../node_modules/firebase-functions/lib/providers/database';
+import { HttpsError } from '../../node_modules/firebase-functions/lib/providers/https';
 import { database } from '../../node_modules/firebase-admin';
+import { IGroup } from '../models/interfaces';
 
 let groupReference: database.Reference;
 function getGroupDBReference() {
@@ -10,6 +13,14 @@ function getGroupDBReference() {
     groupReference = getDatabase().ref('groups/');
   }
   return groupReference;
+}
+
+export function getGroup(groupId: string): Promise<IGroup> {
+  return getGroupDBReference().child(groupId).once('value').catch((err: Error) => {
+    return new HttpsError((<any>errorCodes).internal, err.message);
+  }).then((groupSnapshot: DataSnapshot): IGroup => {
+    return groupSnapshot.val() as IGroup;
+  });
 }
 
 export function getGroupsForUser(userModel: User): Promise<IUserGroup> {

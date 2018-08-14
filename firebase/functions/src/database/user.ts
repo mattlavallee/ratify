@@ -14,11 +14,11 @@ function getUserDBReference() {
   return userReference;
 }
 
-export function getUser(userId: string): Promise<any> {
+export function getUser(userId: string): Promise<User> {
   return getUserDBReference().child(userId).once('value').catch((err: Error) => {
     return new HttpsError((<any>errorCodes).internal, err.message);
-  }).then((snapshot: DataSnapshot): any => {
-    return snapshot.val();
+  }).then((snapshot: DataSnapshot): User => {
+    return snapshot.val() as User;
   });
 }
 
@@ -44,4 +44,8 @@ export function createUser(userId: string, model: User): Promise<IUserGroup> {
       };
     });
   });
+}
+
+export function updateUser(userId: string, model: User): Promise<any> {
+  return getUserDBReference().child(userId).set(model);
 }
