@@ -2,10 +2,10 @@ import { HttpsError, CallableContext } from 'firebase-functions/lib/providers/ht
 import { getGroup } from '../database/group';
 import { getUser, updateUser } from '../database/user';
 import { User } from '../models/user';
-import { IGroup } from '../models/interfaces';
+import { IGroup, IResult } from '../models/interfaces';
 import { initUserVotes } from '../database/votes';
 
-export function joinGroupImpl(data: any, context: CallableContext) {
+export function joinGroupImpl(data: any, context: CallableContext): Promise<IResult> {
   if (context.auth.uid && context.auth.uid.length > 0) {
     const groupPromise: Promise<IGroup> = getGroup(data.groupCode);
     const userPromise: Promise<User> = getUser(context.auth.uid);
@@ -48,8 +48,8 @@ export function joinGroupImpl(data: any, context: CallableContext) {
         }
       });
   } else {
-    return {
+    return Promise.resolve({
       error: 'Error authenticating the user',
-    };
+    });
   }
 }

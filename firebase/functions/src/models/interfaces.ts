@@ -64,3 +64,8 @@ export interface IGroup {
     [matchId: string]: boolean
   }
 };
+
+export interface IResult {
+  error?: string,
+  [key: string]: string,
+};

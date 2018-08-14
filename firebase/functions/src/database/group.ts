@@ -52,3 +52,16 @@ export function getGroupsForUser(userModel: User): Promise<IUserGroup> {
 
   return Promise.all([resolvedCreatedPromise, resolvedJoinedPromise]).then(() => result);
 }
+
+export function insertGroup(groupId: string, model: IGroup): Promise<boolean> {
+  return getGroupDBReference().limitToFirst(1).once('value').then((snapshot: DataSnapshot): Promise<boolean> => {
+    if (snapshot.val()) {
+      return getGroupDBReference().child(groupId).set(model).then(() => true).catch(() => false);
+    }
+
+    const newGroupEntry: {[key:string]: IGroup} = {
+      [groupId]: model,
+    };
+    return getGroupDBReference().set(newGroupEntry).then(() => true).catch(() => false);
+  }).catch(() => false);
+}
