@@ -263,7 +263,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
             val groupDescription: String = this.createGroupDescription?.text.toString()
             val groupActivity: String = this.createGroupActivity?.text.toString()
 
-            val newGroup = Group(groupName, groupDescription, groupActivity, this.createGroupPlace,
+            val newGroup = Group("", groupName, groupDescription, groupActivity, this.createGroupPlace,
                     this.createGroupMaxResults, this.createGroupVoteConclusionDateTime.time, this.createGroupExpirationDays)
             var missingFields = this.groupViewModel?.validateGroup(newGroup)
 

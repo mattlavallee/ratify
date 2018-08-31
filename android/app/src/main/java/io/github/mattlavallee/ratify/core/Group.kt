@@ -4,6 +4,7 @@ import com.google.android.gms.location.places.Place
 import java.util.*
 
 class Group {
+    var id: String
     var name: String
     var description: String
     var activity: String
@@ -14,8 +15,9 @@ class Group {
     var expirationDays: Int = -1
     var voteConclusion: Date = Date(0)
 
-    constructor(name: String, descr: String, activity: String, location: Place?, numResults: Int,
+    constructor(id: String, name: String, descr: String, activity: String, location: Place?, numResults: Int,
                 conclusion: Date, expiration: Int) {
+        this.id = id
         this.name = name
         this.description = descr
         this.activity = activity
@@ -25,6 +27,19 @@ class Group {
             this.placeLongitude = location.latLng.longitude
         }
 
+        this.maxResults = numResults
+        this.voteConclusion = conclusion
+        this.expirationDays = expiration
+    }
+
+    constructor(id: String, name: String, descr: String, activity: String, latitude: Double, longitude: Double,
+                numResults: Int, conclusion: Date, expiration: Int) {
+        this.id = id
+        this.name = name
+        this.description = descr
+        this.activity = activity
+        this.placeLatitude = latitude
+        this.placeLongitude = longitude
         this.maxResults = numResults
         this.voteConclusion = conclusion
         this.expirationDays = expiration
@@ -41,5 +56,23 @@ class Group {
         params["expiration"] = this.expirationDays
         params["conclusion"] = this.voteConclusion.time
         return params
+    }
+
+    companion object {
+        fun fromJsonHashMap(id: String, model: HashMap<String, Any>): Group {
+            @Suppress("UNCHECKED_CAST")
+            val location: HashMap<String, Double> = model["location"] as HashMap<String, Double>
+            return Group(
+                id,
+                model["name"] as String,
+                model["description"] as String,
+                model["query"] as String,
+                location["latitude"] as Double,
+                location["longitude"] as Double,
+                model["numberResults"] as Int,
+                Date(model["voteConclusion"] as Long),
+                model["daysToExpire"] as Int
+            )
+        }
     }
 }

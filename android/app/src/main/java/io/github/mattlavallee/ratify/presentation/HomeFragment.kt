@@ -21,8 +21,11 @@ class HomeFragment : Fragment(), UserAuthInterface {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        viewModel?.getTestData()?.observe(this, Observer{
-            text -> dummyView?.text = text
+        viewModel?.getErrorMessage()?.observe(this, Observer{
+            msg -> if (msg?.isEmpty() == false || msg != null) SnackbarGenerator.generateSnackbar(view, msg!!)
+        })
+        viewModel?.getGroups()?.observe(this, Observer{
+            results -> dummyView?.text = results?.size.toString()
         })
         viewModel?.getFetchIsPending()?.observe(this, Observer{
             isPending -> if (isPending == true) pendingFetchSpinner?.visibility = View.VISIBLE else pendingFetchSpinner?.visibility = View.GONE

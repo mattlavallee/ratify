@@ -21,7 +21,8 @@ class JoinViewModel: ViewModel {
 
         FirebaseFunctions.getInstance().getHttpsCallable("joinGroup").call(params).continueWith { task ->
             if (task.isSuccessful) {
-                val joinGroupResponse: HashMap<String, Object> = task.result.data as HashMap<String, Object>
+                @Suppress("UNCHECKED_CAST")
+                val joinGroupResponse: HashMap<String, Any> = task.result.data as HashMap<String, Any>
                 if (joinGroupResponse["error"] != null) {
                     joinedGroup.value = Pair(joinGroupResponse["error"].toString(), null)
                 } else {

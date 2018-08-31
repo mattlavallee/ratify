@@ -31,9 +31,9 @@ class GroupViewModel: ViewModel {
         var errorFields = ArrayList<String>()
         if (group.name.trim().isEmpty()) errorFields.add("name")
         if (group.activity.trim().isEmpty()) errorFields.add("activity")
-        if (group.placeName.isEmpty() || group.placeName == null) errorFields.add("place")
+        if (group.placeName.isEmpty()) errorFields.add("place")
         if (group.maxResults < 0 || group.maxResults > 30) errorFields.add("maxResults")
-        if (group.voteConclusion == null || group.voteConclusion.before(Date())) errorFields.add("voteConclusion")
+        if (group.voteConclusion.before(Date())) errorFields.add("voteConclusion")
         if (group.expirationDays < 0 || group.expirationDays > 14) errorFields.add("expirationDays")
 
         return errorFields
@@ -47,6 +47,7 @@ class GroupViewModel: ViewModel {
         FirebaseFunctions.getInstance().getHttpsCallable("createGroup").call(params).continueWith { task ->
             this.createPending.value = false
             if (task.isSuccessful) {
+                @Suppress("UNCHECKED_CAST")
                 val response: HashMap<String, Any> = task.result.data as HashMap<String, Any>
                 if (response["error"] != null) {
                     createGroupError.value = response["error"].toString()
