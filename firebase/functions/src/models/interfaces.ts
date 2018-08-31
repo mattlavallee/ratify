@@ -55,7 +55,7 @@ export interface IGroup {
     longitude: Number,
   },
   numberResults: Number,
-  voteConclusion: Date,
+  voteConclusion: Number,
   daysToExpire: Number,
   members: {
     [userId: string]: boolean

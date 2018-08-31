@@ -1,6 +1,8 @@
+import {IGroup} from './interfaces';
+
 export interface IUserGroup {
-  created_groups: {[groupId: string]: Group},
-  joined_groups: {[groupId: string]: Group},
+  created_groups: {[groupId: string]: IGroup},
+  joined_groups: {[groupId: string]: IGroup},
 };
 
 export class Group {

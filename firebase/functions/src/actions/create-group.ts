@@ -50,7 +50,7 @@ export function createGroupImpl(data: any, context: CallableContext) {
               "longitude": newGroup.location.longitude
             },
             "numberResults": newGroup.maxResults,
-            "voteConclusion": newGroup.voteConclusion,
+            "voteConclusion": newGroup.voteConclusion.getTime(),
             "daysToExpire": newGroup.expiration,
             "members": {},
             "matches": {},
