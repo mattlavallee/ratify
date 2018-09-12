@@ -4,31 +4,41 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.TextView
 import io.github.mattlavallee.ratify.R
+import io.github.mattlavallee.ratify.adapters.GroupAdapter
+import io.github.mattlavallee.ratify.core.Group
 import io.github.mattlavallee.ratify.data.HomeViewModel
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 
 class HomeFragment : Fragment(), UserAuthInterface {
     private var viewModel: HomeViewModel? = null
-    private var pendingFetchSpinner: ProgressBar? = null
-    private var dummyView: TextView? = null
+    private var joinedGroups: ArrayList<Group> = ArrayList()
+    private lateinit var pendingFetchSpinner: ProgressBar
+    private lateinit var groupRecyclerView: RecyclerView
+    private lateinit var viewLayoutManager: RecyclerView.LayoutManager
+    private lateinit var joinedGroupAdapter: RecyclerView.Adapter<*>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         viewModel?.getErrorMessage()?.observe(this, Observer{
-            msg -> if (msg?.isEmpty() == false || msg != null) SnackbarGenerator.generateSnackbar(view, msg!!)
+            msg -> if (msg?.isEmpty() == false || msg != null) SnackbarGenerator.generateSnackbar(view, msg)
         })
         viewModel?.getGroups()?.observe(this, Observer{
-            results -> dummyView?.text = results?.size.toString()
+            results ->
+                joinedGroups.clear()
+                joinedGroups.addAll(results as ArrayList<Group>)
+                joinedGroupAdapter.notifyDataSetChanged()
         })
         viewModel?.getFetchIsPending()?.observe(this, Observer{
-            isPending -> if (isPending == true) pendingFetchSpinner?.visibility = View.VISIBLE else pendingFetchSpinner?.visibility = View.GONE
+            isPending -> if (isPending == true) pendingFetchSpinner.visibility = View.VISIBLE else pendingFetchSpinner.visibility = View.GONE
         })
     }
 
@@ -39,9 +49,14 @@ class HomeFragment : Fragment(), UserAuthInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewLayoutManager = LinearLayoutManager(context)
+        joinedGroupAdapter = GroupAdapter(joinedGroups)
         pendingFetchSpinner = view.findViewById(R.id.group_list_spinner)
-        dummyView = view.findViewById(R.id.testData)
-        dummyView?.text = "initialized!"
+        groupRecyclerView = view.findViewById<RecyclerView>(R.id.groups_recycler_view).apply {
+            setHasFixedSize(true)
+            layoutManager = viewLayoutManager
+            adapter = joinedGroupAdapter
+        }
     }
 
     override fun onUserAuthError() {
