@@ -15,6 +15,12 @@ function getGroupDBReference() {
   return groupReference;
 }
 
+function isGroupExpired(group: IGroup): boolean {
+  const expirationDate = new Date(group.voteConclusion as number);
+  expirationDate.setDate(expirationDate.getDate() + (group.daysToExpire as number));
+  return expirationDate < new Date();
+}
+
 export function getGroup(groupId: string): Promise<IGroup> {
   return getGroupDBReference().child(groupId).once('value').catch((err: Error) => {
     return new HttpsError((<any>errorCodes).internal, err.message);
@@ -41,12 +47,18 @@ export function getGroupsForUser(userModel: User): Promise<IUserGroup> {
   };
   const resolvedCreatedPromise = Promise.all(createdGroupPromises).then((groups: DataSnapshot[]) => {
     for (let i = 0; i < createdGroupKeys.length; i++) {
-      result.created_groups[createdGroupKeys[i]] = groups[i].val();
+      const currGroup = groups[i].val();
+      if (!isGroupExpired(currGroup)) {
+        result.created_groups[createdGroupKeys[i]] = currGroup;
+      }
     }
   });
   const resolvedJoinedPromise = Promise.all(joinedGroupPromises).then((groups: DataSnapshot[]) => {
     for (let i = 0; i < joinedGroupKeys.length; i++) {
-      result.joined_groups[joinedGroupKeys[i]] = groups[i].val();
+      const currGroup = groups[i].val();
+      if (!isGroupExpired(currGroup)) {
+        result.joined_groups[joinedGroupKeys[i]] = currGroup;
+      }
     }
   });
 

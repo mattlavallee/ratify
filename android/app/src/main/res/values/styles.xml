@@ -12,6 +12,28 @@
         <item name="colorPrimary">@color/brown</item>
         <item name="colorPrimaryDark">@color/dark_brown</item>
         <item name="colorAccent">@color/light_brown</item>
+
+        <item name="android:fontFamily">Roboto</item>
+        <item name="fontFamily">Roboto</item>
+
+        <item name="android:textViewStyle">@style/RobotoTextView</item>
+        <item name="android:buttonStyle">@style/RobotoButton</item>
+        <item name="android:editTextStyle">@style/RobotoEditText</item>
+    </style>
+
+    <style name="RobotoTextView" parent="android:Widget.TextView">
+        <item name="android:fontFamily">Roboto</item>
+        <item name="fontFamily">Roboto</item>
+    </style>
+
+    <style name="RobotoButton" parent="android:Widget.Button">
+        <item name="android:fontFamily">Roboto</item>
+        <item name="fontFamily">Roboto</item>
+    </style>
+
+    <style name="RobotoEditText" parent="android:Widget.EditText">
+        <item name="android:fontFamily">Roboto</item>
+        <item name="fontFamily">Roboto</item>
     </style>
 
 </resources>
