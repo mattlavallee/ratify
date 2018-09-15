@@ -33,8 +33,9 @@ class HomeFragment : Fragment(), UserAuthInterface {
         })
         viewModel?.getGroups()?.observe(this, Observer{
             results ->
+                results!!.sortBy { it.voteConclusion }
                 joinedGroups.clear()
-                joinedGroups.addAll(results as ArrayList<Group>)
+                joinedGroups.addAll(results)
                 joinedGroupAdapter.notifyDataSetChanged()
         })
         viewModel?.getFetchIsPending()?.observe(this, Observer{

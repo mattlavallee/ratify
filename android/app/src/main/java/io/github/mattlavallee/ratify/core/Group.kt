@@ -14,6 +14,7 @@ class Group {
     var maxResults: Int = -1
     var expirationDays: Int = -1
     var voteConclusion: Date = Date(0)
+    var participants: Int = -1
 
     constructor(id: String, name: String, descr: String, activity: String, location: Place?, numResults: Int,
                 conclusion: Date, expiration: Int) {
@@ -33,7 +34,7 @@ class Group {
     }
 
     constructor(id: String, name: String, descr: String, activity: String, latitude: Double, longitude: Double,
-                numResults: Int, conclusion: Date, expiration: Int) {
+                numResults: Int, conclusion: Date, expiration: Int, participants: Int?) {
         this.id = id
         this.name = name
         this.description = descr
@@ -43,6 +44,9 @@ class Group {
         this.maxResults = numResults
         this.voteConclusion = conclusion
         this.expirationDays = expiration
+        if (participants != null) {
+            this.participants = participants!!
+        }
     }
 
     fun populateParams(params: MutableMap<String, Any>): MutableMap<String, Any> {
@@ -62,6 +66,9 @@ class Group {
         fun fromJsonHashMap(id: String, model: HashMap<String, Any>): Group {
             @Suppress("UNCHECKED_CAST")
             val location: HashMap<String, Double> = model["location"] as HashMap<String, Double>
+            val participants: HashMap<String, Boolean> = model["members"] as HashMap<String, Boolean>
+
+            val totalActiveParticipants: Int = participants.count { it.value }
             return Group(
                 id,
                 model["name"] as String,
@@ -71,7 +78,8 @@ class Group {
                 location["longitude"] as Double,
                 model["numberResults"] as Int,
                 Date(model["voteConclusion"] as Long),
-                model["daysToExpire"] as Int
+                model["daysToExpire"] as Int,
+                totalActiveParticipants
             )
         }
     }
