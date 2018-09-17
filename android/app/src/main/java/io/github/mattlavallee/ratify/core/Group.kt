@@ -45,7 +45,7 @@ class Group {
         this.voteConclusion = conclusion
         this.expirationDays = expiration
         if (participants != null) {
-            this.participants = participants!!
+            this.participants = participants
         }
     }
 

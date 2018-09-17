@@ -25,9 +25,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-//test {
-//    useJUnit {
-//        includeCategories 'io.github.mattlavallee.rightify'
-//    }
-//}
