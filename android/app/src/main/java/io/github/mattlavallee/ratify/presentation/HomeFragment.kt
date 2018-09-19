@@ -44,7 +44,12 @@ class HomeFragment : Fragment(), UserAuthInterface {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val layout = inflater.inflate(R.layout.fragment_home, container, false)
+        val bundle: Bundle? = arguments
+        if (bundle?.getBoolean("fetchOnStart") == true) {
+            viewModel?.fetch()
+        }
+        return layout
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

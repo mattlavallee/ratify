@@ -3,6 +3,7 @@ package io.github.mattlavallee.ratify
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
@@ -10,12 +11,13 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Button
 import com.firebase.ui.auth.AuthUI
+import com.google.firebase.auth.FirebaseAuth
 import io.github.mattlavallee.ratify.core.Constants
 import io.github.mattlavallee.ratify.presentation.CreateFragment
 import io.github.mattlavallee.ratify.presentation.HomeFragment
 import io.github.mattlavallee.ratify.presentation.JoinView
-import io.github.mattlavallee.ratify.presentation.SnackbarGenerator
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 import kotlinx.android.synthetic.main.activity_ratify.*
 import java.util.*
@@ -24,6 +26,11 @@ class RatifyActivity : AppCompatActivity() {
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var joinViewModel: JoinView? = null
     private var selectedFragment: Fragment? = null
+    private var mainContainerLayout: ConstraintLayout? = null
+    private var splashScreenLayout: ConstraintLayout? = null
+    private var signInButton: Button? = null
+    private var userAuth: FirebaseAuth? = null
+
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
@@ -54,14 +61,37 @@ class RatifyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ratify)
 
+        mainContainerLayout = findViewById(R.id.mainContainer)
+        splashScreenLayout = findViewById(R.id.splash_screen_layout)
+        signInButton = findViewById(R.id.sign_in)
+        userAuth = FirebaseAuth.getInstance()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        var launchLogin = true
+        val homeFragmentParams = Bundle()
+        if (userAuth?.currentUser != null) {
+            launchLogin = false
+            homeFragmentParams.putBoolean("fetchOnStart", true)
+        }
+
         //initialize the default home fragment
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         selectedFragment = HomeFragment()
+        if (!launchLogin) {
+            selectedFragment?.arguments = homeFragmentParams
+        }
         transaction.replace(R.id.content_container, selectedFragment)
         transaction.commit()
 
         //initialize the join bottomsheet
         initJoinView()
+
+        signInButton?.setOnClickListener {
+            launchLogin()
+        }
 
         //TODO: move this to JoinViewModel
         val bottomSheet = findViewById<LinearLayout>(R.id.bottom_sheet)
@@ -70,16 +100,10 @@ class RatifyActivity : AppCompatActivity() {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        var providers: List<AuthUI.IdpConfig> = Arrays.asList(
-            AuthUI.IdpConfig.GoogleBuilder().build()
-        )
-        //create and launch the sign-in intent
-        startActivityForResult(
-            AuthUI.getInstance()
-                  .createSignInIntentBuilder()
-                  .setAvailableProviders(providers)
-                  .build(),
-            Constants.RC_SIGN_IN)
+        if (!launchLogin) {
+            toggleDisplays(true)
+            return
+        }
     }
 
     override fun onResume() {
@@ -95,17 +119,41 @@ class RatifyActivity : AppCompatActivity() {
         }
     }
 
+    private fun launchLogin() {
+        val providers: List<AuthUI.IdpConfig> = Arrays.asList(
+                AuthUI.IdpConfig.GoogleBuilder().build()
+        )
+        //create and launch the sign-in intent
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                Constants.RC_SIGN_IN
+        )
+    }
+
+    private fun toggleDisplays(showFragment: Boolean) {
+        if (showFragment) {
+            splashScreenLayout?.visibility = View.GONE
+            mainContainerLayout?.visibility = View.VISIBLE
+        } else {
+            splashScreenLayout?.visibility = View.VISIBLE
+            mainContainerLayout?.visibility = View.GONE
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         selectedFragment?.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == Constants.RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
+                toggleDisplays(true)
                 (selectedFragment as UserAuthInterface?)?.onUserAuthSuccess()
             } else {
                 //sign in failed
-                val baseView = findViewById<View>(android.R.id.content)
-                SnackbarGenerator.generateSnackbar(baseView, "Error signing in...")?.show()
+                toggleDisplays(false)
             }
         }
     }
