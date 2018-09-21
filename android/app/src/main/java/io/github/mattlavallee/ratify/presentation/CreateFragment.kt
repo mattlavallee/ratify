@@ -70,6 +70,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
         this.groupViewModel?.getGroupCode()?.observe(this, Observer {
             code ->
                 if (code != null) {
+                    this.clearCreateGroupForm()
                     ShareCompat.IntentBuilder
                             .from(activity)
                             .setType("text/plain")
@@ -280,5 +281,18 @@ class CreateFragment : Fragment(), UserAuthInterface {
                 this.groupViewModel?.createGroup(newGroup)
             }
         }
+    }
+
+    private fun clearCreateGroupForm() {
+        this.createGroupName?.setText("")
+        this.createGroupDescription?.setText("")
+        this.createGroupActivity?.setText("")
+        this.createGroupPlace = null
+        this.createGroupMaxResults = -1
+        this.createGroupMaxResultsDisplay?.setText("")
+        this.createGroupExpirationDays = -1
+        this.createGroupExpirationDisplay?.setText("")
+        this.createGroupVoteConclusionDateTime = Calendar.getInstance()
+        this.createGroupVoteConclusion?.setText("")
     }
 }

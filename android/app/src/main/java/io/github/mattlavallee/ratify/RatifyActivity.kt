@@ -1,6 +1,8 @@
 package io.github.mattlavallee.ratify
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
@@ -15,6 +17,7 @@ import android.widget.Button
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import io.github.mattlavallee.ratify.core.Constants
+import io.github.mattlavallee.ratify.data.GroupViewModel
 import io.github.mattlavallee.ratify.presentation.CreateFragment
 import io.github.mattlavallee.ratify.presentation.HomeFragment
 import io.github.mattlavallee.ratify.presentation.JoinView
@@ -25,6 +28,7 @@ import java.util.*
 class RatifyActivity : AppCompatActivity() {
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var joinViewModel: JoinView? = null
+    private var groupViewModel: GroupViewModel? = null
     private var selectedFragment: Fragment? = null
     private var mainContainerLayout: ConstraintLayout? = null
     private var splashScreenLayout: ConstraintLayout? = null
@@ -35,6 +39,11 @@ class RatifyActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.navigation_home -> {
                 selectedFragment = HomeFragment()
+                if (FirebaseAuth.getInstance().currentUser != null) {
+                    val bundle = Bundle()
+                    bundle.putBoolean("fetchOnStart", true)
+                    selectedFragment?.arguments = bundle
+                }
             }
             R.id.navigation_join -> {
                 joinViewModel?.resetCodeInput()
@@ -53,6 +62,10 @@ class RatifyActivity : AppCompatActivity() {
     }
 
     private fun initJoinView() {
+        if (joinViewModel != null) {
+            return
+        }
+
         val baseView = findViewById<View>(android.R.id.content)
         joinViewModel = JoinView(baseView, this)
     }
@@ -79,15 +92,32 @@ class RatifyActivity : AppCompatActivity() {
 
         //initialize the default home fragment
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        selectedFragment = HomeFragment()
-        if (!launchLogin) {
-            selectedFragment?.arguments = homeFragmentParams
+        if (selectedFragment == null) {
+            selectedFragment = HomeFragment()
+            if (!launchLogin) {
+                selectedFragment?.arguments = homeFragmentParams
+            }
         }
         transaction.replace(R.id.content_container, selectedFragment)
         transaction.commit()
 
         //initialize the join bottomsheet
         initJoinView()
+
+        if (groupViewModel == null) {
+            groupViewModel = ViewModelProviders.of(this).get(GroupViewModel::class.java)
+            groupViewModel?.getGroupCode()?.observe(this, Observer {
+                code ->
+                    if (code != null) {
+                        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+                        selectedFragment = HomeFragment()
+                        selectedFragment?.arguments = Bundle()
+                        (selectedFragment?.arguments as Bundle).putBoolean("fetchOnStart", true)
+                        transaction.replace(R.id.content_container, selectedFragment)
+                        transaction.commit()
+                    }
+            })
+        }
 
         signInButton?.setOnClickListener {
             launchLogin()
