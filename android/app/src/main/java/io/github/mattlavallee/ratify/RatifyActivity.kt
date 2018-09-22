@@ -10,6 +10,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
+import android.support.v4.app.ShareCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.LinearLayout
@@ -21,11 +22,12 @@ import io.github.mattlavallee.ratify.data.GroupViewModel
 import io.github.mattlavallee.ratify.presentation.CreateFragment
 import io.github.mattlavallee.ratify.presentation.HomeFragment
 import io.github.mattlavallee.ratify.presentation.JoinView
+import io.github.mattlavallee.ratify.presentation.interfaces.FragmentSwitchInterface
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 import kotlinx.android.synthetic.main.activity_ratify.*
 import java.util.*
 
-class RatifyActivity : AppCompatActivity() {
+class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
     private var joinViewModel: JoinView? = null
     private var groupViewModel: GroupViewModel? = null
@@ -59,6 +61,16 @@ class RatifyActivity : AppCompatActivity() {
         transaction.replace(R.id.content_container, selectedFragment)
         transaction.commit()
         return@OnNavigationItemSelectedListener true
+    }
+
+    override fun onResetToHomeFragment(code: String) {
+        navigation.selectedItemId = R.id.navigation_home
+        ShareCompat.IntentBuilder
+                .from(this)
+                .setType("text/plain")
+                .setChooserTitle("Share Group Code")
+                .setText("Join my group on Ratify with code: $code")
+                .startChooser()
     }
 
     private fun initJoinView() {

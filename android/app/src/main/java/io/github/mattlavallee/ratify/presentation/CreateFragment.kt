@@ -6,12 +6,12 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.content.DialogInterface
 import android.support.v4.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
-import android.support.v4.app.ShareCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +30,7 @@ import android.widget.ProgressBar
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import io.github.mattlavallee.ratify.core.Group
 import io.github.mattlavallee.ratify.data.GroupViewModel
+import io.github.mattlavallee.ratify.presentation.interfaces.FragmentSwitchInterface
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 import java.text.SimpleDateFormat
 import java.util.*
@@ -57,6 +58,8 @@ class CreateFragment : Fragment(), UserAuthInterface {
 
     private var requiredFieldsToEditTextMap: HashMap<String, TextInputEditText?> = HashMap()
 
+    private var callbackActivity: FragmentSwitchInterface? =  null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -71,16 +74,24 @@ class CreateFragment : Fragment(), UserAuthInterface {
             code ->
                 if (code != null) {
                     this.clearCreateGroupForm()
-                    ShareCompat.IntentBuilder
-                            .from(activity)
-                            .setType("text/plain")
-                            .setChooserTitle("Share Group Code")
-                            .setText("Join my group on Ratify with code: $code")
-                            .startChooser()
+                    callbackActivity?.onResetToHomeFragment(code)
                 } else {
                     SnackbarGenerator.generateSnackbar(view, "Shucks, something went wrong generating the group code")?.show()
                 }
         })
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        if (context is FragmentSwitchInterface) {
+            callbackActivity = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbackActivity = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
