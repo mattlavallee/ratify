@@ -8,10 +8,14 @@ import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
+import android.support.transition.Fade
+import android.support.transition.TransitionInflater
+import android.support.transition.TransitionSet
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.app.ShareCompat
 import android.support.v7.app.AppCompatActivity
+import android.transition.Visibility
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Button
@@ -38,6 +42,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
     private var userAuth: FirebaseAuth? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        val previousFragment = selectedFragment
         when (item.itemId) {
             R.id.navigation_home -> {
                 selectedFragment = HomeFragment()
@@ -57,6 +62,8 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
             }
         }
 
+
+        setFragmentTransitions(previousFragment, selectedFragment)
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.content_container, selectedFragment)
         transaction.commit()
@@ -110,6 +117,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
                 selectedFragment?.arguments = homeFragmentParams
             }
         }
+        setFragmentTransitions(null, selectedFragment)
         transaction.replace(R.id.content_container, selectedFragment)
         transaction.commit()
 
@@ -121,12 +129,14 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
             groupViewModel?.getGroupCode()?.observe(this, Observer {
                 code ->
                     if (code != null) {
-                        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+                        val previous = selectedFragment
+                        val groupCreatedTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
                         selectedFragment = HomeFragment()
                         selectedFragment?.arguments = Bundle()
                         (selectedFragment?.arguments as Bundle).putBoolean("fetchOnStart", true)
-                        transaction.replace(R.id.content_container, selectedFragment)
-                        transaction.commit()
+                        setFragmentTransitions(previous, selectedFragment)
+                        groupCreatedTransaction.replace(R.id.content_container, selectedFragment)
+                        groupCreatedTransaction.commit()
                     }
             })
         }
@@ -198,5 +208,19 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
                 toggleDisplays(false)
             }
         }
+    }
+
+    private fun setFragmentTransitions(previous: Fragment?, current: Fragment?) {
+        //set a fade out exit transition
+        val exitFade = Fade(Visibility.MODE_OUT)
+        exitFade.duration = Constants.TRANSITION_DURATION
+        previous?.exitTransition = exitFade
+
+        //set a move enter transition
+        val transitionSet = TransitionSet()
+        transitionSet.addTransition(TransitionInflater.from(applicationContext).inflateTransition(android.R.transition.move))
+        transitionSet.duration = Constants.TRANSITION_DURATION
+        transitionSet.startDelay = Constants.TRANSITION_DELAY
+        current?.sharedElementEnterTransition = transitionSet
     }
 }

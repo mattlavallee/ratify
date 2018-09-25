@@ -6,5 +6,9 @@ class Constants {
             private set
         var RC_SIGN_IN: Int = 123
             private set
+        var TRANSITION_DELAY: Long = 50
+            private set
+        var TRANSITION_DURATION: Long = 300
+            private set
     }
 }
