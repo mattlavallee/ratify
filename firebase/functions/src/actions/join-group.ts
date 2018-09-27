@@ -7,7 +7,8 @@ import { initUserVotes } from '../database/votes';
 
 export function joinGroupImpl(data: any, context: CallableContext): Promise<IResult> {
   if (context.auth.uid && context.auth.uid.length > 0) {
-    const groupPromise: Promise<IGroup> = getGroup(data.groupCode);
+    const sanitizedGroupCode = data.groupCode.replace(/\.|#|\$|\[|\]/g, '');
+    const groupPromise: Promise<IGroup> = getGroup(sanitizedGroupCode);
     const userPromise: Promise<User> = getUser(context.auth.uid);
     return Promise.all([groupPromise, userPromise]).catch((err: HttpsError) => err)
       .then((results: Array<IGroup|User>|HttpsError): Promise<any> => {
@@ -15,8 +16,8 @@ export function joinGroupImpl(data: any, context: CallableContext): Promise<IRes
         const user: User = results[1] as User;
 
         if (group && user) {
-          if (user.created_groups && user.created_groups[data.groupCode] ||
-            (user.joined_groups && user.joined_groups[data.groupCode])) {
+          if (user.created_groups && user.created_groups[sanitizedGroupCode] ||
+            (user.joined_groups && user.joined_groups[sanitizedGroupCode])) {
             return Promise.resolve({
               error: 'Hey! You\'ve already joined this group!',
             });
@@ -25,16 +26,16 @@ export function joinGroupImpl(data: any, context: CallableContext): Promise<IRes
           const businessIds: Array<string> = Object.keys(group.matches);
           const matchIds: Array<string> = [];
           for(const businessId of businessIds) {
-            matchIds.push(data.groupCode + '|' + businessId);
+            matchIds.push(sanitizedGroupCode + '|' + businessId);
           }
           return initUserVotes(context.auth.uid, matchIds).then((success: boolean): Promise<any> => {
             if (!success) {
               return Promise.resolve({error: 'Error joining the group!'});
             }
 
-            user.joined_groups[data.groupCode] = true;
+            user.joined_groups[sanitizedGroupCode] = true;
             return updateUser(context.auth.uid, user).then(() => {
-              return {data: data.groupCode};
+              return {data: sanitizedGroupCode};
             });
           });
         } else if (group && !user) {
@@ -43,7 +44,7 @@ export function joinGroupImpl(data: any, context: CallableContext): Promise<IRes
           });
         } else {
           return Promise.resolve({
-            error: 'Aww, shucks, ' + data.groupCode + ' doesn\'t exist',
+            error: 'Aww, shucks, ' + sanitizedGroupCode + ' doesn\'t exist',
           });
         }
       });
