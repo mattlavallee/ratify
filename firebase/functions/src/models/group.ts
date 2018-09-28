@@ -7,6 +7,7 @@ export interface IUserGroup {
 
 export class Group {
   public name: string;
+  public type: string;
   public description: string;
   public activity: string;
   public location: {[key: string]: any} = {
@@ -18,10 +19,11 @@ export class Group {
   public voteConclusion: Date;
   public expiration: number;
 
-  constructor(name: string, descr: string, activity: string, location: string, 
+  constructor(name: string, type: string, descr: string, activity: string, location: string, 
              latitude: number, longitude: number, results: number, conclusion: number, 
              expiration: number) {
     this.name = name;
+    this.type = type;
     this.description = descr;
     this.activity = activity;
     this.location.name = location;
@@ -33,9 +35,13 @@ export class Group {
   }
 
   isValid() {
-    if (this.name && this.name.length && this.description && this.description.length &&
-        this.activity && this.activity.length && this.location.name.length &&
-        this.maxResults > 0 && this.maxResults <= 30 && !isNaN(this.voteConclusion.getTime()) &&
+    if (this.name && this.name.length &&
+        this.type && this.type.length &&
+        this.description && this.description.length &&
+        this.activity && this.activity.length
+        && this.location.name.length &&
+        this.maxResults > 0 && this.maxResults <= 30 &&
+        !isNaN(this.voteConclusion.getTime()) &&
         this.expiration > 0 && this.expiration <= 14) {
       return true;
     }

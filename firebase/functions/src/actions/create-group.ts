@@ -13,7 +13,7 @@ import { insertMatches } from '../database/matches';
 
 export function createGroupImpl(data: any, context: CallableContext) {
   if (context.auth.uid && context.auth.uid.length > 0) {
-    const newGroup: Group = new Group(data.name, data.description, data.activity,
+    const newGroup: Group = new Group(data.name, data.type, data.description, data.activity,
       data.startingLocation, data.latitude, data.longitude, data.results,
       data.conclusion, data.expiration);
 
@@ -43,6 +43,7 @@ export function createGroupImpl(data: any, context: CallableContext) {
           //Create Group Entry
           const groupEntry: IGroup = {
             "name": newGroup.name,
+            "type": newGroup.type,
             "query": newGroup.activity,
             "description": newGroup.description,
             "location": {

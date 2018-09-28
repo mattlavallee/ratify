@@ -35,7 +35,12 @@ class JoinView(view: View?, activity: AppCompatActivity) {
         }
 
         viewModel?.getGroup()?.observe(activity, Observer{
-            groupVal -> SnackbarGenerator.generateSnackbar(view, groupVal!!.first)?.show()
+            groupVal ->
+                var message: String = groupVal!!.first
+                if (message.isEmpty()) {
+                    message = "Joined Group!"
+                }
+                SnackbarGenerator.generateSnackbar(view, message)?.show()
         })
     }
 

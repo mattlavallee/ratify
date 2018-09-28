@@ -5,6 +5,7 @@ import java.util.*
 
 class Group {
     var id: String
+    var type: String
     var name: String
     var description: String
     var activity: String
@@ -16,9 +17,10 @@ class Group {
     var voteConclusion: Date = Date(0)
     var participants: Int = -1
 
-    constructor(id: String, name: String, descr: String, activity: String, location: Place?, numResults: Int,
+    constructor(id: String, type: String, name: String, descr: String, activity: String, location: Place?, numResults: Int,
                 conclusion: Date, expiration: Int) {
         this.id = id
+        this.type = type
         this.name = name
         this.description = descr
         this.activity = activity
@@ -33,9 +35,10 @@ class Group {
         this.expirationDays = expiration
     }
 
-    constructor(id: String, name: String, descr: String, activity: String, latitude: Double, longitude: Double,
+    constructor(id: String, type: String, name: String, descr: String, activity: String, latitude: Double, longitude: Double,
                 numResults: Int, conclusion: Date, expiration: Int, participants: Int?) {
         this.id = id
+        this.type = type
         this.name = name
         this.description = descr
         this.activity = activity
@@ -51,6 +54,7 @@ class Group {
 
     fun populateParams(params: MutableMap<String, Any>): MutableMap<String, Any> {
         params["name"] = this.name
+        params["type"] = this.type
         params["description"] = this.description
         params["activity"] = this.activity
         params["startingLocation"] = this.placeName
@@ -71,6 +75,7 @@ class Group {
             val totalActiveParticipants: Int = participants.count { it.value }
             return Group(
                 id,
+                model["type"] as String,
                 model["name"] as String,
                 model["description"] as String,
                 model["query"] as String,

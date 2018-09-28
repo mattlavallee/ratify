@@ -13,7 +13,7 @@ export function getGroupsImpl(data: any, context: CallableContext): Promise<IUse
           return getGroupsForUser(userDef);
         }
 
-        return createUser(context.auth.uid, new User(context.auth.uid));
+        return createUser(context.auth.uid, new User(context.auth.token.name));
       });
   } else {
     return Promise.resolve({

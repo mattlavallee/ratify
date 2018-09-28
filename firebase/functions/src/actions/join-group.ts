@@ -33,6 +33,9 @@ export function joinGroupImpl(data: any, context: CallableContext): Promise<IRes
               return Promise.resolve({error: 'Error joining the group!'});
             }
 
+            if (!user.joined_groups) {
+              user.joined_groups = {};
+            }
             user.joined_groups[sanitizedGroupCode] = true;
             return updateUser(context.auth.uid, user).then(() => {
               return {data: sanitizedGroupCode};

@@ -48,6 +48,7 @@ export interface IMatch {
 
 export interface IGroup {
   name: string,
+  type: string,
   query: string,
   description: string,
   location: {
