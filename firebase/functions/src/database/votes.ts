@@ -14,7 +14,15 @@ function getVoteDBReference() {
 export function initUserVotes(userId: string, voteIds: Array<string>): Promise<boolean> {
   const promiseArr = [];
   for (const voteId of voteIds) {
-    const prom: Promise<void> = getVoteDBReference().child(voteId).set({[userId]: false});
+    const prom: Promise<void> = getVoteDBReference().child(voteId).once('value').then((vote: DataSnapshot) => {
+      const instance = vote.val();
+      if (instance) {
+        instance[userId] = false;
+        return getVoteDBReference().child(voteId).set(instance);
+      }
+
+      return Promise.reject('error updating votes: ' + voteId + ' - ' + userId);
+    });
     promiseArr.push(prom);
   }
 

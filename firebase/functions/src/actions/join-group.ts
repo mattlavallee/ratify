@@ -1,5 +1,5 @@
 import { HttpsError, CallableContext } from 'firebase-functions/lib/providers/https';
-import { getGroup } from '../database/group';
+import { getGroup, updateGroup } from '../database/group';
 import { getUser, updateUser } from '../database/user';
 import { User } from '../models/user';
 import { IGroup, IResult } from '../models/interfaces';
@@ -28,8 +28,12 @@ export function joinGroupImpl(data: any, context: CallableContext): Promise<IRes
           for(const businessId of businessIds) {
             matchIds.push(sanitizedGroupCode + '|' + businessId);
           }
-          return initUserVotes(context.auth.uid, matchIds).then((success: boolean): Promise<any> => {
-            if (!success) {
+          group.members[context.auth.uid] = true;
+          return Promise.all([
+            initUserVotes(context.auth.uid, matchIds),
+            updateGroup(sanitizedGroupCode, group),
+          ]).then((updateResults: boolean[]): Promise<any> => {
+            if (!updateResults[0] || !updateResults[1]) {
               return Promise.resolve({error: 'Error joining the group!'});
             }
 

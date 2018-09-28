@@ -77,3 +77,7 @@ export function insertGroup(groupId: string, model: IGroup): Promise<boolean> {
     return getGroupDBReference().set(newGroupEntry).then(() => true).catch(() => false);
   }).catch(() => false);
 }
+
+export function updateGroup(groupId: string, model: IGroup): Promise<boolean> {
+  return getGroupDBReference().child(groupId).set(model).then(() => true).catch(() => false);
+}
