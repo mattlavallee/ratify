@@ -10,14 +10,19 @@ import android.widget.Button
 import android.widget.EditText
 import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.data.JoinViewModel
+import io.github.mattlavallee.ratify.presentation.interfaces.FragmentSwitchInterface
 
 class JoinView(view: View?, activity: AppCompatActivity) {
     private var joinCode: EditText? = null
     private var joinBtn: Button? = null
     private var viewModel: JoinViewModel? = null
+    private var callbackActivity: FragmentSwitchInterface? =  null
 
     init {
         viewModel = ViewModelProviders.of(activity).get(JoinViewModel::class.java)
+        if (activity is FragmentSwitchInterface) {
+            callbackActivity = activity
+        }
         this.joinCode = view?.findViewById(R.id.join_code)
         this.joinBtn = view?.findViewById(R.id.btn_join)
         this.joinCode?.addTextChangedListener(object: TextWatcher {
@@ -35,12 +40,7 @@ class JoinView(view: View?, activity: AppCompatActivity) {
         }
 
         viewModel?.getGroup()?.observe(activity, Observer{
-            groupVal ->
-                var message: String = groupVal!!.first
-                if (message.isEmpty()) {
-                    message = "Joined Group!"
-                }
-                SnackbarGenerator.generateSnackbar(view, message)?.show()
+            groupVal -> callbackActivity?.onResetToHomeFragment("")
         })
     }
 

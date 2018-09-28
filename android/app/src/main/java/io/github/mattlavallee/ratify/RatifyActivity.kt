@@ -71,13 +71,22 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
     }
 
     override fun onResetToHomeFragment(code: String) {
+        if (code.isEmpty()) {
+            bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+            if (selectedFragment is HomeFragment) {
+                (selectedFragment as HomeFragment).onUserAuthSuccess()
+            }
+        }
+
         navigation.selectedItemId = R.id.navigation_home
-        ShareCompat.IntentBuilder
-                .from(this)
-                .setType("text/plain")
-                .setChooserTitle("Share Group Code")
-                .setText("Join my group on Ratify with code: $code")
-                .startChooser()
+        if (!code.isEmpty()) {
+            ShareCompat.IntentBuilder
+                    .from(this)
+                    .setType("text/plain")
+                    .setChooserTitle("Share Group Code")
+                    .setText("Join my group on Ratify with code: $code")
+                    .startChooser()
+        }
     }
 
     private fun initJoinView() {
