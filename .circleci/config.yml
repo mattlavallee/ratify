@@ -1,10 +1,10 @@
 version: 2
 jobs:
-  build:
+  build-firebase:
     docker: # use the docker executor type; machine and macos executors are also supported
       - image: circleci/node:7.10 # the primary container, where your job's commands are run
 
-    working_directory: ~/ratify
+    working_directory: ~/ratify/firebase/functions
 
     steps:
       - add_ssh_keys:
@@ -17,7 +17,7 @@ jobs:
             - v1-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      - run: cd firebase/functions && yarn install
+      - run: yarn install
 
       - save_cache:
           paths:
@@ -25,7 +25,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # build!
-      - run: cd firebase/functions && yarn run lint && yarn run build
+      - run: yarn run lint && yarn run build
 
 
 
