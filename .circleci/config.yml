@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build-firebase:
+  build:
     docker: # use the docker executor type; machine and macos executors are also supported
       - image: circleci/node:7.10 # the primary container, where your job's commands are run
 
