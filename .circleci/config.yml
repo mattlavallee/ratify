@@ -4,5 +4,8 @@ jobs:
     docker: # use the docker executor type; machine and macos executors are also supported
       - image: circleci/node:4.8.2 # the primary container, where your job's commands are run
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "0a:a2:37:b1:23:4a:46:d7:49:7d:b7:e6:40:6d:95:64"
       - checkout # check out the code in the project directory
       - run: echo "hello world" # run the `echo` command
