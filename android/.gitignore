@@ -18,3 +18,4 @@
 .externalNativeBuild
 *.log
 *.jks
+./app/src/main/res/values/secrets.xml
