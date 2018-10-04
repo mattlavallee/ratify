@@ -27,42 +27,6 @@ jobs:
       # build!
       - run: cd firebase/functions && yarn run lint && yarn run build
   android:
-    docker:
-      # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
-
-    working_directory: ~/ratify
-
-    environment:
-      # Customize the JVM maximum heap limit
-      JVM_OPTS: -Xmx3200m
-      TERM: dumb
-    
-    steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "./android/build.gradle" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: cd ./android && gradle dependencies
-
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: v1-dependencies-{{ checksum "./android/build.gradle" }}
-        
-      # run bundle!
-      - run: cd ./android && gradle :app:bundleDebug
-  android2:
     working_directory: ~/ratify
     docker:
       - image: circleci/android:api-25-alpha
@@ -91,7 +55,7 @@ workflows:
   build_all:
     jobs:
       - build
-      - android2
+      - android
 
 
 
