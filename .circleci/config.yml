@@ -26,6 +26,11 @@ jobs:
 
       # build!
       - run: cd firebase/functions && yarn run lint && yarn run build
+workflows:
+  version: 2
+  build_all:
+    jobs:
+      - build
 
 
 
