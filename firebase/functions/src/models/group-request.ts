@@ -5,7 +5,7 @@ export interface IUserGroup {
   joined_groups: {[groupId: string]: IGroup},
 };
 
-export class Group {
+export class GroupRequest {
   public name: string;
   public type: string;
   public description: string;

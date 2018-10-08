@@ -1,7 +1,7 @@
 import { generateUuid } from '../utilities/uuid'
 import { getGroup, insertGroup } from '../database/group';
 import { getUser, updateUser } from '../database/user';
-import { Group } from '../models/group'
+import { GroupRequest } from '../models/group-request'
 import { User } from '../models/user';
 import { HttpsError, CallableContext } from 'firebase-functions/lib/providers/https';
 import { getYelpResultsForGroup } from '../utilities/yelp-requester';
@@ -13,7 +13,7 @@ import { insertMatches } from '../database/matches';
 
 export function createGroupImpl(data: any, context: CallableContext) {
   if (context.auth.uid && context.auth.uid.length > 0) {
-    const newGroup: Group = new Group(data.name, data.type, data.description, data.activity,
+    const newGroup: GroupRequest = new GroupRequest(data.name, data.type, data.description, data.activity,
       data.startingLocation, data.latitude, data.longitude, data.results,
       data.conclusion, data.expiration);
 

@@ -1,11 +1,11 @@
 const yelpApi = require('../../ratify-yelp-key.json');
 import axios from 'axios';
-import { Group } from '../models/group';
+import { GroupRequest } from '../models/group-request';
 import { YelpResult } from '../models/yelp-result';
 
 const yelpBusinessSearch: string = 'https://api.yelp.com/v3/businesses/search?radius=4000';
 
-export function getYelpResultsForGroup(group: Group): Promise<YelpResult[]> {
+export function getYelpResultsForGroup(group: GroupRequest): Promise<YelpResult[]> {
   const businessSearchUrl = yelpBusinessSearch + 
     '&term=' + group.activity +
     '&latitude=' + group.location.latitude +

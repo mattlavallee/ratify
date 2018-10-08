@@ -1,7 +1,7 @@
 import { getDatabase } from './db-instance';
 import { User } from '../models/user';
 import { errorCodes } from '../utilities/firebase-error-codes';
-import { IUserGroup } from '../models/group';
+import { IUserGroup } from '../models/group-request';
 import { DataSnapshot } from '../../node_modules/firebase-functions/lib/providers/database';
 import { HttpsError } from '../../node_modules/firebase-functions/lib/providers/https';
 import { database } from '../../node_modules/firebase-admin';

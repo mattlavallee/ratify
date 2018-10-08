@@ -1,7 +1,7 @@
 import { getUser, createUser } from '../database/user';
 import { getGroupsForUser } from '../database/group';
 import { User } from '../models/user';
-import { IUserGroup } from '../models/group';
+import { IUserGroup } from '../models/group-request';
 import { IResult } from '../models/interfaces';
 import { HttpsError, CallableContext } from 'firebase-functions/lib/providers/https';
 
