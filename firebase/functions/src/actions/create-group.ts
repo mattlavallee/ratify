@@ -1,12 +1,14 @@
 import { generateUuid } from '../utilities/uuid'
 import { getGroup, insertGroup } from '../database/group';
 import { getUser, updateUser } from '../database/user';
-import { GroupRequest } from '../models/group-request'
+import { GroupRequest, IGroup } from '../models/group'
 import { User } from '../models/user';
 import { HttpsError, CallableContext } from 'firebase-functions/lib/providers/https';
 import { getYelpResultsForGroup } from '../utilities/yelp-requester';
 import { YelpResult } from '../models/yelp-result';
-import { IGroup, IVote, IMatch, IResult } from '../models/interfaces';
+import { IResult } from '../models/action-result';
+import { IMatch } from '../models/match';
+import { IVote } from '../models/vote';
 import { insertUserVotes } from '../database/votes';
 import { insertMatches } from '../database/matches';
 

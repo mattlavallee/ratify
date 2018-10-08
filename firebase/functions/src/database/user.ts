@@ -3,7 +3,7 @@ import {errorCodes} from '../utilities/firebase-error-codes';
 import { DataSnapshot } from '../../node_modules/firebase-functions/lib/providers/database';
 import { HttpsError } from '../../node_modules/firebase-functions/lib/providers/https';
 import { User } from '../models/user';
-import { IUserGroup } from '../models/group-request';
+import { IUserGroup } from '../models/group';
 import { database } from '../../node_modules/firebase-admin';
 
 let userReference: database.Reference;

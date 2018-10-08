@@ -2,7 +2,8 @@ import { HttpsError, CallableContext } from 'firebase-functions/lib/providers/ht
 import { getGroup, updateGroup } from '../database/group';
 import { getUser, updateUser } from '../database/user';
 import { User } from '../models/user';
-import { IGroup, IResult } from '../models/interfaces';
+import { IGroup } from '../models/group';
+import { IResult } from '../models/action-result';
 import { initUserVotes } from '../database/votes';
 
 export function joinGroupImpl(data: any, context: CallableContext): Promise<IResult> {

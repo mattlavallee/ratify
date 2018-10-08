@@ -1,6 +1,6 @@
 import { getDatabase } from './db-instance';
 import { database } from '../../node_modules/firebase-admin';
-import { IMatch } from '../models/interfaces';
+import { IMatch } from '../models/match';
 import { DataSnapshot } from '../../node_modules/firebase-functions/lib/providers/database';
 
 let matchReference: database.Reference;

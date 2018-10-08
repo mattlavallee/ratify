@@ -1,6 +1,6 @@
 const yelpApi = require('../../ratify-yelp-key.json');
 import axios from 'axios';
-import { GroupRequest } from '../models/group-request';
+import { GroupRequest } from '../models/group';
 import { YelpResult } from '../models/yelp-result';
 
 const yelpBusinessSearch: string = 'https://api.yelp.com/v3/businesses/search?radius=4000';

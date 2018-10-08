@@ -1,4 +1,22 @@
-import {IGroup} from './interfaces';
+export interface IGroup {
+  name: string,
+  type: string,
+  query: string,
+  description: string,
+  location: {
+    latitude: Number,
+    longitude: Number,
+  },
+  numberResults: Number,
+  voteConclusion: Number,
+  daysToExpire: Number,
+  members: {
+    [userId: string]: boolean
+  },
+  matches: {
+    [matchId: string]: boolean
+  }
+};
 
 export interface IUserGroup {
   created_groups: {[groupId: string]: IGroup},

@@ -1,8 +1,8 @@
 import { getUser, createUser } from '../database/user';
 import { getGroupsForUser } from '../database/group';
 import { User } from '../models/user';
-import { IUserGroup } from '../models/group-request';
-import { IResult } from '../models/interfaces';
+import { IUserGroup } from '../models/group';
+import { IResult } from '../models/action-result';
 import { HttpsError, CallableContext } from 'firebase-functions/lib/providers/https';
 
 export function getGroupsImpl(data: any, context: CallableContext): Promise<IUserGroup|IResult> {

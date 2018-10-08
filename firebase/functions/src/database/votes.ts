@@ -1,6 +1,6 @@
 import { getDatabase } from './db-instance';
 import { database } from '../../node_modules/firebase-admin';
-import { IVote } from '../models/interfaces';
+import { IVote } from '../models/vote';
 import { DataSnapshot } from '../../node_modules/firebase-functions/lib/providers/database';
 
 let voteReference: database.Reference;
