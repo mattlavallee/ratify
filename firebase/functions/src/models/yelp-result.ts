@@ -1,4 +1,4 @@
-interface IYelpFullResult {
+export interface IYelpFullResult {
   id: string,
   alias: string,
   name: string,
