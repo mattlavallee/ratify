@@ -1,12 +1,14 @@
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
+    rootDir: 'src/',
+    clearMocks: true,
     collectCoverage: true,
-    coverageDirectory: 'coverage',
+    coverageDirectory: '../coverage',
     collectCoverageFrom: [
-        'src/**/*.ts',
+        '**/*.ts',
         '!**/node_modules/**',
-        '!**/vendor/**',
+        '!**/lib/**',
     ],
     coverageReporters: ["json", "lcov", "text-summary", "clover"],
 };

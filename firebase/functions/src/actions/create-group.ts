@@ -13,7 +13,7 @@ import { insertUserVotes } from '../database/votes';
 import { insertMatches } from '../database/matches';
 
 
-export function createGroupImpl(data: any, context: CallableContext) {
+export function createGroupImpl(data: any, context: CallableContext): Promise<any> {
   if (context.auth.uid && context.auth.uid.length > 0) {
     const newGroup: GroupRequest = new GroupRequest(data.name, data.type, data.description, data.activity,
       data.startingLocation, data.latitude, data.longitude, data.results,
