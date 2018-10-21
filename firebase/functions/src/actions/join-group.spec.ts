@@ -3,7 +3,6 @@ import * as userDb from '../database/user';
 import * as voteDb from '../database/votes';
 import { CallableContext } from 'firebase-functions/lib/providers/https';
 import { User } from '../models/user';
-import { IGroup } from '../models/group';
 
 describe('Join Group', () => {
   it('throws an error if unauthorized', (done) => {
