@@ -31,8 +31,8 @@ export function getGroup(groupId: string): Promise<IGroup> {
 export function getGroupsForUser(userModel: User): Promise<IUserGroup> {
   const createdGroupKeys = Object.keys(userModel.created_groups || {});
   const joinedGroupKeys = Object.keys(userModel.joined_groups || {});
-  const createdGroupPromises: Promise<DataSnapshot>[] = [];
-  const joinedGroupPromises: Promise<DataSnapshot>[] = [];
+  const createdGroupPromises: Promise<database.DataSnapshot>[] = [];
+  const joinedGroupPromises: Promise<database.DataSnapshot>[] = [];
   for (const cKey of createdGroupKeys) {
     createdGroupPromises.push(getGroupDBReference().child(cKey).once('value'));
   }
