@@ -16,7 +16,7 @@ function getUserDBReference() {
 
 export function getUser(userId: string): Promise<User> {
   return getUserDBReference().child(userId).once('value').catch((err: Error) => {
-    return new HttpsError((<any>errorCodes).internal, err.message);
+    return new Error(err.message);
   }).then((snapshot: DataSnapshot): User => {
     return snapshot.val() as User;
   });
