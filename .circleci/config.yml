@@ -26,6 +26,7 @@ jobs:
 
       # build!
       - run: printf "{}" > ./firebase/functions/ratify-yelp-key.json
+      - run: printf "{}" > ./firebase/functions/ratify-service-key.json
       - run: cd firebase/functions && yarn run build && yarn run test
   android:
     working_directory: ~/ratify
