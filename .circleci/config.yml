@@ -26,7 +26,6 @@ jobs:
 
       # build!
       - run: printf "{}" > ./firebase/functions/ratify-yelp-key.json
-      - run: printf "{\"private_key\":\"test\",\"client_email\":\"foo@foo.com\"}" > ./firebase/functions/ratify-service-key.json
       - run: cd firebase/functions && yarn run build && yarn run test
   android:
     working_directory: ~/ratify
