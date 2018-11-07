@@ -28,17 +28,17 @@ class HomeFragment : Fragment(), UserAuthInterface {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        viewModel?.getErrorMessage()?.observe(this, Observer{
+        viewModel?.getErrorMessage()?.observe(this, Observer {
             msg -> if (msg?.isEmpty() == false || msg != null) SnackbarGenerator.generateSnackbar(view, msg)
         })
-        viewModel?.getGroups()?.observe(this, Observer{
+        viewModel?.getGroups()?.observe(this, Observer {
             results ->
                 results!!.sortBy { it.voteConclusion }
                 joinedGroups.clear()
                 joinedGroups.addAll(results)
                 joinedGroupAdapter.notifyDataSetChanged()
         })
-        viewModel?.getFetchIsPending()?.observe(this, Observer{
+        viewModel?.getFetchIsPending()?.observe(this, Observer {
             isPending -> if (isPending == true) pendingFetchSpinner.visibility = View.VISIBLE else pendingFetchSpinner.visibility = View.GONE
         })
     }
@@ -66,7 +66,7 @@ class HomeFragment : Fragment(), UserAuthInterface {
     }
 
     override fun onUserAuthError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onUserAuthSuccess() {

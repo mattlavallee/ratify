@@ -1,7 +1,7 @@
 package io.github.mattlavallee.ratify.core
 
 import com.google.android.gms.location.places.Place
-import java.util.*
+import java.util.Date
 
 data class Group(
     var id: String,
@@ -18,8 +18,17 @@ data class Group(
 ) {
     var placeName: String = ""
 
-    constructor(id: String, type: String, name: String, descr: String, activity: String,
-                location: Place?, numResults: Int, conclusion: Date, expiration: Int):
+    constructor(
+        id: String,
+        type: String,
+        name: String,
+        descr: String,
+        activity: String,
+        location: Place?,
+        numResults: Int,
+        conclusion: Date,
+        expiration: Int
+    ):
             this(id, type, name, descr, activity, location?.latLng?.latitude!!,
                     location.latLng?.longitude!!, numResults, conclusion, expiration, -1) {
         if (location.name != null) {

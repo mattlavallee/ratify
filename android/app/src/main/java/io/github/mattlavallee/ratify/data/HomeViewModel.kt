@@ -7,12 +7,12 @@ import android.util.Log
 import com.google.firebase.functions.FirebaseFunctions
 import io.github.mattlavallee.ratify.core.Group
 
-class HomeViewModel: ViewModel {
+class HomeViewModel : ViewModel {
     private val fetchPending: MutableLiveData<Boolean> = MutableLiveData()
     private val groups: MutableLiveData<ArrayList<Group>> = MutableLiveData()
     private val error: MutableLiveData<String> = MutableLiveData()
 
-    public constructor(){}
+    public constructor() {}
 
     fun getGroups(): LiveData<ArrayList<Group>> {
         return groups
@@ -38,11 +38,11 @@ class HomeViewModel: ViewModel {
                 val joinedGroups: HashMap<String, Any> = response["joined_groups"] as HashMap<String, Any>
 
                 val groupsList: ArrayList<Group> = ArrayList()
-                for(key: String in createdGroups.keys) {
+                for (key: String in createdGroups.keys) {
                     @Suppress("UNCHECKED_CAST")
                     groupsList.add(Group.fromJsonHashMap(key, createdGroups[key] as HashMap<String, Any>))
                 }
-                for(key: String in joinedGroups.keys) {
+                for (key: String in joinedGroups.keys) {
                     @Suppress("UNCHECKED_CAST")
                     groupsList.add(Group.fromJsonHashMap(key, joinedGroups[key] as HashMap<String, Any>))
                 }

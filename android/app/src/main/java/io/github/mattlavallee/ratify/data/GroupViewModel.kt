@@ -5,14 +5,14 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.firebase.functions.FirebaseFunctions
 import io.github.mattlavallee.ratify.core.Group
-import java.util.*
+import java.util.Date
 
-class GroupViewModel: ViewModel {
+class GroupViewModel : ViewModel {
     private val createPending: MutableLiveData<Boolean> = MutableLiveData()
     private val createGroupError: MutableLiveData<String> = MutableLiveData()
     private val createGroupCode: MutableLiveData<String> = MutableLiveData()
 
-    public constructor(){}
+    public constructor() {}
 
     fun getCreatePending(): LiveData<Boolean> {
         return createPending
@@ -21,7 +21,6 @@ class GroupViewModel: ViewModel {
     fun getGroupError(): LiveData<String> {
         return createGroupError
     }
-
 
     fun getGroupCode(): LiveData<String> {
         return createGroupCode

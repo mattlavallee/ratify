@@ -33,7 +33,9 @@ import io.github.mattlavallee.ratify.data.GroupViewModel
 import io.github.mattlavallee.ratify.presentation.interfaces.FragmentSwitchInterface
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -58,13 +60,13 @@ class CreateFragment : Fragment(), UserAuthInterface {
 
     private var requiredFieldsToEditTextMap: HashMap<String, TextInputEditText?> = HashMap()
 
-    private var callbackActivity: FragmentSwitchInterface? =  null
+    private var callbackActivity: FragmentSwitchInterface? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         this.groupViewModel = ViewModelProviders.of(this).get(GroupViewModel::class.java)
-        this.groupViewModel?.getCreatePending()?.observe(this, Observer{
+        this.groupViewModel?.getCreatePending()?.observe(this, Observer {
             isPending -> if (isPending == true) this.pendingSpinner?.visibility = View.VISIBLE else this.pendingSpinner?.visibility = View.GONE
         })
         this.groupViewModel?.getGroupError()?.observe(this, Observer {
@@ -139,7 +141,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
         super.onActivityResult(requestCode, resultCode, data)
         autocompleteFragment?.onActivityResult(requestCode, resultCode, data)
 
-        //handle selection from place autocomplete
+        // handle selection from place autocomplete
         when (resultCode) {
             Activity.RESULT_OK -> {
                 this.createGroupPlace = PlaceAutocomplete.getPlace(view?.context, data)
@@ -156,11 +158,11 @@ class CreateFragment : Fragment(), UserAuthInterface {
     }
 
     override fun onUserAuthError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onUserAuthSuccess() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     /*
@@ -172,7 +174,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
                 .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
                 .build()
         autocompleteFragment?.setFilter(typeFilter)
-        autocompleteFragment?.setOnPlaceSelectedListener(object: PlaceSelectionListener {
+        autocompleteFragment?.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(selectedPlace: Place?) {
                 createGroupPlace = selectedPlace
             }
@@ -281,7 +283,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
 
             if (missingFields == null) missingFields = ArrayList()
             if (missingFields.size > 0) {
-                for(field: String in missingFields) {
+                for (field: String in missingFields) {
                     if (field == "place") {
                         SnackbarGenerator.generateSnackbar(view, "A starting location must be chosen")?.show()
                     } else {

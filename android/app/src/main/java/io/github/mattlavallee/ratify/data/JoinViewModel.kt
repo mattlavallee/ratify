@@ -6,10 +6,10 @@ import android.arch.lifecycle.ViewModel
 import com.google.firebase.functions.FirebaseFunctions
 import io.github.mattlavallee.ratify.core.Group
 
-class JoinViewModel: ViewModel {
+class JoinViewModel : ViewModel {
     private val joinedGroup: MutableLiveData<Pair<String, Group?>> = MutableLiveData()
 
-    public constructor(){}
+    public constructor() {}
 
     fun getGroup(): LiveData<Pair<String, Group?>> {
         return joinedGroup

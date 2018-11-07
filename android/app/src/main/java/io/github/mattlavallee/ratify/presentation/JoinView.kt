@@ -16,7 +16,7 @@ class JoinView(view: View?, activity: AppCompatActivity) {
     private var joinCode: EditText? = null
     private var joinBtn: Button? = null
     private var viewModel: JoinViewModel? = null
-    private var callbackActivity: FragmentSwitchInterface? =  null
+    private var callbackActivity: FragmentSwitchInterface? = null
 
     init {
         viewModel = ViewModelProviders.of(activity).get(JoinViewModel::class.java)
@@ -25,12 +25,12 @@ class JoinView(view: View?, activity: AppCompatActivity) {
         }
         this.joinCode = view?.findViewById(R.id.join_code)
         this.joinBtn = view?.findViewById(R.id.btn_join)
-        this.joinCode?.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, pq: Int, p2: Int, p3: Int){}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int){}
-            override fun afterTextChanged(p0: Editable?){
+        this.joinCode?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, pq: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {
                 joinBtn?.isEnabled = !p0.toString().isBlank()
-                joinBtn?.alpha = if(joinBtn?.isEnabled == true) 1f else 0.5f
+                joinBtn?.alpha = if (joinBtn?.isEnabled == true) 1f else 0.5f
             }
         })
 
@@ -39,7 +39,7 @@ class JoinView(view: View?, activity: AppCompatActivity) {
             this.viewModel?.joinGroup(code)
         }
 
-        viewModel?.getGroup()?.observe(activity, Observer{
+        viewModel?.getGroup()?.observe(activity, Observer {
             _ -> callbackActivity?.onResetToHomeFragment("")
         })
     }

@@ -29,7 +29,7 @@ import io.github.mattlavallee.ratify.presentation.JoinView
 import io.github.mattlavallee.ratify.presentation.interfaces.FragmentSwitchInterface
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 import kotlinx.android.synthetic.main.activity_ratify.*
-import java.util.*
+import java.util.Arrays
 
 class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
     private var bottomSheetBehavior: BottomSheetBehavior<*>? = null
@@ -61,7 +61,6 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
                 selectedFragment = CreateFragment()
             }
         }
-
 
         setFragmentTransitions(previousFragment, selectedFragment)
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
@@ -118,7 +117,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
             homeFragmentParams.putBoolean("fetchOnStart", true)
         }
 
-        //initialize the default home fragment
+        // initialize the default home fragment
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         if (selectedFragment == null) {
             selectedFragment = HomeFragment()
@@ -130,7 +129,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
         transaction.replace(R.id.content_container, selectedFragment)
         transaction.commit()
 
-        //initialize the join bottomsheet
+        // initialize the join bottomsheet
         initJoinView()
 
         if (groupViewModel == null) {
@@ -154,7 +153,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
             launchLogin()
         }
 
-        //TODO: move this to JoinViewModel
+        // TODO: move this to JoinViewModel
         val bottomSheet = findViewById<LinearLayout>(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
@@ -184,7 +183,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
         val providers: List<AuthUI.IdpConfig> = Arrays.asList(
                 AuthUI.IdpConfig.GoogleBuilder().build()
         )
-        //create and launch the sign-in intent
+        // create and launch the sign-in intent
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -213,19 +212,19 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
                 toggleDisplays(true)
                 (selectedFragment as UserAuthInterface?)?.onUserAuthSuccess()
             } else {
-                //sign in failed
+                // sign in failed
                 toggleDisplays(false)
             }
         }
     }
 
     private fun setFragmentTransitions(previous: Fragment?, current: Fragment?) {
-        //set a fade out exit transition
+        // set a fade out exit transition
         val exitFade = Fade(Visibility.MODE_OUT)
         exitFade.duration = Constants.TRANSITION_DURATION
         previous?.exitTransition = exitFade
 
-        //set a move enter transition
+        // set a move enter transition
         val transitionSet = TransitionSet()
         transitionSet.addTransition(TransitionInflater.from(applicationContext).inflateTransition(android.R.transition.move))
         transitionSet.duration = Constants.TRANSITION_DURATION
