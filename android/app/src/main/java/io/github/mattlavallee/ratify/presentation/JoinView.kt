@@ -40,7 +40,7 @@ class JoinView(view: View?, activity: AppCompatActivity) {
         }
 
         viewModel?.getGroup()?.observe(activity, Observer{
-            groupVal -> callbackActivity?.onResetToHomeFragment("")
+            _ -> callbackActivity?.onResetToHomeFragment("")
         })
     }
 

@@ -3,52 +3,27 @@ package io.github.mattlavallee.ratify.core
 import com.google.android.gms.location.places.Place
 import java.util.*
 
-class Group {
-    var id: String
-    var type: String
-    var name: String
-    var description: String
-    var activity: String
+data class Group(
+    var id: String,
+    var type: String,
+    var name: String,
+    var description: String,
+    var activity: String,
+    var placeLatitude: Double,
+    var placeLongitude: Double,
+    var maxResults: Int,
+    var voteConclusion: Date,
+    var expirationDays: Int,
+    var participants: Int
+) {
     var placeName: String = ""
-    var placeLatitude: Double = -1.0
-    var placeLongitude: Double = -1.0
-    var maxResults: Int = -1
-    var expirationDays: Int = -1
-    var voteConclusion: Date = Date(0)
-    var participants: Int = -1
 
-    constructor(id: String, type: String, name: String, descr: String, activity: String, location: Place?, numResults: Int,
-                conclusion: Date, expiration: Int) {
-        this.id = id
-        this.type = type
-        this.name = name
-        this.description = descr
-        this.activity = activity
-        if (location != null) {
+    constructor(id: String, type: String, name: String, descr: String, activity: String,
+                location: Place?, numResults: Int, conclusion: Date, expiration: Int):
+            this(id, type, name, descr, activity, location?.latLng?.latitude!!,
+                    location.latLng?.longitude!!, numResults, conclusion, expiration, -1) {
+        if (location.name != null) {
             this.placeName = location.name.toString()
-            this.placeLatitude = location.latLng.latitude
-            this.placeLongitude = location.latLng.longitude
-        }
-
-        this.maxResults = numResults
-        this.voteConclusion = conclusion
-        this.expirationDays = expiration
-    }
-
-    constructor(id: String, type: String, name: String, descr: String, activity: String, latitude: Double, longitude: Double,
-                numResults: Int, conclusion: Date, expiration: Int, participants: Int?) {
-        this.id = id
-        this.type = type
-        this.name = name
-        this.description = descr
-        this.activity = activity
-        this.placeLatitude = latitude
-        this.placeLongitude = longitude
-        this.maxResults = numResults
-        this.voteConclusion = conclusion
-        this.expirationDays = expiration
-        if (participants != null) {
-            this.participants = participants
         }
     }
 

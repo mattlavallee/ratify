@@ -48,7 +48,7 @@ class GroupViewModel: ViewModel {
             this.createPending.value = false
             if (task.isSuccessful) {
                 @Suppress("UNCHECKED_CAST")
-                val response: HashMap<String, Any> = task.result.data as HashMap<String, Any>
+                val response: HashMap<String, Any> = task.result?.data as HashMap<String, Any>
                 if (response["error"] != null) {
                     createGroupError.value = response["error"].toString()
                 } else {

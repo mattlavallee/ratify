@@ -31,7 +31,7 @@ class HomeViewModel: ViewModel {
         FirebaseFunctions.getInstance().getHttpsCallable("getGroups").call().continueWith { task ->
             if (task.isSuccessful) {
                 @Suppress("UNCHECKED_CAST")
-                val response: HashMap<String, Any> = task.result.data as HashMap<String, Any>
+                val response: HashMap<String, Any> = task.result?.data as HashMap<String, Any>
                 @Suppress("UNCHECKED_CAST")
                 val createdGroups: HashMap<String, Any> = response["created_groups"] as HashMap<String, Any>
                 @Suppress("UNCHECKED_CAST")
