@@ -54,6 +54,7 @@ data class Group(
         fun fromJsonHashMap(id: String, model: HashMap<String, Any>): Group {
             @Suppress("UNCHECKED_CAST")
             val location: HashMap<String, Double> = model["location"] as HashMap<String, Double>
+            @Suppress("UNCHECKED_CAST")
             val participants: HashMap<String, Boolean> = model["members"] as HashMap<String, Boolean>
 
             val totalActiveParticipants: Int = participants.count { it.value }
