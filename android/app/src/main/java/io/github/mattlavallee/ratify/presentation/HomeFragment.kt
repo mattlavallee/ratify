@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ class HomeFragment : Fragment(), UserAuthInterface {
     private lateinit var groupRecyclerView: RecyclerView
     private lateinit var viewLayoutManager: RecyclerView.LayoutManager
     private lateinit var joinedGroupAdapter: RecyclerView.Adapter<*>
+    private lateinit var groupSwipeRefresh: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,9 +39,10 @@ class HomeFragment : Fragment(), UserAuthInterface {
                 joinedGroups.clear()
                 joinedGroups.addAll(results)
                 joinedGroupAdapter.notifyDataSetChanged()
+                groupSwipeRefresh.isRefreshing = false;
         })
         viewModel?.getFetchIsPending()?.observe(this, Observer {
-            isPending -> if (isPending == true) pendingFetchSpinner.visibility = View.VISIBLE else pendingFetchSpinner.visibility = View.GONE
+            isPending -> if (isPending == true && !groupSwipeRefresh.isRefreshing) pendingFetchSpinner.visibility = View.VISIBLE else pendingFetchSpinner.visibility = View.GONE
         })
     }
 
@@ -58,10 +61,15 @@ class HomeFragment : Fragment(), UserAuthInterface {
         viewLayoutManager = LinearLayoutManager(context)
         joinedGroupAdapter = GroupAdapter(joinedGroups)
         pendingFetchSpinner = view.findViewById(R.id.group_list_spinner)
+        groupSwipeRefresh = view.findViewById(R.id.group_swipe_refresh)
         groupRecyclerView = view.findViewById<RecyclerView>(R.id.groups_recycler_view).apply {
             setHasFixedSize(true)
             layoutManager = viewLayoutManager
             adapter = joinedGroupAdapter
+        }
+
+        groupSwipeRefresh.setOnRefreshListener {
+            viewModel?.fetch()
         }
     }
 
