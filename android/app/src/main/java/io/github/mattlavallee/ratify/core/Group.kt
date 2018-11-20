@@ -36,6 +36,10 @@ data class Group(
         }
     }
 
+    fun isConcluded(): Boolean {
+        return this.voteConclusion.before(Date())
+    }
+
     fun populateParams(params: MutableMap<String, Any>): MutableMap<String, Any> {
         params["name"] = this.name
         params["type"] = this.type

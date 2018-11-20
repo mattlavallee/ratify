@@ -1,5 +1,6 @@
 package io.github.mattlavallee.ratify.adapters
 
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -28,9 +29,10 @@ class GroupAdapter(private val data: ArrayList<Group>) : RecyclerView.Adapter<Gr
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.name.text = data[position].name
-        holder.description.text = data[position].description
-        var totalParticipants = data[position].participants
+        val currGroup = data[position]
+        holder.name.text = currGroup.name
+        holder.description.text = currGroup.description
+        var totalParticipants = currGroup.participants
         var participantText = " participants"
         if (totalParticipants <= 0) {
             // if it's showing up in someone's view, there's got to be at least one user
@@ -38,8 +40,16 @@ class GroupAdapter(private val data: ArrayList<Group>) : RecyclerView.Adapter<Gr
             participantText = " participant"
         }
         holder.participants.text = "(" + totalParticipants + participantText + ")"
-        holder.code.text = data[position].id
-        holder.expiration.text = conclusionFormatter.format(data[position].voteConclusion)
+        holder.code.text = currGroup.id
+        holder.expiration.text = conclusionFormatter.format(currGroup.voteConclusion)
+
+        if (currGroup.isConcluded()) {
+            holder.name.setTextColor(Color.LTGRAY)
+            holder.description.setTextColor(Color.LTGRAY)
+            holder.participants.setTextColor(Color.LTGRAY)
+            holder.code.setTextColor(Color.LTGRAY)
+            holder.expiration.setTextColor(Color.LTGRAY)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
