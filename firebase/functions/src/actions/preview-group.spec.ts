@@ -34,7 +34,7 @@ describe('Preview Group', () => {
     }, {
       auth: {uid: 'test'}
     } as CallableContext).then((result) => {
-      expect(result).toEqual([new YelpResult({
+      expect(result).toEqual({results: [new YelpResult({
         id: 'match1',
         name: 'A Match',
         image_url: 'match.png',
@@ -43,7 +43,7 @@ describe('Preview Group', () => {
         location: {
           display_address: ['ABC 123 St']
         }
-      } as IYelpFullResult)]);
+      } as IYelpFullResult)]});
       done();
     });
   });
