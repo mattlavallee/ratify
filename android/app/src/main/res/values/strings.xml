@@ -12,6 +12,7 @@
     <string name="create_group_name_description">Description</string>
     <string name="create_group_results_label">Max Results</string>
     <string name="create_group_create_btn_text">Create</string>
+    <string name="create_group_preview_btn_text">Preview</string>
     <string name="create_group_activity_hint">Activity (Dinner? Lunch? Drinks?)</string>
     <string name="create_group_vote_conclusion">Conclude Voting By...</string>
     <string name="create_group_vote_expiration">Days After Conclusion to Expire</string>

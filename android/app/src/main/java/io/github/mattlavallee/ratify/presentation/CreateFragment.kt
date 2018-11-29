@@ -12,6 +12,8 @@ import android.support.v4.app.Fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +30,9 @@ import io.github.mattlavallee.ratify.R
 import android.widget.NumberPicker
 import android.widget.ProgressBar
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import io.github.mattlavallee.ratify.adapters.PreviewResultsAdapter
 import io.github.mattlavallee.ratify.core.Group
+import io.github.mattlavallee.ratify.core.YelpResult
 import io.github.mattlavallee.ratify.data.GroupViewModel
 import io.github.mattlavallee.ratify.presentation.interfaces.FragmentSwitchInterface
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
@@ -52,6 +56,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
     private var createGroupMaxResultsDisplay: TextInputEditText? = null
     private var createGroupExpirationDisplay: TextInputEditText? = null
     private var createCreateBtn: Button? = null
+    private var createPreviewBtn: Button? = null
 
     private var createGroupPlace: Place? = null
     private var createGroupMaxResults: Int = -1
@@ -80,6 +85,9 @@ class CreateFragment : Fragment(), UserAuthInterface {
                 } else {
                     SnackbarGenerator.generateSnackbar(view, "Shucks, something went wrong generating the group code")?.show()
                 }
+        })
+        this.groupViewModel?.getGroupPreview()?.observe(this, Observer {
+            results -> this.displayPreviewResults(results!!)
         })
     }
 
@@ -110,6 +118,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
         this.createGroupDescription = view.findViewById(R.id.create_group_description)
         this.createGroupActivity = view.findViewById(R.id.create_group_activity)
         this.createCreateBtn = view.findViewById(R.id.create_group_create_btn)
+        this.createPreviewBtn = view.findViewById(R.id.create_group_preview_btn)
         autocompleteFragment = activity?.supportFragmentManager?.findFragmentById(R.id.place_autocomplete_fragment) as? SupportPlaceAutocompleteFragment
         configureAutocompleteFragment()
 
@@ -121,9 +130,8 @@ class CreateFragment : Fragment(), UserAuthInterface {
 
         this.createGroupExpirationDisplay = activity?.findViewById(R.id.create_group_expiration) as TextInputEditText
         configureExpirationDialog()
-
-        this.createCreateBtn = activity?.findViewById(R.id.create_group_create_btn) as Button
         configureCreate()
+        configurePreview()
 
         this.requiredFieldsToEditTextMap["name"] = this.createGroupName
         this.requiredFieldsToEditTextMap["activity"] = this.createGroupActivity
@@ -296,6 +304,18 @@ class CreateFragment : Fragment(), UserAuthInterface {
         }
     }
 
+    private fun configurePreview() {
+        this.createPreviewBtn?.setOnClickListener {
+            val groupActivity: String = this.createGroupActivity?.text.toString()
+            if (groupActivity.isEmpty() || this.createGroupPlace == null || this.createGroupMaxResults <= 0) {
+                SnackbarGenerator.generateSnackbar(view, "You must include an activity, location, and max results to preview")?.show()
+            } else {
+                this.groupViewModel?.previewResults(groupActivity, this.createGroupPlace?.latLng?.latitude!!,
+                        this.createGroupPlace?.latLng?.longitude!!, this.createGroupMaxResults)
+            }
+        }
+    }
+
     private fun clearCreateGroupForm() {
         this.createGroupName?.setText("")
         this.createGroupDescription?.setText("")
@@ -307,5 +327,18 @@ class CreateFragment : Fragment(), UserAuthInterface {
         this.createGroupExpirationDisplay?.setText("")
         this.createGroupVoteConclusionDateTime = Calendar.getInstance()
         this.createGroupVoteConclusion?.setText("")
+    }
+
+    private fun displayPreviewResults(items: ArrayList<YelpResult>) {
+        var builder = android.support.v7.app.AlertDialog.Builder(context!!)
+        var previewResultsAdapter = PreviewResultsAdapter(items)
+        val previewResultsView = activity?.layoutInflater?.inflate(R.layout.preview_results_layout, null)
+        previewResultsView!!.findViewById<RecyclerView>(R.id.preview_results_list_view).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = previewResultsAdapter
+        }
+        builder.setView(previewResultsView)
+                .setPositiveButton("OK", { dialog, _ -> dialog.cancel()})
+        builder.create().show()
     }
 }

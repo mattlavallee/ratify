@@ -146,20 +146,44 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/create_group_create_btn"></RelativeLayout>
-    <Button
-        android:id="@+id/create_group_create_btn"
-        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/create_group_button_wrapper"></RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/create_group_button_wrapper"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:text="@string/create_group_create_btn_text"
-        app:layout_constraintHorizontal_bias="1"
+        android:orientation="horizontal"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        style="?android:attr/borderlessButtonStyle"
-        android:background="@drawable/button_ripple_light"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+        <Button
+            android:id="@+id/create_group_preview_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/create_group_create_btn"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="@string/create_group_preview_btn_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintRight_toLeftOf="@id/create_group_create_btn"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/button_ripple_light" />
+        <Button
+            android:id="@+id/create_group_create_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_alignParentRight="true"
+            android:text="@string/create_group_create_btn_text"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toRightOf="@id/create_group_preview_btn"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/button_ripple_light"/>
+    </RelativeLayout>
 
     <ProgressBar
         android:id="@+id/create_group_spinner"

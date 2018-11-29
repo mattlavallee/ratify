@@ -5,12 +5,14 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.firebase.functions.FirebaseFunctions
 import io.github.mattlavallee.ratify.core.Group
+import io.github.mattlavallee.ratify.core.YelpResult
 import java.util.Date
 
 class GroupViewModel : ViewModel {
     private val createPending: MutableLiveData<Boolean> = MutableLiveData()
     private val createGroupError: MutableLiveData<String> = MutableLiveData()
     private val createGroupCode: MutableLiveData<String> = MutableLiveData()
+    private val createGroupPreview: MutableLiveData<ArrayList<YelpResult>> = MutableLiveData()
 
     public constructor() {}
 
@@ -24,6 +26,10 @@ class GroupViewModel : ViewModel {
 
     fun getGroupCode(): LiveData<String> {
         return createGroupCode
+    }
+
+    fun getGroupPreview(): LiveData<ArrayList<YelpResult>> {
+        return createGroupPreview
     }
 
     fun validateGroup(group: Group): ArrayList<String> {
@@ -55,6 +61,30 @@ class GroupViewModel : ViewModel {
                 }
             } else {
                 createGroupError.value = "Error creating group! " + task.exception?.stackTrace.toString()
+            }
+        }
+    }
+
+    fun previewResults(activity: String, latitude: Double, longitude: Double, results: Int) {
+        var params: MutableMap<String, Any> = mutableMapOf()
+        params["activity"] = activity
+        params["latitude"] = latitude
+        params["longitude"] = longitude
+        params["maxResults"] = results
+
+        this.createPending.value = true
+        FirebaseFunctions.getInstance().getHttpsCallable("previewGroupResults").call(params).continueWith { task ->
+            this.createPending.value = false
+            if (task.isSuccessful) {
+                @Suppress("UNCHECKED_CAST")
+                val response: HashMap<String, Any> = task.result?.data as HashMap<String, Any>
+                if (response["error"] != null) {
+                    createGroupError.value = response["error"].toString()
+                } else {
+                    createGroupPreview.value = YelpResult.fromJsonArray(response["results"] as ArrayList<HashMap<String, Any>>)
+                }
+            } else {
+                createGroupError.value = "Error getting group previews!"
             }
         }
     }
