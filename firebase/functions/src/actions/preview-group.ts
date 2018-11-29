@@ -8,7 +8,11 @@ export function previewGroupImpl(data: any, context: CallableContext): Promise<a
     const newGroup: GroupRequest = new GroupRequest('', '', '', data.activity,
       '', data.latitude, data.longitude, data.maxResults, -1, -1);
 
-    return getYelpResultsForGroup(newGroup).then((matches: YelpResult[]) => matches);
+    return getYelpResultsForGroup(newGroup).then((matches: YelpResult[]) => {
+      return {
+        results: matches,
+      };
+    });
   } else {
     return Promise.resolve({
       error: 'Error authenticating the user',
