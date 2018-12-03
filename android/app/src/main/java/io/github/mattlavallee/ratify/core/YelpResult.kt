@@ -28,5 +28,21 @@ class YelpResult(
             }
             return result
         }
+
+        fun toJsonArray(data: ArrayList<YelpResult> ): List<Map<String, Any>> {
+            val resultAsJson: ArrayList<Map<String, Any>> = ArrayList()
+            data.map {
+                val currResult: MutableMap<String, Any> = mutableMapOf()
+                currResult["id" ] = it.id
+                currResult["name"] = it.name
+                currResult["businessImage"] = it.businessImage
+                currResult["address"] = it.address
+                currResult["rating"] = it.rating
+                currResult["price"] = it.price
+                resultAsJson.add(currResult.toMap())
+            }
+
+            return resultAsJson.toList()
+        }
     }
 }

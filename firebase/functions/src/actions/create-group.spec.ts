@@ -130,4 +130,46 @@ describe('Create Group', () => {
       done();
     });
   });
+
+  it('successfully creates a group if matches were provided via preview', (done) => {
+    jest.spyOn(yelpRequester, 'getYelpResultsForGroup').mockReturnValueOnce(Promise.resolve());
+    jest.spyOn(groupDb, 'getGroup').mockReturnValueOnce(Promise.resolve(null));
+    jest.spyOn(groupDb, 'insertGroup').mockReturnValueOnce(Promise.resolve(true));
+    jest.spyOn(userDb, 'getUser').mockReturnValueOnce(Promise.resolve(new User('foo')));
+    jest.spyOn(userDb, 'updateUser').mockReturnValueOnce(Promise.resolve(true));
+    jest.spyOn(matchDb, 'insertMatches').mockReturnValueOnce(Promise.resolve(true));
+    jest.spyOn(voteDb, 'insertUserVotes').mockReturnValueOnce(Promise.resolve(true));
+    jest.spyOn(uuidUtil, 'generateUuid').mockReturnValueOnce('12345');
+    const {createGroupImpl} = require('./create-group');
+
+    createGroupImpl({
+      name: 'foo',
+      type: 'blah',
+      description: 'something',
+      activity: 'bar',
+      startingLocation: 'somewhere',
+      latitude: 68,
+      longitude: 73,
+      results: 3,
+      conclusion: (new Date()).getTime(),
+      expiration: 5,
+      matches: [
+        new YelpResult({
+          id: 'match1',
+          name: 'A Match',
+          image_url: 'match.png',
+          rating: 4.3,
+          price: '$$',
+          location: {
+            display_address: ['ABC 123 St']
+          }} as IYelpFullResult),
+      ],
+    }, {
+      auth: {uid: 'test'}
+    } as CallableContext).then((result) => {
+      expect(yelpRequester.getYelpResultsForGroup).not.toHaveBeenCalled();
+      expect(result).toEqual({groupId: '12345'});
+      done();
+    });
+  });
 });

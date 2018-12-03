@@ -13,6 +13,7 @@ class GroupViewModel : ViewModel {
     private val createGroupError: MutableLiveData<String> = MutableLiveData()
     private val createGroupCode: MutableLiveData<String> = MutableLiveData()
     private val createGroupPreview: MutableLiveData<ArrayList<YelpResult>> = MutableLiveData()
+    private val groupMatchesCache: HashMap<String, ArrayList<YelpResult>> = HashMap()
 
     public constructor() {}
 
@@ -48,6 +49,12 @@ class GroupViewModel : ViewModel {
         var params: MutableMap<String, Any> = mutableMapOf()
         group.populateParams(params)
 
+        val cacheKey = group.activity + "-" + group.placeLatitude.toString() + "-" +
+                group.placeLongitude.toString() + "-" + group.maxResults.toString()
+        if (groupMatchesCache.containsKey(cacheKey)) {
+            params["matches"] = YelpResult.toJsonArray(groupMatchesCache[cacheKey] as ArrayList<YelpResult>)
+        }
+
         this.createPending.value = true
         FirebaseFunctions.getInstance().getHttpsCallable("createGroup").call(params).continueWith { task ->
             this.createPending.value = false
@@ -66,6 +73,13 @@ class GroupViewModel : ViewModel {
     }
 
     fun previewResults(activity: String, latitude: Double, longitude: Double, results: Int) {
+        val cacheKey = activity + "-" + latitude.toString() + "-" + longitude.toString() + "-" + results.toString()
+
+        if (groupMatchesCache.contains(cacheKey)) {
+            createGroupPreview.value = groupMatchesCache[cacheKey]
+            return
+        }
+
         var params: MutableMap<String, Any> = mutableMapOf()
         params["activity"] = activity
         params["latitude"] = latitude
@@ -81,7 +95,9 @@ class GroupViewModel : ViewModel {
                 if (response["error"] != null) {
                     createGroupError.value = response["error"].toString()
                 } else {
-                    createGroupPreview.value = YelpResult.fromJsonArray(response["results"] as ArrayList<HashMap<String, Any>>)
+                    val results = YelpResult.fromJsonArray((response["results"] as ArrayList<HashMap<String, Any>>))
+                    groupMatchesCache[cacheKey] = results
+                    createGroupPreview.value = results
                 }
             } else {
                 createGroupError.value = "Error getting group previews!"

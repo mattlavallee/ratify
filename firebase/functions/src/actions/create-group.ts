@@ -26,8 +26,11 @@ export function createGroupImpl(data: any, context: CallableContext): Promise<an
     }
 
     const newGroupUuid = generateUuid();
+    const groupMatches: YelpResult[]|undefined = data.matches;
+    const matchesPromise = groupMatches ? Promise.resolve(groupMatches) :
+      getYelpResultsForGroup(newGroup);
 
-    return getYelpResultsForGroup(newGroup).then((matches: YelpResult[]): Promise<IResult> => {
+    return matchesPromise.then((matches: YelpResult[]): Promise<IResult> => {
       const groupPromise: Promise<IGroup> = getGroup(newGroupUuid);
       const userPromise: Promise<User> = getUser(context.auth.uid);
 
