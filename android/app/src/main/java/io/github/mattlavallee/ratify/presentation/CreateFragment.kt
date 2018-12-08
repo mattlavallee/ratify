@@ -107,6 +107,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity?.title = "Create Group"
         val hasPlayServicesAccess = GoogleApiAvailability.getInstance()?.isGooglePlayServicesAvailable(activity?.applicationContext)
         if (hasPlayServicesAccess != ConnectionResult.SUCCESS) {
             GoogleApiAvailability.getInstance()?.getErrorDialog(activity, hasPlayServicesAccess!!, 9000)?.show()

@@ -58,6 +58,7 @@ class HomeFragment : Fragment(), UserAuthInterface {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity?.title = "Ratify"
         viewLayoutManager = LinearLayoutManager(context)
         joinedGroupAdapter = GroupAdapter(joinedGroups)
         pendingFetchSpinner = view.findViewById(R.id.group_list_spinner)

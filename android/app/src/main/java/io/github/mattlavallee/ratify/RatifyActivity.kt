@@ -40,6 +40,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
     private var splashScreenLayout: ConstraintLayout? = null
     private var signInButton: Button? = null
     private var userAuth: FirebaseAuth? = null
+    private var priorFragmentTitle: String? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         val previousFragment = selectedFragment
@@ -55,6 +56,8 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
             R.id.navigation_join -> {
                 joinViewModel?.resetCodeInput()
                 bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+                this.priorFragmentTitle = this.title.toString()
+                this.title = "Join a Group"
                 return@OnNavigationItemSelectedListener false
             }
             R.id.navigation_create -> {
@@ -174,6 +177,10 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
     override fun onBackPressed() {
         if (bottomSheetBehavior != null && bottomSheetBehavior?.state == BottomSheetBehavior.STATE_EXPANDED) {
             bottomSheetBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+            if (this.priorFragmentTitle != null) {
+                this.title = this.priorFragmentTitle
+                this.priorFragmentTitle = null
+            }
         } else {
             super.onBackPressed()
         }
