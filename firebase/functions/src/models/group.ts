@@ -1,15 +1,18 @@
+import { IDetailedGroupVotes } from "./vote";
+import { IMatchDetails, ISingleMatch } from "./match";
+
 export interface IGroup {
   name: string,
   type: string,
   query: string,
   description: string,
   location: {
-    latitude: Number,
-    longitude: Number,
+    latitude: number,
+    longitude: number,
   },
-  numberResults: Number,
-  voteConclusion: Number,
-  daysToExpire: Number,
+  numberResults: number,
+  voteConclusion: number,
+  daysToExpire: number,
   members: {
     [userId: string]: boolean
   },
@@ -65,5 +68,25 @@ export class GroupRequest {
     }
 
     return false;
+  }
+}
+
+export class DetailedGroup extends GroupRequest {
+  public userVotes: IDetailedGroupVotes = {};
+  public matches: {[matchId: string]: IMatchDetails} = {};
+
+  constructor(group: IGroup) {
+    super(group.name, group.type, group.description, group.query, '', group.location.latitude,
+      group.location.longitude, group.numberResults, group.voteConclusion, group.daysToExpire);
+  }
+
+  public setVoteState(votes: IDetailedGroupVotes) {
+    this.userVotes = votes;
+  }
+
+  public setMatches(inflatedMatches: ISingleMatch[]) {
+    inflatedMatches.forEach((match: ISingleMatch) => {
+      this.matches[match.details.id] = match.details;
+    });
   }
 }

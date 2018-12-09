@@ -1,6 +1,6 @@
 import { getDatabase } from './db-instance';
 import { database } from '../../node_modules/firebase-admin';
-import { IVote } from '../models/vote';
+import { IVote, IDetailedGroupVotes } from '../models/vote';
 import { DataSnapshot } from '../../node_modules/firebase-functions/lib/providers/database';
 
 let voteReference: database.Reference;
@@ -43,5 +43,36 @@ export function insertUserVotes(votes: IVote): Promise<boolean> {
     }
 
     return Promise.all(promises).then(() => true).catch(() => false);
+  });
+}
+
+export function getGroupVotes(ids: string[]): Promise<any> {
+  const votePromises = [];
+  for (const voteId of ids) {
+    const prom: Promise<void> = getVoteDBReference().child(voteId).once('value').then((vote: DataSnapshot) => {
+      return vote.val();
+    });
+    votePromises.push(prom);
+  }
+  
+  return Promise.all(votePromises).then((matchVotes: {[userId: string]: boolean}[]) => {
+    const userVotesForMatches: IDetailedGroupVotes = {};
+    for (let i = 0; i < matchVotes.length; i++) {
+      const currMatchVote = matchVotes[i];
+      if (!currMatchVote) {
+        continue;
+      }
+
+      const matchId = ids[i].split('|')[1];
+      const userIds = Object.keys(currMatchVote);
+      userIds.forEach((userId: string) => {
+        if (!userVotesForMatches[userId]) {
+          userVotesForMatches[userId] = {};
+        }
+
+        userVotesForMatches[userId][matchId] = currMatchVote[userId];
+      });
+    }
+    return userVotesForMatches;
   });
 }

@@ -1,6 +1,6 @@
 import { getDatabase } from './db-instance';
 import { database } from '../../node_modules/firebase-admin';
-import { IMatch } from '../models/match';
+import { IMatch, ISingleMatch } from '../models/match';
 import { DataSnapshot } from '../../node_modules/firebase-functions/lib/providers/database';
 
 let matchReference: database.Reference;
@@ -25,5 +25,19 @@ export function insertMatches(matches: IMatch): Promise<boolean> {
     }
 
     return Promise.all(promises).then(() => true).catch(() => false);
+  });
+}
+
+export function getMatches(ids: string[]): Promise<ISingleMatch[]> {
+  const promises = [];
+  ids.forEach((id: string) => {
+    const prom = getMatchDBReference().child(id).once('value').then((value: DataSnapshot) => {
+      return value.val();
+    });
+    promises.push(prom);
+  });
+
+  return Promise.all(promises).then((results: (ISingleMatch|undefined)[]) => {
+    return results.filter((res) => res !== null && res !== undefined);
   });
 }

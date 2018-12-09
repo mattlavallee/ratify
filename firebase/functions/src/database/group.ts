@@ -15,8 +15,8 @@ function getGroupDBReference() {
 }
 
 function isGroupExpired(group: IGroup): boolean {
-  const expirationDate = new Date(group.voteConclusion as number);
-  expirationDate.setDate(expirationDate.getDate() + (group.daysToExpire as number));
+  const expirationDate = new Date(group.voteConclusion);
+  expirationDate.setDate(expirationDate.getDate() + (group.daysToExpire));
   return expirationDate < new Date();
 }
 
