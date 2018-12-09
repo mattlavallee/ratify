@@ -44,6 +44,9 @@ class HomeFragment : Fragment(), UserAuthInterface {
         viewModel?.getFetchIsPending()?.observe(this, Observer {
             isPending -> if (isPending == true && !groupSwipeRefresh.isRefreshing) pendingFetchSpinner.visibility = View.VISIBLE else pendingFetchSpinner.visibility = View.GONE
         })
+        viewModel?.getGroupDetails()?.observe(this, Observer {
+            SnackbarGenerator.generateSnackbar(view, "Successful")?.show()
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -60,7 +63,7 @@ class HomeFragment : Fragment(), UserAuthInterface {
 
         activity?.title = "Ratify"
         viewLayoutManager = LinearLayoutManager(context)
-        joinedGroupAdapter = GroupAdapter(joinedGroups)
+        joinedGroupAdapter = GroupAdapter(joinedGroups, viewModel)
         pendingFetchSpinner = view.findViewById(R.id.group_list_spinner)
         groupSwipeRefresh = view.findViewById(R.id.group_swipe_refresh)
         groupRecyclerView = view.findViewById<RecyclerView>(R.id.groups_recycler_view).apply {

@@ -9,6 +9,7 @@ import io.github.mattlavallee.ratify.core.Group
 
 class HomeViewModel : ViewModel {
     private val fetchPending: MutableLiveData<Boolean> = MutableLiveData()
+    private val groupDetails: MutableLiveData<String> = MutableLiveData() //DetailedGroup
     private val groups: MutableLiveData<ArrayList<Group>> = MutableLiveData()
     private val error: MutableLiveData<String> = MutableLiveData()
 
@@ -24,6 +25,10 @@ class HomeViewModel : ViewModel {
 
     fun getFetchIsPending(): LiveData<Boolean> {
         return fetchPending
+    }
+
+    fun getGroupDetails(): LiveData<String> { //DetailedGroup
+        return groupDetails
     }
 
     fun fetch() {
@@ -54,6 +59,23 @@ class HomeViewModel : ViewModel {
                 error.value = "Error getting groups!"
             }
             fetchPending.value = false
+        }
+    }
+
+    fun fetchGroup(groupId: String) {
+        val params: MutableMap<String, String> = mutableMapOf()
+        params["groupId"] = groupId
+        fetchPending.value = true
+        FirebaseFunctions.getInstance().getHttpsCallable("getGroupById").call(params).continueWith {
+            task ->
+                fetchPending.value = false
+                if (task.isSuccessful) {
+                    error.value = null
+                    groupDetails.value = "test"
+                } else {
+                    Log.e("RATIFY", task.exception?.stackTrace.toString())
+                    error.value = "Error launching group!"
+                }
         }
     }
 }

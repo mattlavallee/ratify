@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import io.github.mattlavallee.ratify.core.Group
 import io.github.mattlavallee.ratify.R
+import io.github.mattlavallee.ratify.data.HomeViewModel
 import java.text.SimpleDateFormat
 
-class GroupAdapter(private val data: ArrayList<Group>) : RecyclerView.Adapter<GroupAdapter.ViewHolder>() {
+class GroupAdapter(private val data: ArrayList<Group>, private val viewModel: HomeViewModel?) : RecyclerView.Adapter<GroupAdapter.ViewHolder>() {
     private val conclusionFormat: String = "MMM d yyyy h:mm a"
     private val conclusionFormatter: SimpleDateFormat = SimpleDateFormat(conclusionFormat)
 
@@ -42,6 +43,7 @@ class GroupAdapter(private val data: ArrayList<Group>) : RecyclerView.Adapter<Gr
         holder.participants.text = "(" + totalParticipants + participantText + ")"
         holder.code.text = currGroup.id
         holder.expiration.text = conclusionFormatter.format(currGroup.voteConclusion)
+        holder.itemView.tag = currGroup.id
 
         if (currGroup.isConcluded()) {
             holder.name.setTextColor(Color.LTGRAY)
@@ -49,6 +51,14 @@ class GroupAdapter(private val data: ArrayList<Group>) : RecyclerView.Adapter<Gr
             holder.participants.setTextColor(Color.LTGRAY)
             holder.code.setTextColor(Color.LTGRAY)
             holder.expiration.setTextColor(Color.LTGRAY)
+        }
+
+        initGroupTapAction(holder.itemView)
+    }
+
+    private fun initGroupTapAction(groupView: View) {
+        groupView.setOnClickListener {
+            viewModel?.fetchGroup(groupView.tag as String)
         }
     }
 
