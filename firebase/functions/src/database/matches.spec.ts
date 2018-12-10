@@ -16,6 +16,17 @@ const dbMock = {
       child: () => {
         return {
           set: () => Promise.resolve(),
+          once: () => Promise.resolve({
+            val: () => {
+              return {
+                fetchTime: 0,
+                details: {
+                  id: 'foo',
+                  name: 'Foo',
+                },
+              };
+            },
+          }),
         };
       }
     };
@@ -41,6 +52,22 @@ describe('Matches Database Handler', () => {
 
     insertMatches([{a: true}]).then((response) => {
       expect(response).toEqual(true);
+      done();
+    });
+  });
+
+  it ('gets all matches for a group', (done) => {
+    jest.spyOn(dbInstance, 'getDatabase').mockReturnValueOnce(dbMock);
+    const {getMatches} = require('./matches');
+
+    getMatches(['g1|foo']).then((response) => {
+      expect(response).toEqual([{
+        fetchTime: 0,
+        details: {
+          id: 'foo',
+          name: 'Foo',
+        },
+      }]);
       done();
     });
   });

@@ -76,7 +76,7 @@ export class DetailedGroup extends GroupRequest {
   public matches: {[matchId: string]: IMatchDetails} = {};
 
   constructor(group: IGroup) {
-    super(group.name, group.type, group.description, group.query, '', group.location.latitude,
+    super(group.name, group.type, group.description, group.query, '_', group.location.latitude,
       group.location.longitude, group.numberResults, group.voteConclusion, group.daysToExpire);
   }
 

@@ -2,6 +2,7 @@ import * as dbInstance from './db-instance';
 
 let childOnceHasInstance = true;
 let limitOnceHasInstance = true;
+let getVoteHasInstance = false;
 const dbMock = {
   ref: () => {
     return {
@@ -19,6 +20,9 @@ const dbMock = {
         return {
           set: () => Promise.resolve(),
           once: () => {
+            if (getVoteHasInstance) {
+              return Promise.resolve({val: () => { return {u1: true}}});
+            }
             if (childOnceHasInstance) {
               return Promise.resolve({val: () => { return {}; }});
             }
@@ -34,6 +38,7 @@ describe('Votes Database Handler', () => {
   describe('initUserVotes - ', () => {
     it('properly resolves for all votes', (done) => {
       childOnceHasInstance = true;
+      getVoteHasInstance = false;
       jest.spyOn(dbInstance, 'getDatabase').mockReturnValueOnce(dbMock);
       const {initUserVotes} = require('./votes');
 
@@ -45,6 +50,7 @@ describe('Votes Database Handler', () => {
 
     it('throws an error if a vote returns undefined', (done) => {
       childOnceHasInstance = false;
+      getVoteHasInstance = false;
       jest.spyOn(dbInstance, 'getDatabase').mockReturnValueOnce(dbMock);
       const {initUserVotes} = require('./votes');
 
@@ -58,6 +64,7 @@ describe('Votes Database Handler', () => {
   describe('insertUserVotes', () => {
     it('properly resolves for all votes', (done) => {
       limitOnceHasInstance = true;
+      getVoteHasInstance = false;
       jest.spyOn(dbInstance, 'getDatabase').mockReturnValueOnce(dbMock);
       const {insertUserVotes} = require('./votes');
 
@@ -72,6 +79,7 @@ describe('Votes Database Handler', () => {
 
     it('updates votes if no instance found', (done) => {
       limitOnceHasInstance = false;
+      getVoteHasInstance = false;
       jest.spyOn(dbInstance, 'getDatabase').mockReturnValueOnce(dbMock);
       const {insertUserVotes} = require('./votes');
 
@@ -81,6 +89,24 @@ describe('Votes Database Handler', () => {
         expect(response).toEqual(true);
         done();
       });
+    });
+  });
+
+  describe('getGroupVotes', () => {
+    it('properly retrieves all votes', (done) => {
+      childOnceHasInstance = false;
+      getVoteHasInstance = true;
+      jest.spyOn(dbInstance, 'getDatabase').mockReturnValueOnce(dbMock);
+      const {getGroupVotes} = require('./votes');
+
+      getGroupVotes(['g1|m1']).then((response) => {
+        expect(response).toEqual({
+          u1: {
+            m1: true,
+          },
+        });
+        done();
+      })
     });
   });
 });

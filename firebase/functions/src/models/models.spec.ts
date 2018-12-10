@@ -1,6 +1,7 @@
-import {GroupRequest} from './group';
+import {GroupRequest, DetailedGroup} from './group';
 import {User, IUserGroupMap} from './user';
 import {YelpResult, IYelpFullResult} from './yelp-result';
+import { IMatchDetails } from './match';
 
 describe('Models', () => {
   it('Group', () => {
@@ -19,6 +20,34 @@ describe('Models', () => {
 
     test.maxResults = 45;
     expect(test.isValid()).toEqual(false);
+  });
+
+  it ('DetailedGroup', () => {
+    const date = new Date();
+    const test = new DetailedGroup({
+      name: 'Test',
+      type: 'restaurant',
+      description: 'test obj',
+      query: 'lunch',
+      location: {
+        latitude: 12,
+        longitude: 13
+      },
+      members: {},
+      matches: {},
+      numberResults: 5,
+      voteConclusion: date.getTime(),
+      daysToExpire: 1,
+    });
+
+    expect(test.isValid()).toEqual(true);
+    
+    test.setMatches([{fetchTime: 0, details: { id: 'foo'} as IMatchDetails}]);
+    expect(test.matches.foo).toBeDefined();
+
+    const votes = {fifi: { foo: false }};
+    test.setVoteState(votes);
+    expect(test.userVotes).toStrictEqual(votes);
   });
 
   it('User', () => {
