@@ -93,21 +93,31 @@ class Group {
         fun fromJsonHashMap(id: String, model: HashMap<String, Any>): Group {
             @Suppress("UNCHECKED_CAST")
             val location: HashMap<String, Double> = model["location"] as HashMap<String, Double>
-            @Suppress("UNCHECKED_CAST")
-            val participants: HashMap<String, Boolean> = model["members"] as HashMap<String, Boolean>
 
-            val totalActiveParticipants: Int = participants.count { it.value }
+            var totalActiveParticipants = 0
+            if (model["members"] != null) {
+                @Suppress("UNCHECKED_CAST")
+                val participants: HashMap<String, Boolean> = model["members"] as HashMap<String, Boolean>
+
+                totalActiveParticipants = participants.count { it.value }
+            }
+
+            var query = if (model["query"] != null) model["query"] as String else model["activity"] as String
+            var numberResults = if(model["numberResults"] != null) model["numberResults"] as Int else model["maxResults"] as Int
+            var expiration = if(model["daysToExpire"] != null) model["daysToExpire"] as Int else model["expiration"] as Int
+            var conclusion = if(model["voteConclusionEpoch"] != null) model["voteConclusionEpoch"] as Long else model["voteConclusion"] as Long
+
             return Group(
                 id,
                 model["type"] as String,
                 model["name"] as String,
                 model["description"] as String,
-                model["query"] as String,
+                query,
                 location["latitude"] as Double,
                 location["longitude"] as Double,
-                model["numberResults"] as Int,
-                Date(model["voteConclusion"] as Long),
-                model["daysToExpire"] as Int,
+                numberResults,
+                Date(conclusion),
+                expiration,
                 totalActiveParticipants
             )
         }

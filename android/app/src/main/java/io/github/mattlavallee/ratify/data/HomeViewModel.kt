@@ -4,12 +4,14 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.functions.FirebaseFunctions
+import io.github.mattlavallee.ratify.core.DetailedGroup
 import io.github.mattlavallee.ratify.core.Group
 
 class HomeViewModel : ViewModel {
     private val fetchPending: MutableLiveData<Boolean> = MutableLiveData()
-    private val groupDetails: MutableLiveData<String> = MutableLiveData() //DetailedGroup
+    private val groupDetails: MutableLiveData<DetailedGroup> = MutableLiveData()
     private val groups: MutableLiveData<ArrayList<Group>> = MutableLiveData()
     private val error: MutableLiveData<String> = MutableLiveData()
 
@@ -27,7 +29,7 @@ class HomeViewModel : ViewModel {
         return fetchPending
     }
 
-    fun getGroupDetails(): LiveData<String> { //DetailedGroup
+    fun getGroupDetails(): LiveData<DetailedGroup> {
         return groupDetails
     }
 
@@ -66,12 +68,21 @@ class HomeViewModel : ViewModel {
         val params: MutableMap<String, String> = mutableMapOf()
         params["groupId"] = groupId
         fetchPending.value = true
+        var userId = ""
+        if (FirebaseAuth.getInstance().currentUser?.uid != null) {
+            userId = FirebaseAuth.getInstance().currentUser?.uid as String
+        }
         FirebaseFunctions.getInstance().getHttpsCallable("getGroupById").call(params).continueWith {
             task ->
                 fetchPending.value = false
                 if (task.isSuccessful) {
                     error.value = null
-                    groupDetails.value = "test"
+                    val results = task.result?.data as HashMap<String, Any>
+                    groupDetails.value = DetailedGroup.fromJsonHashMap(
+                        groupId,
+                        userId,
+                        results["results"] as HashMap<String, Any>
+                    )
                 } else {
                     Log.e("RATIFY", task.exception?.stackTrace.toString())
                     error.value = "Error launching group!"

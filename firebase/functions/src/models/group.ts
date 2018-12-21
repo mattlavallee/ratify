@@ -74,10 +74,12 @@ export class GroupRequest {
 export class DetailedGroup extends GroupRequest {
   public userVotes: IDetailedGroupVotes = {};
   public matches: {[matchId: string]: IMatchDetails} = {};
+  public voteConclusionEpoch: number;
 
   constructor(group: IGroup) {
     super(group.name, group.type, group.description, group.query, '_', group.location.latitude,
       group.location.longitude, group.numberResults, group.voteConclusion, group.daysToExpire);
+    this.voteConclusionEpoch = this.voteConclusion.getTime();
   }
 
   public setVoteState(votes: IDetailedGroupVotes) {

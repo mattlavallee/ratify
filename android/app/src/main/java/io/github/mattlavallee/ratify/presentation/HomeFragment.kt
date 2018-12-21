@@ -39,7 +39,7 @@ class HomeFragment : Fragment(), UserAuthInterface {
                 joinedGroups.clear()
                 joinedGroups.addAll(results)
                 joinedGroupAdapter.notifyDataSetChanged()
-                groupSwipeRefresh.isRefreshing = false;
+                groupSwipeRefresh.isRefreshing = false
         })
         viewModel?.getFetchIsPending()?.observe(this, Observer {
             isPending -> if (isPending == true && !groupSwipeRefresh.isRefreshing) pendingFetchSpinner.visibility = View.VISIBLE else pendingFetchSpinner.visibility = View.GONE

@@ -1,7 +1,5 @@
 package io.github.mattlavallee.ratify.core
 
-import android.util.Log
-
 class YelpResult(
     var id: String,
     var name: String,
@@ -25,6 +23,15 @@ class YelpResult(
             val result: ArrayList<YelpResult> = ArrayList()
             for (payload in jsonPayload) {
                 result.add(YelpResult(payload))
+            }
+            return result
+        }
+
+        fun fromHashMap(jsonPayload: HashMap<String, HashMap<String, Any>>): ArrayList<YelpResult> {
+            val result: ArrayList<YelpResult> = ArrayList()
+            for ((id, hashMap) in jsonPayload) {
+                hashMap["id"] = id
+                result.add(YelpResult(hashMap))
             }
             return result
         }
