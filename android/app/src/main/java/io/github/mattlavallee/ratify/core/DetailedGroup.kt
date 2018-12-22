@@ -1,12 +1,14 @@
 package io.github.mattlavallee.ratify.core
 
+import java.io.Serializable
+
 class DetailedGroup(
     private val details: Group,
     private val matches: ArrayList<YelpResult>,
     private val votes: Map<String, UserVote>
-) {
-    fun isConcluded() {
-        this.details.isConcluded()
+): Serializable {
+    fun isConcluded(): Boolean {
+        return this.details.isConcluded()
     }
 
     companion object {

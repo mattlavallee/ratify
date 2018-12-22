@@ -1,6 +1,8 @@
 package io.github.mattlavallee.ratify.core
 
-class UserVote(var matchId: String, var value: Number) {
+import java.io.Serializable
+
+class UserVote(var matchId: String, var value: Number): Serializable {
     private var isDirty: Boolean = false
 
     fun updateVote(voteState: Number) {

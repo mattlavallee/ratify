@@ -1,9 +1,10 @@
 package io.github.mattlavallee.ratify.core
 
 import com.google.android.gms.location.places.Place
+import java.io.Serializable
 import java.util.Date
 
-class Group {
+class Group: Serializable {
     var id: String
     var type: String
     var name: String
