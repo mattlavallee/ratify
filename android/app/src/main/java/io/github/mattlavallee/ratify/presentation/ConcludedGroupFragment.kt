@@ -23,7 +23,7 @@ class ConcludedGroupFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.title = "GROUP!!!"
+        activity?.title = group.getName()
         //TODO: Populate fragment fields here
     }
 }
