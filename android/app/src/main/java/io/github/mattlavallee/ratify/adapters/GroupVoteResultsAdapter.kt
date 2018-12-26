@@ -1,12 +1,12 @@
 package io.github.mattlavallee.ratify.adapters
 
-import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.core.YelpResult
 
@@ -28,8 +28,13 @@ class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>): Recycler
         holder.name.text = currMatch.name
         holder.location.text = currMatch.address
 
-        holder.image.setImageDrawable(null) //force a redraw
-        holder.image.setImageURI(Uri.parse(currMatch.businessImage))
+        if (currMatch.businessImage.isNotEmpty()) {
+            Picasso.get()
+                   .load(currMatch.businessImage)
+                   .fit()
+                   .centerCrop()
+                   .into(holder.image)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -38,13 +43,3 @@ class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>): Recycler
 
     override fun getItemCount() = data.size
 }
-
-/*
-class GroupAdapter(private val data: ArrayList<Group>, private val viewModel: HomeViewModel?) : RecyclerView.Adapter<GroupAdapter.ViewHolder>()
-        override fun getItemViewType(position: Int): Int {
-        return R.layout.group_layout
-    }
-
-    override fun getItemCount() = data.size
-}
- */
