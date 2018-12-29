@@ -31,7 +31,7 @@ class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>): Recycler
         if (currMatch.businessImage.isNotEmpty()) {
             Picasso.get()
                    .load(currMatch.businessImage)
-                   .placeholder(R.drawable.ic_photo_black_24dp)
+                   .placeholder(R.drawable.ic_cloud_off_16dp)
                    .fit()
                    .centerCrop()
                    .into(holder.image)
