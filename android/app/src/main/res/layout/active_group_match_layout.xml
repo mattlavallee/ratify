@@ -1,52 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
-    <android.support.v7.widget.CardView
-        android:id="@+id/match_image_container"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="10dp"
-        app:cardCornerRadius="25dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/match_details_wrapper"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/match_details_wrapper">
-        <ImageView
-            android:id="@+id/match_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/ic_cloud_off_16dp"/>
-    </android.support.v7.widget.CardView>
+    app:cardCornerRadius="5dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginBottom="3dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp">
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/match_details_wrapper"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintStart_toEndOf="@id/match_image_container"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/match_image_container">
-        <TextView
-            android:id="@+id/match_details_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+        <android.support.v7.widget.CardView
+            android:id="@+id/match_image_container"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="10dp"
+            app:cardCornerRadius="25dp"
+            app:cardElevation="0dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/match_details_wrapper"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-        <TextView
-            android:id="@+id/match_details_location"
-            android:layout_width="wrap_content"
+            app:layout_constraintRight_toLeftOf="@+id/match_details_wrapper"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <ImageView
+                android:id="@+id/match_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_cloud_off_16dp"/>
+        </android.support.v7.widget.CardView>
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/match_details_wrapper"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/match_details_name"/>
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/match_image_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/match_image_container">
+            <TextView
+                android:id="@+id/match_details_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <LinearLayout
+                android:id="@+id/match_rating_price_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/match_details_name"
+                app:layout_constraintBottom_toTopOf="@id/match_details_location">
+                <TextView
+                    android:id="@+id/match_rating_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <RatingBar
+                    android:id="@+id/match_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:numStars="5"
+                    android:stepSize="0.5"
+                    style="?android:attr/ratingBarStyleSmall"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/middle_dot"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"/>
+                <TextView
+                    android:id="@+id/match_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/match_details_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/match_rating_price_container"/>
+        </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
-</android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>
