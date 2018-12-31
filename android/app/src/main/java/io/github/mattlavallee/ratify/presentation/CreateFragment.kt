@@ -339,7 +339,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
             adapter = previewResultsAdapter
         }
         builder.setView(previewResultsView)
-                .setPositiveButton("OK", { dialog, _ -> dialog.cancel()})
+                .setPositiveButton("OK", { dialog, _ -> dialog.cancel() })
         builder.create().show()
     }
 }

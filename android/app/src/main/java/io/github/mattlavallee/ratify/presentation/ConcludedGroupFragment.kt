@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.core.DetailedGroup
 
-class ConcludedGroupFragment: Fragment() {
+class ConcludedGroupFragment : Fragment() {
     lateinit var group: DetailedGroup
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -24,6 +24,6 @@ class ConcludedGroupFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity?.title = group.getName()
-        //TODO: Populate fragment fields here
+        // TODO: Populate fragment fields here
     }
 }

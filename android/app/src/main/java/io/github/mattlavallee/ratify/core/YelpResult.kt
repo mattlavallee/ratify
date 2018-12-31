@@ -9,7 +9,7 @@ class YelpResult(
     var address: String,
     var rating: Double,
     var price: String
-): Serializable {
+) : Serializable {
     constructor(payload: HashMap<String, Any>): this(payload["id"] as String, payload["name"] as String,
         payload["businessImage"] as String, payload["address"] as String, 0.0,
         payload["price"] as String) {
@@ -38,7 +38,7 @@ class YelpResult(
             return result
         }
 
-        fun toJsonArray(data: ArrayList<YelpResult> ): List<Map<String, Any>> {
+        fun toJsonArray(data: ArrayList<YelpResult>): List<Map<String, Any>> {
             val resultAsJson: ArrayList<Map<String, Any>> = ArrayList()
             data.map {
                 val currResult: MutableMap<String, Any> = mutableMapOf()

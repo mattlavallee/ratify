@@ -4,7 +4,7 @@ import com.google.android.gms.location.places.Place
 import java.io.Serializable
 import java.util.Date
 
-class Group: Serializable {
+class Group : Serializable {
     var id: String
     var type: String
     var name: String
@@ -56,7 +56,8 @@ class Group: Serializable {
         numResults: Int,
         conclusion: Date,
         expiration: Int,
-        participants: Int?) {
+        participants: Int?
+    ) {
         this.id = id
         this.type = type
         this.name = name
@@ -104,9 +105,9 @@ class Group: Serializable {
             }
 
             var query = if (model["query"] != null) model["query"] as String else model["activity"] as String
-            var numberResults = if(model["numberResults"] != null) model["numberResults"] as Int else model["maxResults"] as Int
-            var expiration = if(model["daysToExpire"] != null) model["daysToExpire"] as Int else model["expiration"] as Int
-            var conclusion = if(model["voteConclusionEpoch"] != null) model["voteConclusionEpoch"] as Long else model["voteConclusion"] as Long
+            var numberResults = if (model["numberResults"] != null) model["numberResults"] as Int else model["maxResults"] as Int
+            var expiration = if (model["daysToExpire"] != null) model["daysToExpire"] as Int else model["expiration"] as Int
+            var conclusion = if (model["voteConclusionEpoch"] != null) model["voteConclusionEpoch"] as Long else model["voteConclusion"] as Long
 
             return Group(
                 id,

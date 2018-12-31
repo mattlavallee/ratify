@@ -12,7 +12,7 @@ import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.adapters.GroupVoteResultsAdapter
 import io.github.mattlavallee.ratify.core.DetailedGroup
 
-class ActiveGroupFragment: Fragment() {
+class ActiveGroupFragment : Fragment() {
     private lateinit var group: DetailedGroup
     private lateinit var recyclerView: RecyclerView
     private lateinit var matchesAdapter: RecyclerView.Adapter<*>
@@ -47,4 +47,3 @@ class ActiveGroupFragment: Fragment() {
         }
     }
 }
-

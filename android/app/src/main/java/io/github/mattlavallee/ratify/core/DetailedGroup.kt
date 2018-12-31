@@ -7,13 +7,13 @@ class DetailedGroup(
     private val details: Group,
     val matches: ArrayList<YelpResult>,
     private val votes: Map<String, UserVote>
-): Serializable {
+) : Serializable {
     private val conclusionFormatter: SimpleDateFormat = SimpleDateFormat("MMM d yyyy h:mm a")
     fun isConcluded(): Boolean {
         return this.details.isConcluded()
     }
 
-    fun getName(): String{
+    fun getName(): String {
         return this.details.name
     }
 
