@@ -5,7 +5,10 @@
     android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="170dp"
-    android:background="@color/white_smoke"
+    android:background="@android:color/white"
+    android:elevation="30dp"
+    android:fadingEdge="horizontal"
+    android:fadingEdgeLength="2dp"
     android:orientation="horizontal"
     app:behavior_hideable="true"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
