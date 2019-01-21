@@ -2,6 +2,8 @@ package io.github.mattlavallee.ratify.presentation
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.DividerItemDecoration.VERTICAL
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -35,6 +37,9 @@ class ActiveGroupFragment : Fragment() {
         val groupDescription = view.findViewById<TextView>(R.id.current_group_description)
         val groupVoteConclusion = view.findViewById<TextView>(R.id.current_group_vote_conclusion)
         recyclerView = view.findViewById(R.id.current_group_matches_recycler_view)
+        val itemDecoration = DividerItemDecoration(context, VERTICAL)
+        recyclerView.addItemDecoration(itemDecoration)
+
         groupDescription.text = group.getDescription()
         groupVoteConclusion.text = "Voting ends " + group.getVoteConclusion()
 
