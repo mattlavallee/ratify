@@ -28,7 +28,9 @@ class DetailedGroup(
     companion object {
         fun fromJsonHashMap(groupId: String, userId: String, model: HashMap<String, Any>): DetailedGroup {
             val groupDetails = Group.fromJsonHashMap(groupId, model)
+            @Suppress("UNCHECKED_CAST")
             val matches = YelpResult.fromHashMap(model["matches"] as HashMap<String, HashMap<String, Any>>)
+            @Suppress("UNCHECKED_CAST")
             val userVotesMap = (model["userVotes"] as HashMap<String, Any>)[userId] as HashMap<String, Any>
             val userVotes: Map<String, UserVote> = UserVote.fromHashMap(userVotesMap)
             return DetailedGroup(groupDetails, matches, userVotes)

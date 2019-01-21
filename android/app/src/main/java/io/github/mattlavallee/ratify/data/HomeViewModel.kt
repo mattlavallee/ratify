@@ -77,10 +77,12 @@ class HomeViewModel : ViewModel {
                 fetchPending.value = false
                 if (task.isSuccessful) {
                     error.value = null
+                    @Suppress("UNCHECKED_CAST")
                     val results = task.result?.data as HashMap<String, Any>
                     groupDetails.value = DetailedGroup.fromJsonHashMap(
                         groupId,
                         userId,
+                        @Suppress("UNCHECKED_CAST")
                         results["results"] as HashMap<String, Any>
                     )
                 } else {

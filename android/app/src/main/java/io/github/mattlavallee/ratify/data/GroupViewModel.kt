@@ -95,9 +95,10 @@ class GroupViewModel : ViewModel {
                 if (response["error"] != null) {
                     createGroupError.value = response["error"].toString()
                 } else {
-                    val results = YelpResult.fromJsonArray((response["results"] as ArrayList<HashMap<String, Any>>))
-                    groupMatchesCache[cacheKey] = results
-                    createGroupPreview.value = results
+                    @Suppress("UNCHECKED_CAST")
+                    val groupResults = YelpResult.fromJsonArray((response["results"] as ArrayList<HashMap<String, Any>>))
+                    groupMatchesCache[cacheKey] = groupResults
+                    createGroupPreview.value = groupResults
                 }
             } else {
                 createGroupError.value = "Error getting group previews!"

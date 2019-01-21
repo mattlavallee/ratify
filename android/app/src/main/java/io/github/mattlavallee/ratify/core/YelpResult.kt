@@ -13,8 +13,8 @@ class YelpResult(
     constructor(payload: HashMap<String, Any>): this(payload["id"] as String, payload["name"] as String,
         payload["businessImage"] as String, payload["address"] as String, 0.0,
         payload["price"] as String) {
-        if (payload["rating"] is Integer) {
-            this.rating = (payload["rating"] as Integer).toDouble()
+        if (payload["rating"] is Int) {
+            this.rating = (payload["rating"] as Int).toDouble()
         } else {
             this.rating = payload["rating"] as Double
         }
