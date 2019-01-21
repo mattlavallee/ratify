@@ -44,7 +44,7 @@ class ActiveGroupFragment : Fragment() {
         groupVoteConclusion.text = "Voting ends " + group.getVoteConclusion()
 
         viewLayoutManager = LinearLayoutManager(context)
-        matchesAdapter = GroupVoteResultsAdapter(group.matches)
+        matchesAdapter = GroupVoteResultsAdapter(group.matches, group.votes)
         recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewLayoutManager

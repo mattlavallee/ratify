@@ -4,10 +4,18 @@ import java.io.Serializable
 
 class UserVote(var matchId: String, var value: Number) : Serializable {
     private var isDirty: Boolean = false
+    private var originalValue: Number
+
+    init {
+        this.originalValue = this.value
+    }
 
     fun updateVote(voteState: Number) {
         this.value = voteState
-        this.isDirty = true
+
+        if (this.originalValue != voteState) {
+            this.isDirty = true
+        }
     }
 
     fun isUpdated(): Boolean {

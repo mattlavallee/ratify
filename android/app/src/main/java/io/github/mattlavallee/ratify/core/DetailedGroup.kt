@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 class DetailedGroup(
     private val details: Group,
     val matches: ArrayList<YelpResult>,
-    private val votes: Map<String, UserVote>
+    val votes: Map<String, UserVote>
 ) : Serializable {
     private val conclusionFormatter: SimpleDateFormat = SimpleDateFormat("MMM d yyyy h:mm a")
     fun isConcluded(): Boolean {
