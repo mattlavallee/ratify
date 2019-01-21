@@ -22,6 +22,14 @@ class UserVote(var matchId: String, var value: Number) : Serializable {
         return this.isDirty
     }
 
+    fun markClean() {
+        this.isDirty = false
+    }
+
+    fun markDirty() {
+        this.isDirty = true
+    }
+
     companion object {
         val YES = 1
         val NO = 2

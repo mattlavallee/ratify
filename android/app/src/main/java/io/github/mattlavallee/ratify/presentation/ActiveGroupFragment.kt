@@ -13,12 +13,17 @@ import android.widget.TextView
 import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.adapters.GroupVoteResultsAdapter
 import io.github.mattlavallee.ratify.core.DetailedGroup
+import io.github.mattlavallee.ratify.core.UserVoteTask
+import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 class ActiveGroupFragment : Fragment() {
     private lateinit var group: DetailedGroup
     private lateinit var recyclerView: RecyclerView
     private lateinit var matchesAdapter: RecyclerView.Adapter<*>
     private lateinit var viewLayoutManager: RecyclerView.LayoutManager
+    private lateinit var scheduleFuture: ScheduledFuture<*>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -50,5 +55,15 @@ class ActiveGroupFragment : Fragment() {
             layoutManager = viewLayoutManager
             adapter = matchesAdapter
         }
+
+        val executor = ScheduledThreadPoolExecutor(1)
+        this.scheduleFuture = executor.scheduleWithFixedDelay(UserVoteTask(this.group), 0, 30000, TimeUnit.MILLISECONDS)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        this.scheduleFuture.cancel(true)
+
+        //TODO: check dirty flags once more!
     }
 }
