@@ -61,6 +61,32 @@ describe('Votes Database Handler', () => {
     });
   });
 
+  describe('setUserVotes', () => {
+    it('throws an error if a vote returns undefined', (done) => {
+      childOnceHasInstance = false;
+      getVoteHasInstance = false;
+      jest.spyOn(dbInstance, 'getDatabase').mockReturnValueOnce(dbMock);
+      const {setUserVotes} = require('./votes');
+
+      setUserVotes('foo', [{id: 'g1|v1', value: 1}]).then((response) => {
+        expect(response).toEqual(false);
+        done();
+      });
+    });
+
+    it('saves user votes to the database', (done) => {
+      childOnceHasInstance = true;
+      getVoteHasInstance = false;
+      jest.spyOn(dbInstance, 'getDatabase').mockReturnValueOnce(dbMock);
+      const {setUserVotes} = require('./votes');
+
+      setUserVotes('foo', [{id: 'g1|v1', value: 1}, {id: 'g1|v2', value: 0}]).then((response) => {
+        expect(response).toEqual(true);
+        done();
+      });
+    });
+  });
+
   describe('insertUserVotes', () => {
     it('properly resolves for all votes', (done) => {
       limitOnceHasInstance = true;
