@@ -64,6 +64,7 @@ class ActiveGroupFragment : Fragment() {
         super.onDestroyView()
         this.scheduleFuture.cancel(true)
 
-        //TODO: check dirty flags once more!
+        val executor = ScheduledThreadPoolExecutor(1)
+        executor.execute(UserVoteTask(this.group))
     }
 }

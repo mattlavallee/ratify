@@ -11,6 +11,24 @@ function getVoteDBReference() {
   return voteReference;
 }
 
+export function setUserVotes(userId: string, votes: Array<{[key: string]: string|number}>): Promise<boolean> {
+  const promiseArr = [];
+  for (const currVote of votes) {
+    const promise: Promise<void> = getVoteDBReference().child(currVote.id as string).once('value').then((vote: DataSnapshot) => {
+      const instance = vote.val();
+      if (instance) {
+        instance[userId] = currVote.value === 0 ? false : currVote.value;
+        return getVoteDBReference().child(currVote.id as string).set(instance);
+      }
+
+      return Promise.reject('error updating votes: ' + currVote.id + ' - ' + userId);
+    });
+    promiseArr.push(promise);
+  }
+
+  return Promise.all(promiseArr).then(() => true).catch(() => false);
+}
+
 export function initUserVotes(userId: string, voteIds: Array<string>): Promise<boolean> {
   const promiseArr = [];
   for (const voteId of voteIds) {

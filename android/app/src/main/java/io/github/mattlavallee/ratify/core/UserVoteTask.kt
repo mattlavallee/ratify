@@ -11,7 +11,8 @@ class UserVoteTask(private val group: DetailedGroup): Runnable {
             }
 
             var params: MutableMap<String, Any> = mutableMapOf()
-            //TODO: send groupId and votes to update to server
+            params["groupId"] = group.getGroupId()
+            params["votes"] = UserVote.toJsonArray(updatedVotes.values)
 
             FirebaseFunctions.getInstance().getHttpsCallable("setGroupVotes").call(params).continueWith { task ->
                 if (!task.isSuccessful) {

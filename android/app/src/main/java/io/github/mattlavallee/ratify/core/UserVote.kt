@@ -49,5 +49,17 @@ class UserVote(var matchId: String, var value: Number) : Serializable {
 
             return result.toMap()
         }
+
+        fun toJsonArray(data: Collection<UserVote>): List<Map<String, Any>> {
+            val resultAsJson: ArrayList<Map<String, Any>> = ArrayList()
+            data.map {
+                val currResult: MutableMap<String, Any> = mutableMapOf()
+                currResult["matchId"] = it.matchId
+                currResult["value"] = it.value
+                resultAsJson.add(currResult.toMap())
+            }
+
+            return resultAsJson.toList()
+        }
     }
 }

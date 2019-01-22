@@ -17,6 +17,10 @@ class DetailedGroup(
         return this.details.name
     }
 
+    fun getGroupId(): String {
+        return this.details.id
+    }
+
     fun getDescription(): String {
         return this.details.description
     }
