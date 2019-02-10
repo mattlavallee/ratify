@@ -1,6 +1,6 @@
 package io.github.mattlavallee.ratify.core
 
-import com.google.android.gms.location.places.Place
+import com.google.android.libraries.places.api.model.Place
 import java.io.Serializable
 import java.util.Date
 
@@ -19,15 +19,15 @@ class Group : Serializable {
     var participants: Int = -1
 
     constructor(
-        id: String,
-        type: String,
-        name: String,
-        descr: String,
-        activity: String,
-        location: Place?,
-        numResults: Int,
-        conclusion: Date,
-        expiration: Int
+            id: String,
+            type: String,
+            name: String,
+            descr: String,
+            activity: String,
+            location: Place?,
+            numResults: Int,
+            conclusion: Date,
+            expiration: Int
     ) {
         this.id = id
         this.type = type
@@ -36,8 +36,8 @@ class Group : Serializable {
         this.activity = activity
         if (location != null) {
             this.placeName = location.name.toString()
-            this.placeLatitude = location.latLng.latitude
-            this.placeLongitude = location.latLng.longitude
+            this.placeLatitude = location.latLng!!.latitude
+            this.placeLongitude = location.latLng!!.longitude
         }
 
         this.maxResults = numResults

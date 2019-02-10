@@ -49,7 +49,6 @@
         android:id="@+id/current_group_matches_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:animateLayoutChanges="true"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/divider"
         app:layout_constraintEnd_toEndOf="parent"

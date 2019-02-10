@@ -22,14 +22,16 @@ import android.widget.Button
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.Status
-import com.google.android.gms.location.places.AutocompleteFilter
-import com.google.android.gms.location.places.Place
-import com.google.android.gms.location.places.ui.PlaceSelectionListener
-import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment
 import io.github.mattlavallee.ratify.R
 import android.widget.NumberPicker
 import android.widget.ProgressBar
-import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.model.TypeFilter
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.AutocompleteActivity
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import io.github.mattlavallee.ratify.adapters.PreviewResultsAdapter
 import io.github.mattlavallee.ratify.core.Group
 import io.github.mattlavallee.ratify.core.YelpResult
@@ -37,9 +39,7 @@ import io.github.mattlavallee.ratify.data.GroupViewModel
 import io.github.mattlavallee.ratify.presentation.interfaces.FragmentSwitchInterface
 import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -48,7 +48,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
     private var pendingSpinner: ProgressBar? = null
 
     private var groupViewModel: GroupViewModel? = null
-    private var autocompleteFragment: SupportPlaceAutocompleteFragment? = null
+    private var autocompleteFragment: AutocompleteSupportFragment? = null
     private var createGroupName: TextInputEditText? = null
     private var createGroupDescription: TextInputEditText? = null
     private var createGroupActivity: TextInputEditText? = null
@@ -70,6 +70,10 @@ class CreateFragment : Fragment(), UserAuthInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (!Places.isInitialized()) {
+            val apiKey = resources.getString(R.string.places_api_key)
+            Places.initialize(this.activity!!.applicationContext, apiKey)
+        }
         this.groupViewModel = ViewModelProviders.of(this).get(GroupViewModel::class.java)
         this.groupViewModel?.getCreatePending()?.observe(this, Observer {
             isPending -> if (isPending == true) this.pendingSpinner?.visibility = View.VISIBLE else this.pendingSpinner?.visibility = View.GONE
@@ -120,7 +124,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
         this.createGroupActivity = view.findViewById(R.id.create_group_activity)
         this.createCreateBtn = view.findViewById(R.id.create_group_create_btn)
         this.createPreviewBtn = view.findViewById(R.id.create_group_preview_btn)
-        autocompleteFragment = activity?.supportFragmentManager?.findFragmentById(R.id.place_autocomplete_fragment) as? SupportPlaceAutocompleteFragment
+        autocompleteFragment = childFragmentManager?.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
         configureAutocompleteFragment()
 
         this.createGroupVoteConclusion = activity?.findViewById(R.id.create_group_vote_conclusion) as TextInputEditText
@@ -153,10 +157,10 @@ class CreateFragment : Fragment(), UserAuthInterface {
         // handle selection from place autocomplete
         when (resultCode) {
             Activity.RESULT_OK -> {
-                this.createGroupPlace = PlaceAutocomplete.getPlace(view?.context, data)
+                this.createGroupPlace = Autocomplete.getPlaceFromIntent(data!!)
             }
-            PlaceAutocomplete.RESULT_ERROR -> {
-                val status = PlaceAutocomplete.getStatus(view?.context, data)
+            AutocompleteActivity.RESULT_ERROR -> {
+                val status = Autocomplete.getStatusFromIntent(data!!)
                 SnackbarGenerator.generateSnackbar(view, "Error fetching location: " + status.statusMessage)?.show()
                 this.createGroupPlace = null
             }
@@ -179,15 +183,14 @@ class CreateFragment : Fragment(), UserAuthInterface {
      * Sets autocomplete listener and type filter
      */
     private fun configureAutocompleteFragment() {
-        val typeFilter: AutocompleteFilter = AutocompleteFilter.Builder()
-                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
-                .build()
-        autocompleteFragment?.setFilter(typeFilter)
-        autocompleteFragment?.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(selectedPlace: Place?) {
+        autocompleteFragment?.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG))
+        autocompleteFragment?.setTypeFilter(TypeFilter.ADDRESS)
+        autocompleteFragment?.setOnPlaceSelectedListener(object: PlaceSelectionListener {
+            override fun onPlaceSelected(selectedPlace: Place) {
                 createGroupPlace = selectedPlace
             }
-            override fun onError(p0: Status?) {
+
+            override fun onError(status: Status) {
                 SnackbarGenerator.generateSnackbar(view, "Error fetching location")?.show()
             }
         })
