@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="forest_green">#228b22</color>
-    <color name="brown">#795548</color>
-    <color name="dark_brown">#4b2c20</color>
-    <color name="light_brown">#a98274</color>
+    <color name="slate_purple">#4b5265</color>
+    <color name="dark_slate_purple">#282c38</color>
+    <color name="light_blue">#7283B1</color>
 </resources>

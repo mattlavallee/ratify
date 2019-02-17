@@ -9,9 +9,9 @@
     </style>
 
     <style name="RatifyTheme" parent="AppTheme" >
-        <item name="colorPrimary">@color/brown</item>
-        <item name="colorPrimaryDark">@color/dark_brown</item>
-        <item name="colorAccent">@color/light_brown</item>
+        <item name="colorPrimary">@color/slate_purple</item>
+        <item name="colorPrimaryDark">@color/dark_slate_purple</item>
+        <item name="colorAccent">@color/light_blue</item>
 
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="fontFamily">sans-serif-light</item>
