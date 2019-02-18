@@ -6,9 +6,11 @@ import java.text.SimpleDateFormat
 class DetailedGroup(
     private val details: Group,
     val matches: ArrayList<YelpResult>,
-    val votes: Map<String, UserVote>
+    val votes: Map<String, UserVote>,
+    val allUserVotes: Map<String, Map<String, UserVote>>?
 ) : Serializable {
     private val conclusionFormatter: SimpleDateFormat = SimpleDateFormat("MMM d yyyy h:mm a")
+
     fun isConcluded(): Boolean {
         return this.details.isConcluded()
     }
@@ -32,12 +34,22 @@ class DetailedGroup(
     companion object {
         fun fromJsonHashMap(groupId: String, userId: String, model: HashMap<String, Any>): DetailedGroup {
             val groupDetails = Group.fromJsonHashMap(groupId, model)
+
             @Suppress("UNCHECKED_CAST")
             val matches = YelpResult.fromHashMap(model["matches"] as HashMap<String, HashMap<String, Any>>)
+
             @Suppress("UNCHECKED_CAST")
             val userVotesMap = (model["userVotes"] as HashMap<String, Any>)[userId] as HashMap<String, Any>
             val userVotes: Map<String, UserVote> = UserVote.fromHashMap(userVotesMap)
-            return DetailedGroup(groupDetails, matches, userVotes)
+
+            var allUserVotes: MutableMap<String, Map<String, UserVote>>? = null
+            if (groupDetails.isConcluded()) {
+                allUserVotes = mutableMapOf()
+                for( (currUserId, voteMap) in (model["userVotes"] as HashMap<String, Any>)) {
+                    allUserVotes[currUserId] = UserVote.fromHashMap(voteMap as HashMap<String, Any>)
+                }
+            }
+            return DetailedGroup(groupDetails, matches, userVotes, allUserVotes?.toMap())
         }
     }
 }
