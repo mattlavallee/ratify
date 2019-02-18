@@ -124,7 +124,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
         this.createGroupActivity = view.findViewById(R.id.create_group_activity)
         this.createCreateBtn = view.findViewById(R.id.create_group_create_btn)
         this.createPreviewBtn = view.findViewById(R.id.create_group_preview_btn)
-        autocompleteFragment = childFragmentManager?.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
+        autocompleteFragment = childFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
         configureAutocompleteFragment()
 
         this.createGroupVoteConclusion = activity?.findViewById(R.id.create_group_vote_conclusion) as TextInputEditText
@@ -184,7 +184,6 @@ class CreateFragment : Fragment(), UserAuthInterface {
      */
     private fun configureAutocompleteFragment() {
         autocompleteFragment?.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG))
-        autocompleteFragment?.setTypeFilter(TypeFilter.ADDRESS)
         autocompleteFragment?.setOnPlaceSelectedListener(object: PlaceSelectionListener {
             override fun onPlaceSelected(selectedPlace: Place) {
                 createGroupPlace = selectedPlace
