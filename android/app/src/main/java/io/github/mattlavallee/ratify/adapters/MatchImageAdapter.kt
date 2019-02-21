@@ -9,7 +9,7 @@ import com.squareup.picasso.Picasso
 import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.core.YelpResult
 
-class MatchImageAdapter(private val data: ArrayList<String>, private val matches: ArrayList<YelpResult>): RecyclerView.Adapter<MatchImageAdapter.ViewHolder>() {
+class MatchImageAdapter(private val data: ArrayList<YelpResult>): RecyclerView.Adapter<MatchImageAdapter.ViewHolder>() {
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val image: ImageView = view.findViewById(R.id.concluded_match_image)
     }
@@ -20,10 +20,9 @@ class MatchImageAdapter(private val data: ArrayList<String>, private val matches
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currMatchId = data[position]
-        val currMatch = matches.find { it.id == currMatchId }
+        val currMatch = data[position]
 
-        if (currMatch?.businessImage?.isNotEmpty() == true) {
+        if (currMatch.businessImage.isNotEmpty()) {
             Picasso.get()
                     .load(currMatch.businessImage)
                     .placeholder(R.drawable.ic_cloud_off_16dp)

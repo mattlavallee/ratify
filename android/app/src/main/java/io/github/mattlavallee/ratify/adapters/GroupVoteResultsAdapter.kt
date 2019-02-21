@@ -1,5 +1,6 @@
 package io.github.mattlavallee.ratify.adapters
 
+import android.opengl.Visibility
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,7 +15,7 @@ import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.core.UserVote
 import io.github.mattlavallee.ratify.core.YelpResult
 
-class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>, private val voteState: Map<String, UserVote>) : RecyclerView.Adapter<GroupVoteResultsAdapter.ViewHolder>() {
+class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>, private val voteState: Map<String, UserVote>, private val isConcluded: Boolean = false) : RecyclerView.Adapter<GroupVoteResultsAdapter.ViewHolder>() {
     class ViewHolder(matchView: View) : RecyclerView.ViewHolder(matchView) {
         val name: TextView = matchView.findViewById(R.id.match_details_name)
         val location: TextView = matchView.findViewById(R.id.match_details_location)
@@ -39,10 +40,16 @@ class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>, private v
         holder.rating.rating = currMatch.rating.toFloat()
         holder.ratingText.text = "%.1f".format(currMatch.rating)
         holder.price.text = currMatch.price
-        if (this.voteState[currMatch.id]?.value == UserVote.YES) {
-            holder.positiveVoteBtn.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.circle_button_border_positive)
-        } else if (this.voteState[currMatch.id]?.value == UserVote.NO) {
-            holder.negativeVoteBtn.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.circle_button_border_negative)
+
+        if (!isConcluded) {
+            if (this.voteState[currMatch.id]?.value == UserVote.YES) {
+                holder.positiveVoteBtn.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.circle_button_border_positive)
+            } else if (this.voteState[currMatch.id]?.value == UserVote.NO) {
+                holder.negativeVoteBtn.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.circle_button_border_negative)
+            }
+        } else {
+            holder.positiveVoteBtn.visibility = View.GONE
+            holder.negativeVoteBtn.visibility = View.GONE
         }
 
         if (currMatch.businessImage.isNotEmpty()) {
@@ -52,6 +59,10 @@ class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>, private v
                 .fit()
                 .centerCrop()
                 .into(holder.image)
+        }
+
+        if (isConcluded) {
+            return
         }
 
         holder.positiveVoteBtn.setOnClickListener {
