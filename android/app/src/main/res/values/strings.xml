@@ -19,5 +19,7 @@
 
     <string name="match_image_description">Match Image</string>
 
+    <string name="results">Results</string>
+
     <string name="middle_dot">&#183;</string>
 </resources>
