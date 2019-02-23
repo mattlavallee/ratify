@@ -27,12 +27,11 @@ import android.widget.NumberPicker
 import android.widget.ProgressBar
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import io.github.mattlavallee.ratify.adapters.PreviewResultsAdapter
+import io.github.mattlavallee.ratify.adapters.GroupVoteResultsAdapter
 import io.github.mattlavallee.ratify.core.Group
 import io.github.mattlavallee.ratify.core.YelpResult
 import io.github.mattlavallee.ratify.data.GroupViewModel
@@ -220,8 +219,10 @@ class CreateFragment : Fragment(), UserAuthInterface {
         }
 
         this.createGroupVoteConclusion?.setOnClickListener {
-            DatePickerDialog(context!!, 0, dateListener, voteConclusionCalendar.get(Calendar.YEAR),
-                    voteConclusionCalendar.get(Calendar.MONTH), voteConclusionCalendar.get(Calendar.DAY_OF_MONTH)).show()
+            val dateDialog = DatePickerDialog(context!!, 0, dateListener, voteConclusionCalendar.get(Calendar.YEAR),
+                    voteConclusionCalendar.get(Calendar.MONTH), voteConclusionCalendar.get(Calendar.DAY_OF_MONTH));
+            dateDialog.datePicker.minDate = Calendar.getInstance().timeInMillis
+            dateDialog.show()
         }
     }
 
@@ -334,7 +335,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
 
     private fun displayPreviewResults(items: ArrayList<YelpResult>) {
         var builder = android.support.v7.app.AlertDialog.Builder(context!!)
-        var previewResultsAdapter = PreviewResultsAdapter(items)
+        val previewResultsAdapter = GroupVoteResultsAdapter(items, mutableMapOf(), true)
         val previewResultsView = activity?.layoutInflater?.inflate(R.layout.preview_results_layout, null)
         previewResultsView!!.findViewById<RecyclerView>(R.id.preview_results_list_view).apply {
             layoutManager = LinearLayoutManager(context)

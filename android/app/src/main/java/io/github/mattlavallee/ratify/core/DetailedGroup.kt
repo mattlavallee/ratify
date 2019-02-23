@@ -45,7 +45,9 @@ class DetailedGroup(
             var allUserVotes: MutableMap<String, Map<String, UserVote>>? = null
             if (groupDetails.isConcluded()) {
                 allUserVotes = mutableMapOf()
+                @Suppress("UNCHECKED_CAST")
                 for( (currUserId, voteMap) in (model["userVotes"] as HashMap<String, Any>)) {
+                    @Suppress("UNCHECKED_CAST")
                     allUserVotes[currUserId] = UserVote.fromHashMap(voteMap as HashMap<String, Any>)
                 }
             }
