@@ -67,7 +67,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
 
         setFragmentTransitions(previousFragment, selectedFragment)
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.content_container, selectedFragment)
+        transaction.replace(R.id.content_container, selectedFragment!!)
         transaction.commit()
         return@OnNavigationItemSelectedListener true
     }
@@ -129,7 +129,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
             }
         }
         setFragmentTransitions(null, selectedFragment)
-        transaction.replace(R.id.content_container, selectedFragment)
+        transaction.replace(R.id.content_container, selectedFragment as Fragment)
         transaction.commit()
 
         // initialize the join bottomsheet
@@ -146,7 +146,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
                         selectedFragment?.arguments = Bundle()
                         (selectedFragment?.arguments as Bundle).putBoolean("fetchOnStart", true)
                         setFragmentTransitions(previous, selectedFragment)
-                        groupCreatedTransaction.replace(R.id.content_container, selectedFragment)
+                        groupCreatedTransaction.replace(R.id.content_container, selectedFragment as Fragment)
                         groupCreatedTransaction.commit()
                     }
             })
@@ -210,7 +210,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         selectedFragment?.onActivityResult(requestCode, resultCode, data)
 
