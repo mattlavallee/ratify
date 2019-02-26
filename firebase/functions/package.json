@@ -11,6 +11,9 @@
         "test": "node_modules/.bin/jest"
     },
     "main": "lib/index.js",
+    "engines": {
+        "node": "8"
+    },
     "dependencies": {
         "@types/node": "^10.12.7",
         "axios": "^0.18.0",
