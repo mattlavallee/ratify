@@ -18,7 +18,6 @@ import android.support.v7.app.AppCompatActivity
 import android.transition.Visibility
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Button
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import io.github.mattlavallee.ratify.core.Constants
@@ -37,8 +36,6 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
     private var groupViewModel: GroupViewModel? = null
     private var selectedFragment: Fragment? = null
     private var mainContainerLayout: ConstraintLayout? = null
-    private var splashScreenLayout: ConstraintLayout? = null
-    private var signInButton: Button? = null
     private var userAuth: FirebaseAuth? = null
     private var priorFragmentTitle: String? = null
 
@@ -105,18 +102,16 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
         setContentView(R.layout.activity_ratify)
 
         mainContainerLayout = findViewById(R.id.mainContainer)
-        splashScreenLayout = findViewById(R.id.splash_screen_layout)
-        signInButton = findViewById(R.id.sign_in)
         userAuth = FirebaseAuth.getInstance()
     }
 
     override fun onStart() {
         super.onStart()
 
-        var launchLogin = true
+        var shouldLaunchLoginScreen = true
         val homeFragmentParams = Bundle()
         if (userAuth?.currentUser != null) {
-            launchLogin = false
+            shouldLaunchLoginScreen = false
             homeFragmentParams.putBoolean("fetchOnStart", true)
         }
 
@@ -124,7 +119,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         if (selectedFragment == null) {
             selectedFragment = HomeFragment()
-            if (!launchLogin) {
+            if (!shouldLaunchLoginScreen) {
                 selectedFragment?.arguments = homeFragmentParams
             }
         }
@@ -152,10 +147,6 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
             })
         }
 
-        signInButton?.setOnClickListener {
-            launchLogin()
-        }
-
         // TODO: move this to JoinViewModel
         val bottomSheet = findViewById<LinearLayout>(R.id.bottom_sheet)
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
@@ -163,9 +154,10 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
-        if (!launchLogin) {
+        if (!shouldLaunchLoginScreen) {
             toggleDisplays(true)
-            return
+        } else {
+            launchLogin()
         }
     }
 
@@ -194,6 +186,9 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
+                        .setLogo(R.drawable.ratify_logo)
+                        .setTheme(R.style.RatifyTheme)
+                        .setIsSmartLockEnabled(!BuildConfig.DEBUG)
                         .setAvailableProviders(providers)
                         .build(),
                 Constants.RC_SIGN_IN
@@ -202,10 +197,8 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
 
     private fun toggleDisplays(showFragment: Boolean) {
         if (showFragment) {
-            splashScreenLayout?.visibility = View.GONE
             mainContainerLayout?.visibility = View.VISIBLE
         } else {
-            splashScreenLayout?.visibility = View.VISIBLE
             mainContainerLayout?.visibility = View.GONE
         }
     }
