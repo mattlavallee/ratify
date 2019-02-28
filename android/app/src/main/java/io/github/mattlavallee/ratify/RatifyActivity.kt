@@ -65,7 +65,8 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
         setFragmentTransitions(previousFragment, selectedFragment)
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.content_container, selectedFragment!!)
-        transaction.commit()
+                .addToBackStack(null)
+                .commit()
         return@OnNavigationItemSelectedListener true
     }
 
@@ -122,10 +123,10 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
             if (!shouldLaunchLoginScreen) {
                 selectedFragment?.arguments = homeFragmentParams
             }
+
+            setFragmentTransitions(null, selectedFragment)
+            transaction.replace(R.id.content_container, selectedFragment as Fragment).commit()
         }
-        setFragmentTransitions(null, selectedFragment)
-        transaction.replace(R.id.content_container, selectedFragment as Fragment)
-        transaction.commit()
 
         // initialize the join bottomsheet
         initJoinView()
@@ -142,7 +143,8 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
                         (selectedFragment?.arguments as Bundle).putBoolean("fetchOnStart", true)
                         setFragmentTransitions(previous, selectedFragment)
                         groupCreatedTransaction.replace(R.id.content_container, selectedFragment as Fragment)
-                        groupCreatedTransaction.commit()
+                                .addToBackStack(null)
+                                .commit()
                     }
             })
         }
@@ -173,8 +175,10 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
                 this.title = this.priorFragmentTitle
                 this.priorFragmentTitle = null
             }
-        } else {
+        } else if (supportFragmentManager.backStackEntryCount == 0) {
             super.onBackPressed()
+        } else {
+            supportFragmentManager.popBackStack()
         }
     }
 

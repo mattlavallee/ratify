@@ -99,7 +99,8 @@ class HomeFragment : Fragment(), UserAuthInterface {
         transitionSet.duration = Constants.TRANSITION_DURATION
         groupFragment.sharedElementEnterTransition = transitionSet
         groupTransaction.replace(R.id.content_container, groupFragment)
-        groupTransaction.commit()
+                .addToBackStack(null)
+                .commit()
     }
 
     override fun onUserAuthError() {
