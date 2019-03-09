@@ -11,6 +11,16 @@ function getMatchDBReference() {
   return matchReference;
 }
 
+export function getAllMatches(): Promise<{[key: string]: ISingleMatch}> {
+  return getMatchDBReference().once('value').catch(() => false).then((snapshot: DataSnapshot) => {
+    return snapshot.val();
+  });
+}
+
+export function cleanMatches(allMatches: any): Promise<boolean> {
+  return getMatchDBReference().set(allMatches).then(() => true);
+}
+
 export function insertMatches(matches: IMatch): Promise<boolean> {
   return getMatchDBReference().limitToFirst(1).once('value').catch(() => false).then((snapshot: DataSnapshot) => {
     const promises: Array<Promise<void>> = [];

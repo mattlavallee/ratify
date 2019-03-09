@@ -20,6 +20,18 @@ function isGroupExpired(group: IGroup): boolean {
   return expirationDate < new Date();
 }
 
+export function getAllGroups(): Promise<{[key:string]: IGroup}> {
+  return getGroupDBReference().once('value').catch((err: Error) => {
+    return new HttpsError((errorCodes as any).internal, err.message);
+  }).then((snapshot: DataSnapshot): any => {
+    return snapshot.val() as {[key: string]: IGroup};
+  });
+}
+
+export function cleanGroups(allGroups: any): Promise<boolean> {
+  return getGroupDBReference().set(allGroups).then(() => true);
+}
+
 export function getGroup(groupId: string): Promise<IGroup> {
   return getGroupDBReference().child(groupId).once('value').catch((err: Error) => {
     return new HttpsError((<any>errorCodes).internal, err.message);

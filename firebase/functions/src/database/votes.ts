@@ -11,6 +11,16 @@ function getVoteDBReference() {
   return voteReference;
 }
 
+export function getAllVotes(): Promise<{[key: string]: any}> {
+  return getVoteDBReference().once('value').then((snapshot: DataSnapshot) => {
+    return snapshot.val();
+  });
+}
+
+export function cleanVotes(allVotes: any): Promise<boolean> {
+  return getVoteDBReference().set(allVotes).then(() => true);
+}
+
 export function setUserVotes(userId: string, votes: Array<{[key: string]: string|number}>): Promise<boolean> {
   const promiseArr = [];
   for (const currVote of votes) {

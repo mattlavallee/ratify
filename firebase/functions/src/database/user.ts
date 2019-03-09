@@ -14,6 +14,18 @@ function getUserDBReference() {
   return userReference;
 }
 
+export function getAllUsers(): Promise<{[key: string]: User}> {
+  return getUserDBReference().once('value').catch((err: Error) => {
+    return new Error(err.message);
+  }).then((snapshot: DataSnapshot): {[key: string]: User} => {
+    return snapshot.val();
+  });
+}
+
+export function cleanUsers(allUsers: any): Promise<boolean> {
+  return getUserDBReference().set(allUsers).then(() => true);
+}
+
 export function getUser(userId: string): Promise<User> {
   return getUserDBReference().child(userId).once('value').catch((err: Error) => {
     return new Error(err.message);
