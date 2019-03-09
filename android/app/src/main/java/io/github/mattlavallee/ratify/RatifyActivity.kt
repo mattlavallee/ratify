@@ -8,14 +8,14 @@ import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
-import android.support.transition.Fade
+import android.support.transition.Slide
 import android.support.transition.TransitionInflater
 import android.support.transition.TransitionSet
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.app.ShareCompat
 import android.support.v7.app.AppCompatActivity
-import android.transition.Visibility
+import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import com.firebase.ui.auth.AuthUI
@@ -224,15 +224,14 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
 
     private fun setFragmentTransitions(previous: Fragment?, current: Fragment?) {
         // set a fade out exit transition
-        val exitFade = Fade(Visibility.MODE_OUT)
-        exitFade.duration = Constants.TRANSITION_DURATION
-        previous?.exitTransition = exitFade
+        val slideTran = Slide(Gravity.RIGHT)
+        slideTran.duration = Constants.TRANSITION_SLIDE_DURATION
+        previous?.exitTransition = slideTran
 
         // set a move enter transition
         val transitionSet = TransitionSet()
-        transitionSet.addTransition(TransitionInflater.from(applicationContext).inflateTransition(android.R.transition.move))
+        transitionSet.addTransition(TransitionInflater.from(applicationContext).inflateTransition(android.R.transition.slide_left))
         transitionSet.duration = Constants.TRANSITION_DURATION
-        transitionSet.startDelay = Constants.TRANSITION_DELAY
         current?.sharedElementEnterTransition = transitionSet
     }
 }

@@ -10,5 +10,7 @@ class Constants {
             private set
         var TRANSITION_DURATION: Long = 300
             private set
+        var TRANSITION_SLIDE_DURATION: Long = 200
+            private set
     }
 }
