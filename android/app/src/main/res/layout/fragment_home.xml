@@ -17,6 +17,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
+    <TextView
+        android:id="@+id/no_groups_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:padding="15dp"
+        android:text="@string/no_groups_message"
+        android:textColor="@color/quantum_white_100"
+        android:textSize="18sp"
+        android:gravity="center_horizontal"
+        android:background="@drawable/rounded_corners"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="40dp"
+        android:visibility="gone"/>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/group_swipe_refresh"
         android:layout_width="match_parent"

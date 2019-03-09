@@ -3,6 +3,7 @@ package io.github.mattlavallee.ratify.presentation
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.design.widget.BottomNavigationView
 import android.support.transition.TransitionInflater
 import android.support.transition.TransitionSet
 import android.support.v4.app.Fragment
@@ -14,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.TextView
 import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.adapters.GroupAdapter
 import io.github.mattlavallee.ratify.core.Constants
@@ -26,6 +28,7 @@ class HomeFragment : Fragment(), UserAuthInterface {
     private var viewModel: HomeViewModel? = null
     private var joinedGroups: ArrayList<Group> = ArrayList()
     private lateinit var pendingFetchSpinner: ProgressBar
+    private lateinit var noGroupsMessage: TextView
     private lateinit var groupRecyclerView: RecyclerView
     private lateinit var viewLayoutManager: RecyclerView.LayoutManager
     private lateinit var joinedGroupAdapter: RecyclerView.Adapter<*>
@@ -45,6 +48,7 @@ class HomeFragment : Fragment(), UserAuthInterface {
                 joinedGroups.addAll(results)
                 joinedGroupAdapter.notifyDataSetChanged()
                 groupSwipeRefresh.isRefreshing = false
+                if (results.size <= 0) noGroupsMessage.visibility = View.VISIBLE else noGroupsMessage.visibility = View.GONE
         })
         viewModel?.getFetchIsPending()?.observe(this, Observer {
             isPending -> if (isPending == true && !groupSwipeRefresh.isRefreshing) pendingFetchSpinner.visibility = View.VISIBLE else pendingFetchSpinner.visibility = View.GONE
@@ -70,6 +74,7 @@ class HomeFragment : Fragment(), UserAuthInterface {
         viewLayoutManager = LinearLayoutManager(context)
         joinedGroupAdapter = GroupAdapter(joinedGroups, viewModel)
         pendingFetchSpinner = view.findViewById(R.id.group_list_spinner)
+        noGroupsMessage = view.findViewById(R.id.no_groups_message)
         groupSwipeRefresh = view.findViewById(R.id.group_swipe_refresh)
         groupRecyclerView = view.findViewById<RecyclerView>(R.id.groups_recycler_view).apply {
             setHasFixedSize(true)
