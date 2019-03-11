@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/quantum_white_100"
     tools:context="io.github.mattlavallee.ratify.presentation.CreateFragment">
     <android.support.design.widget.TextInputLayout
         android:id="@+id/create_group_name_wrapper"
