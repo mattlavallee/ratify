@@ -100,7 +100,7 @@ class HomeFragment : Fragment(), UserAuthInterface {
         val groupTransaction: FragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
         val transitionSet = TransitionSet()
         val fragmentActivity = activity!!
-        transitionSet.addTransition(TransitionInflater.from(fragmentActivity.applicationContext).inflateTransition(android.R.transition.fade))
+        transitionSet.addTransition(TransitionInflater.from(fragmentActivity.applicationContext).inflateTransition(android.R.transition.explode))
         transitionSet.duration = Constants.TRANSITION_DURATION
         groupFragment.sharedElementEnterTransition = transitionSet
         groupTransaction.replace(R.id.content_container, groupFragment)
