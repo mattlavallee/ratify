@@ -2,6 +2,7 @@ import { getDatabase } from './db-instance';
 import { database } from '../../node_modules/firebase-admin';
 import { IMatch, ISingleMatch } from '../models/match';
 import { DataSnapshot } from '../../node_modules/firebase-functions/lib/providers/database';
+import { YelpResult } from '../models/yelp-result';
 
 let matchReference: database.Reference;
 function getMatchDBReference() {
@@ -19,6 +20,20 @@ export function getAllMatches(): Promise<{[key: string]: ISingleMatch}> {
 
 export function cleanMatches(allMatches: any): Promise<boolean> {
   return getMatchDBReference().set(allMatches).then(() => true);
+}
+
+export function updateMatches(matches: YelpResult[], groupId: string): Promise<boolean> {
+  return getAllMatches().then((allMatches: {[key: string]: ISingleMatch}) => {
+    matches.forEach((match: YelpResult) => {
+      if (match !== null && match !== undefined) {
+        const key = groupId + '|' + match.id;
+        allMatches[key].fetchTime = (new Date()).getTime();
+        allMatches[key].details = match;
+      }
+    });
+
+    return getMatchDBReference().set(allMatches).then(() => true);
+  });
 }
 
 export function insertMatches(matches: IMatch): Promise<boolean> {
