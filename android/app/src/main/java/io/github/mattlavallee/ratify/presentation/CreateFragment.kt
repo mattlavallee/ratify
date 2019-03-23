@@ -182,6 +182,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
      * Sets autocomplete listener and type filter
      */
     private fun configureAutocompleteFragment() {
+        autocompleteFragment?.setHint("Search Location")
         autocompleteFragment?.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG))
         autocompleteFragment?.setOnPlaceSelectedListener(object: PlaceSelectionListener {
             override fun onPlaceSelected(selectedPlace: Place) {
@@ -215,7 +216,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
             voteConclusionCalendar.set(Calendar.MONTH, monthOfYear)
             voteConclusionCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-            TimePickerDialog(v.context, 0, timeListener, voteConclusionCalendar.get(Calendar.HOUR), voteConclusionCalendar.get(Calendar.MINUTE), false).show()
+            TimePickerDialog(v.context, 0, timeListener, voteConclusionCalendar.get(Calendar.HOUR_OF_DAY), voteConclusionCalendar.get(Calendar.MINUTE), false).show()
         }
 
         this.createGroupVoteConclusion?.setOnClickListener {
@@ -231,9 +232,9 @@ class CreateFragment : Fragment(), UserAuthInterface {
      */
     private fun configureMaxResults() {
         val maxResults = NumberPicker(activity)
-        maxResults.maxValue = 30
-        maxResults.minValue = 0
-        maxResults.value = 20
+        maxResults.maxValue = 20
+        maxResults.minValue = 1
+        maxResults.value = 10
 
         val builder = AlertDialog.Builder(activity)
         builder.setTitle("Max Results to Display")
@@ -258,12 +259,12 @@ class CreateFragment : Fragment(), UserAuthInterface {
      */
     private fun configureExpirationDialog() {
         val expirationTime = NumberPicker(activity)
-        expirationTime.maxValue = 14
-        expirationTime.minValue = 0
-        expirationTime.value = 7
+        expirationTime.maxValue = 7
+        expirationTime.minValue = 1
+        expirationTime.value = 3
 
         val builder = AlertDialog.Builder(activity)
-        builder.setTitle("Days to Expiration")
+        builder.setTitle("Days After RSVP to Expire")
         builder.setView(expirationTime)
 
         val clickListener = DialogInterface.OnClickListener { _, _ ->
