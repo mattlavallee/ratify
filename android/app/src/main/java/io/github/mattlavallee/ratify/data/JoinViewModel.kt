@@ -29,7 +29,7 @@ class JoinViewModel : ViewModel {
                     joinedGroup.value = Pair("", null)
                 }
             } else {
-                joinedGroup.value = Pair("Error getting groups! " + task.exception?.stackTrace.toString(), null)
+                joinedGroup.value = Pair("Error joining group", null)
             }
         }
     }

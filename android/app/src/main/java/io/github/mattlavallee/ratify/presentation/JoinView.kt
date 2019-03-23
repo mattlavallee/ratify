@@ -2,6 +2,7 @@ package io.github.mattlavallee.ratify.presentation
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.view.View
@@ -40,7 +41,13 @@ class JoinView(view: View?, activity: AppCompatActivity) {
         }
 
         viewModel?.getGroup()?.observe(activity, Observer {
-            callbackActivity?.onResetToHomeFragment("")
+            result ->
+                callbackActivity?.onResetToHomeFragment("")
+                Handler().postDelayed({
+                    if (result != null && result!!.first!!.isNotEmpty()) {
+                        SnackbarGenerator.generateSnackbar(view, result!!.first)?.show()
+                    }
+                }, 150)
         })
     }
 

@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.constraint.ConstraintLayout
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
@@ -17,6 +18,7 @@ import android.support.v4.app.ShareCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
@@ -76,6 +78,10 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
             if (selectedFragment is HomeFragment) {
                 (selectedFragment as HomeFragment).onUserAuthSuccess()
             }
+            val imm = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            Handler().postDelayed({
+                imm.hideSoftInputFromWindow(findViewById<View>(android.R.id.content).windowToken, 0)
+            }, 500)
         }
 
         navigation.selectedItemId = R.id.navigation_home
