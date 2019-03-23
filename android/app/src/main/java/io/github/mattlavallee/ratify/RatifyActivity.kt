@@ -178,7 +178,12 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
         } else if (supportFragmentManager.backStackEntryCount == 0) {
             super.onBackPressed()
         } else {
-            supportFragmentManager.popBackStack()
+            if (selectedFragment is CreateFragment) {
+                val callback: () -> Unit = { supportFragmentManager.popBackStack() }
+                (selectedFragment as CreateFragment).confirmCancel(callback)
+            } else {
+                supportFragmentManager.popBackStack()
+            }
         }
     }
 

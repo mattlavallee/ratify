@@ -177,6 +177,23 @@ class CreateFragment : Fragment(), UserAuthInterface {
         TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
+    fun confirmCancel(callback: () -> Unit) {
+        if (!this.isDirtyForm()) {
+            callback()
+            return
+        }
+
+        val builder = AlertDialog.Builder(context)
+                .setTitle("Discard Group?")
+                .setMessage("Do you want to discard changes for this group?")
+                .setIconAttribute(android.R.attr.alertDialogIcon)
+        builder.setPositiveButton("Yes") { _, _ ->
+            callback()
+        }
+        builder.setNegativeButton("No") { _, _ -> }
+        builder.show()
+    }
+
     /*
      * Configures the place autocomplete fragment.
      * Sets autocomplete listener and type filter
@@ -332,6 +349,19 @@ class CreateFragment : Fragment(), UserAuthInterface {
         this.createGroupExpirationDisplay?.setText("")
         this.createGroupVoteConclusionDateTime = Calendar.getInstance()
         this.createGroupVoteConclusion?.setText("")
+    }
+
+    private fun isDirtyForm(): Boolean {
+        val name = this.createGroupName?.text.toString()
+        val descr = this.createGroupDescription?.text.toString()
+        val activity = this.createGroupActivity?.text.toString()
+
+        if (name.isNotEmpty() || descr.isNotEmpty() || activity.isNotEmpty() || this.createGroupPlace != null ||
+                this.createGroupMaxResults > 0 || this.createGroupExpirationDays >= 0) {
+            return true
+        }
+
+        return false
     }
 
     private fun displayPreviewResults(items: ArrayList<YelpResult>) {
