@@ -23,6 +23,12 @@
                 ".validate": "newData.hasChildren(['fetchTime'])",
                 ".indexOn": ["fetchTime"]
             }
+        },
+        "match_votes": {
+            "$voteId": {
+                ".read": "auth.uid != null",
+                ".write": "auth.uid != null"
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ const dbMock = {
         };
       },
       set: () => Promise.resolve(),
+      update: () => Promise.resolve(),
       child: () => {
         return {
           set: () => Promise.resolve(),
@@ -44,18 +45,6 @@ describe('Votes Database Handler', () => {
 
       initUserVotes('foo', ['v1', 'v2']).then((response) => {
         expect(response).toEqual(true);
-        done();
-      });
-    });
-
-    it('throws an error if a vote returns undefined', (done) => {
-      childOnceHasInstance = false;
-      getVoteHasInstance = false;
-      jest.spyOn(dbInstance, 'getDatabase').mockReturnValueOnce(dbMock);
-      const {initUserVotes} = require('./votes');
-
-      initUserVotes('foo', ['v1']).then((response) => {
-        expect(response).toEqual(false);
         done();
       });
     });

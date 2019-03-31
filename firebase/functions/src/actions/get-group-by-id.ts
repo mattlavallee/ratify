@@ -38,24 +38,6 @@ function getNewMatchPromises(matches: ISingleMatch[], currentDate: Date, groupId
       return updateMatches(result, groupId);
     });
   });
-  
-  // const promises: Promise<YelpResult>[] = [];
-  // matches.filter((match: ISingleMatch) => {
-  //   const fetchDate = new Date(match.fetchTime);
-  //   fetchDate.setDate(fetchDate.getDate() + 1);
-  //   return fetchDate < currentDate;
-  // }).forEach((match: ISingleMatch) => {
-  //   const prom = getYelpBusinessDetails(match.details.id);
-  //   promises.push(prom);
-  // });
-
-  // if (promises.length === 0) {
-  //   return Promise.resolve(false);
-  // }
-
-  // return Promise.all(promises).then((result: YelpResult[]) => {
-  //   return updateMatches(result, groupId);
-  // });
 }
 
 export function getGroupByIdImpl(data: any, context: CallableContext): Promise<any> {
