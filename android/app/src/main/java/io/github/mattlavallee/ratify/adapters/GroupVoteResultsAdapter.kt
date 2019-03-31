@@ -43,8 +43,10 @@ class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>, private v
         if (!isConcluded) {
             if (this.voteState[currMatch.id]?.value == UserVote.YES) {
                 holder.positiveVoteBtn.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.circle_button_border_positive)
+                holder.negativeVoteBtn.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.circle_button_border)
             } else if (this.voteState[currMatch.id]?.value == UserVote.NO) {
                 holder.negativeVoteBtn.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.circle_button_border_negative)
+                holder.positiveVoteBtn.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.circle_button_border)
             }
         } else {
             holder.positiveVoteBtn.visibility = View.GONE

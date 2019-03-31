@@ -57,7 +57,7 @@ class ActiveGroupFragment : Fragment() {
         }
 
         val executor = ScheduledThreadPoolExecutor(1)
-        this.scheduleFuture = executor.scheduleWithFixedDelay(UserVoteTask(this.group), 0, 30000, TimeUnit.MILLISECONDS)
+        this.scheduleFuture = executor.scheduleWithFixedDelay(UserVoteTask(this.group), 0, 15000, TimeUnit.MILLISECONDS)
     }
 
     override fun onDestroyView() {
