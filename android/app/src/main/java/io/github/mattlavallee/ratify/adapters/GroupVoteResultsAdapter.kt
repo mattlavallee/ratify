@@ -1,5 +1,9 @@
 package io.github.mattlavallee.ratify.adapters
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,7 +18,10 @@ import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.core.UserVote
 import io.github.mattlavallee.ratify.core.YelpResult
 
-class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>, private val voteState: Map<String, UserVote>, private val isConcluded: Boolean = false) : RecyclerView.Adapter<GroupVoteResultsAdapter.ViewHolder>() {
+class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>,
+                              private val voteState: Map<String, UserVote>,
+                              private val callingActivity: FragmentActivity,
+                              private val isConcluded: Boolean = false) : RecyclerView.Adapter<GroupVoteResultsAdapter.ViewHolder>() {
     class ViewHolder(matchView: View) : RecyclerView.ViewHolder(matchView) {
         val name: TextView = matchView.findViewById(R.id.match_details_name)
         val location: TextView = matchView.findViewById(R.id.match_details_location)
@@ -26,7 +33,7 @@ class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>, private v
         val negativeVoteBtn: ImageButton = matchView.findViewById(R.id.match_details_vote_negative)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupVoteResultsAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val matchView = LayoutInflater.from(parent.context).inflate(viewType, parent, false) as View
         return ViewHolder(matchView)
     }
@@ -79,6 +86,15 @@ class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>, private v
                 this.voteState[currMatch.id]?.updateVote(UserVote.NO)
                 holder.positiveVoteBtn.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.circle_button_border)
                 holder.negativeVoteBtn.background = ContextCompat.getDrawable(holder.itemView.context, R.drawable.circle_button_border_negative)
+            }
+        }
+
+        holder.image.setOnClickListener {
+            val locationUri = Uri.parse("geo:0,0?q=" + currMatch.address)
+            val mapIntent = Intent(Intent.ACTION_VIEW, locationUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            if (mapIntent.resolveActivity(callingActivity.packageManager) != null) {
+                callingActivity.startActivity(mapIntent)
             }
         }
     }

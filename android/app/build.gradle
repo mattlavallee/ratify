@@ -10,8 +10,8 @@ android {
         applicationId "io.github.mattlavallee.ratify"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 4
-        versionName "0.2.0-beta"
+        versionCode 5
+        versionName "0.3.0-beta"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
         multiDexEnabled true
@@ -45,6 +45,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.5'
     implementation 'com.firebaseui:firebase-ui-auth:3.3.0'
     implementation 'com.google.firebase:firebase-functions:16.1.2'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'android.arch.lifecycle:viewmodel:1.1.1'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.android.support:multidex:1.0.3'
     testImplementation 'junit:junit:4.12'

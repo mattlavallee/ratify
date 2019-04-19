@@ -366,7 +366,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
 
     private fun displayPreviewResults(items: ArrayList<YelpResult>) {
         var builder = android.support.v7.app.AlertDialog.Builder(context!!)
-        val previewResultsAdapter = GroupVoteResultsAdapter(items, mutableMapOf(), true)
+        val previewResultsAdapter = GroupVoteResultsAdapter(items, mutableMapOf(), activity!!, true)
         val previewResultsView = activity?.layoutInflater?.inflate(R.layout.preview_results_layout, null)
         previewResultsView!!.findViewById<RecyclerView>(R.id.preview_results_list_view).apply {
             layoutManager = LinearLayoutManager(context)

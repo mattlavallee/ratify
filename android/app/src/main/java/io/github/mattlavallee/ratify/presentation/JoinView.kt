@@ -44,7 +44,7 @@ class JoinView(view: View?, activity: AppCompatActivity) {
             result ->
                 callbackActivity?.onResetToHomeFragment("")
                 Handler().postDelayed({
-                    if (result != null && result!!.first!!.isNotEmpty()) {
+                    if (result != null && result.first.isNotEmpty()) {
                         SnackbarGenerator.generateSnackbar(view, result!!.first)?.show()
                     }
                 }, 150)

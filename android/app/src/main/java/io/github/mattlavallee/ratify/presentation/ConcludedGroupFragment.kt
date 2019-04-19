@@ -116,7 +116,7 @@ class ConcludedGroupFragment : Fragment() {
 
     private fun initializeWinnerDetails(winners: ArrayList<YelpResult>) {
         matchesViewLayoutManager = LinearLayoutManager(context)
-        matchesAdapter = GroupVoteResultsAdapter(winners, group.votes, true)
+        matchesAdapter = GroupVoteResultsAdapter(winners, group.votes, activity!!,true)
         matchesRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = matchesViewLayoutManager
