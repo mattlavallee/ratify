@@ -42,33 +42,50 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
     private var priorFragmentTitle: String? = null
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-        val previousFragment = selectedFragment
-        when (item.itemId) {
-            R.id.navigation_home -> {
-                selectedFragment = HomeFragment()
-                if (FirebaseAuth.getInstance().currentUser != null) {
-                    val bundle = Bundle()
-                    bundle.putBoolean("fetchOnStart", true)
-                    selectedFragment?.arguments = bundle
+        val callback: () -> Unit = {
+            val previousFragment = selectedFragment
+            when (item.itemId) {
+                R.id.navigation_home -> {
+                    selectedFragment = HomeFragment()
+                    if (FirebaseAuth.getInstance().currentUser != null) {
+                        val bundle = Bundle()
+                        bundle.putBoolean("fetchOnStart", true)
+                        selectedFragment?.arguments = bundle
+                    }
+                }
+                R.id.navigation_join -> {
+                    joinViewModel?.resetCodeInput()
+                    bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+                    this.priorFragmentTitle = this.title.toString()
+                    this.title = "Join a Group"
+                }
+                R.id.navigation_create -> {
+                    selectedFragment = CreateFragment()
                 }
             }
-            R.id.navigation_join -> {
-                joinViewModel?.resetCodeInput()
-                bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
-                this.priorFragmentTitle = this.title.toString()
-                this.title = "Join a Group"
-                return@OnNavigationItemSelectedListener false
-            }
-            R.id.navigation_create -> {
-                selectedFragment = CreateFragment()
-            }
+
+            setFragmentTransitions(previousFragment, selectedFragment)
+            val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.content_container, selectedFragment!!)
+                    .addToBackStack(null)
+                    .commit()
         }
 
-        setFragmentTransitions(previousFragment, selectedFragment)
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.content_container, selectedFragment!!)
-                .addToBackStack(null)
-                .commit()
+        if (selectedFragment is CreateFragment) {
+            val switchingToJoin: Boolean = item.itemId == R.id.navigation_join
+            val navigationUpdateCallback: () -> Unit = {
+                if (navigation.selectedItemId != item.itemId && !switchingToJoin) {
+                    navigation.selectedItemId = item.itemId
+                }
+            }
+            (selectedFragment as CreateFragment).confirmCancel(callback, navigationUpdateCallback, switchingToJoin)
+            return@OnNavigationItemSelectedListener false
+        }
+
+        callback()
+        if (item.itemId == R.id.navigation_join) {
+            return@OnNavigationItemSelectedListener false
+        }
         return@OnNavigationItemSelectedListener true
     }
 

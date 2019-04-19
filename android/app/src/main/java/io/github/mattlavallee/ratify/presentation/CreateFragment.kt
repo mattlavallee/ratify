@@ -177,8 +177,8 @@ class CreateFragment : Fragment(), UserAuthInterface {
         TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
-    fun confirmCancel(callback: () -> Unit) {
-        if (!this.isDirtyForm()) {
+    fun confirmCancel(callback: () -> Unit, navigationUpdate: () -> Unit = {}, switchingToJoin: Boolean = false) {
+        if (!this.isDirtyForm() || switchingToJoin) {
             callback()
             return
         }
@@ -189,6 +189,7 @@ class CreateFragment : Fragment(), UserAuthInterface {
                 .setIconAttribute(android.R.attr.alertDialogIcon)
         builder.setPositiveButton("Yes") { _, _ ->
             callback()
+            navigationUpdate()
         }
         builder.setNegativeButton("No") { _, _ -> }
         builder.show()
