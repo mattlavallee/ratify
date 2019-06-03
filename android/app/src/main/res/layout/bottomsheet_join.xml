@@ -34,7 +34,6 @@
                 android:background="@android:color/transparent"
                 android:gravity="center"
                 android:hint="@string/join_code_placeholder"
-                android:inputType="textCapCharacters"
                 android:selectAllOnFocus="true"
                 android:singleLine="true"
                 android:textSize="40sp" />
