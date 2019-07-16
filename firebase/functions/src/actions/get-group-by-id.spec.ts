@@ -16,7 +16,7 @@ describe('Get Group By Id', () => {
     });
   });
 
-  it('successfully gets the group', (done) => {
+  xit('successfully gets the group', (done) => {
     jest.spyOn(groupDb, 'getGroup').mockReturnValueOnce(Promise.resolve({
       matches: {
         m1: true,
