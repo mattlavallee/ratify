@@ -16,6 +16,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.adapters.GroupAdapter
 import io.github.mattlavallee.ratify.core.Constants
@@ -33,6 +35,7 @@ class HomeFragment : Fragment(), UserAuthInterface {
     private lateinit var viewLayoutManager: RecyclerView.LayoutManager
     private lateinit var joinedGroupAdapter: RecyclerView.Adapter<*>
     private lateinit var groupSwipeRefresh: SwipeRefreshLayout
+    private lateinit var adView: AdView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +88,10 @@ class HomeFragment : Fragment(), UserAuthInterface {
         groupSwipeRefresh.setOnRefreshListener {
             viewModel?.fetch()
         }
+
+        adView = view.findViewById(R.id.home_banner_ad)
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
     }
 
     private fun launchGroupView(group: DetailedGroup?) {

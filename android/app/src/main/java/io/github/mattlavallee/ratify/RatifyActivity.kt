@@ -21,6 +21,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import com.firebase.ui.auth.AuthUI
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
 import io.github.mattlavallee.ratify.core.Constants
 import io.github.mattlavallee.ratify.data.GroupViewModel
@@ -127,6 +128,7 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
 
         mainContainerLayout = findViewById(R.id.mainContainer)
         userAuth = FirebaseAuth.getInstance()
+        MobileAds.initialize(this, "ca-app-pub-8869069548122228~2754875566")
     }
 
     override fun onStart() {

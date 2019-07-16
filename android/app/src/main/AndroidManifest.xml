@@ -23,6 +23,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/places_api_key" />
+        <meta-data
+            android:name="com.google.android.gms.ads.ca-app-pub-8869069548122228~2754875566"
+            android:value="ca-app-pub-3940256099942544/6300978111"/>
+        <!-- ca-app-pub-8869069548122228/7117795391 -->
     </application>
 
 </manifest>
