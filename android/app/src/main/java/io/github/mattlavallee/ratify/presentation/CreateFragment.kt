@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.support.v4.app.Fragment
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
@@ -366,15 +367,20 @@ class CreateFragment : Fragment(), UserAuthInterface {
     }
 
     private fun displayPreviewResults(items: ArrayList<YelpResult>) {
+        val displayRectangle = Rect()
+        activity!!.window.decorView.getWindowVisibleDisplayFrame(displayRectangle)
         var builder = android.support.v7.app.AlertDialog.Builder(context!!)
         val previewResultsAdapter = GroupVoteResultsAdapter(items, mutableMapOf(), activity!!, true)
         val previewResultsView = activity?.layoutInflater?.inflate(R.layout.preview_results_layout, null)
+        previewResultsView?.minimumWidth = (displayRectangle.width() * 0.88f).toInt()
+        previewResultsView?.minimumHeight = (displayRectangle.height() * 0.9f).toInt()
         previewResultsView!!.findViewById<RecyclerView>(R.id.preview_results_list_view).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = previewResultsAdapter
         }
         builder.setView(previewResultsView)
                 .setPositiveButton("OK", { dialog, _ -> dialog.cancel() })
+
         builder.create().show()
     }
 }

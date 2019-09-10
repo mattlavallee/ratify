@@ -24,4 +24,6 @@
     <string name="middle_dot">&#183;</string>
 
     <string name="no_groups_message">You are not a part of any groups!\n\nUse the buttons below to join or create a group</string>
+
+    <string name="yelp_powered_by">Results provided by Yelp</string>
 </resources>
