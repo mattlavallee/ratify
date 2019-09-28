@@ -372,8 +372,8 @@ class CreateFragment : Fragment(), UserAuthInterface {
         var builder = android.support.v7.app.AlertDialog.Builder(context!!)
         val previewResultsAdapter = GroupVoteResultsAdapter(items, mutableMapOf(), activity!!, true)
         val previewResultsView = activity?.layoutInflater?.inflate(R.layout.preview_results_layout, null)
-        previewResultsView?.minimumWidth = (displayRectangle.width() * 0.88f).toInt()
-        previewResultsView?.minimumHeight = (displayRectangle.height() * 0.9f).toInt()
+        previewResultsView?.minimumWidth = (displayRectangle.width() * 0.80f).toInt()
+        previewResultsView?.minimumHeight = (displayRectangle.height() * 0.85f).toInt()
         previewResultsView!!.findViewById<RecyclerView>(R.id.preview_results_list_view).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = previewResultsAdapter
