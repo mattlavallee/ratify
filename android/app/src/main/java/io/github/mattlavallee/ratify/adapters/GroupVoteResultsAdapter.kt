@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
 import com.squareup.picasso.Picasso
 import io.github.mattlavallee.ratify.R
@@ -26,7 +25,7 @@ class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>,
         val name: TextView = matchView.findViewById(R.id.match_details_name)
         val location: TextView = matchView.findViewById(R.id.match_details_location)
         val image: ImageView = matchView.findViewById(R.id.match_image)
-        val rating: RatingBar = matchView.findViewById(R.id.match_rating)
+        val ratingStars: ImageView = matchView.findViewById(R.id.match_rating_stars)
         val ratingText: TextView = matchView.findViewById(R.id.match_rating_text)
         val price: TextView = matchView.findViewById(R.id.match_price)
         val positiveVoteBtn: ImageButton = matchView.findViewById(R.id.match_details_vote_positive)
@@ -43,8 +42,20 @@ class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>,
 
         holder.name.text = currMatch.name
         holder.location.text = currMatch.address
-        holder.rating.rating = currMatch.rating.toFloat()
-        holder.ratingText.text = "%.1f".format(currMatch.rating)
+        val ratingText = "%.1f".format(currMatch.rating)
+        when(ratingText) {
+            "5.0" -> holder.ratingStars.setImageResource(R.mipmap.yelp_stars_5)
+            "4.5" -> holder.ratingStars.setImageResource(R.mipmap.yelp_stars_4_half)
+            "4.0" -> holder.ratingStars.setImageResource(R.mipmap.yelp_stars_4)
+            "3.5" -> holder.ratingStars.setImageResource(R.mipmap.yelp_stars_3_half)
+            "3.0" -> holder.ratingStars.setImageResource(R.mipmap.yelp_stars_3)
+            "2.5" -> holder.ratingStars.setImageResource(R.mipmap.yelp_stars_2_half)
+            "2.0" -> holder.ratingStars.setImageResource(R.mipmap.yelp_stars_2)
+            "1.5" -> holder.ratingStars.setImageResource(R.mipmap.yelp_stars_1_half)
+            "1.0" -> holder.ratingStars.setImageResource(R.mipmap.yelp_stars_1)
+            else -> { holder.ratingStars.setImageResource(R.mipmap.yelp_stars_0) }
+        }
+        holder.ratingText.text = ratingText
         holder.price.text = currMatch.price
 
         if (!isConcluded) {

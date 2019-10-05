@@ -60,14 +60,13 @@
                     android:id="@+id/match_rating_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-                <RatingBar
-                    android:id="@+id/match_rating"
+                <ImageView
+                    android:id="@+id/match_rating_stars"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:numStars="5"
-                    android:stepSize="0.5"
-                    style="?android:attr/ratingBarStyleSmall"/>
+                    android:layout_marginLeft="5dp"
+                    android:src="@mipmap/yelp_stars_0" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
