@@ -1,5 +1,7 @@
 package io.github.mattlavallee.ratify.presentation
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -7,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.adapters.GroupVoteResultsAdapter
@@ -53,6 +56,12 @@ class ConcludedGroupFragment : Fragment() {
             concludedGoupText.text = "Enjoy your time at:"
         } else {
             concludedGoupText.text = "It's a tie. Time to duke it out!"
+        }
+
+        val yelpLogo = view.findViewById<ImageView>(R.id.yelp_logo_concluded)
+        yelpLogo.setOnClickListener {
+            val linkBackIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://yelp.com"))
+            startActivity(linkBackIntent)
         }
     }
 

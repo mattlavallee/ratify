@@ -83,7 +83,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageView
-            android:id="@+id/yelp_logo"
+            android:id="@+id/yelp_logo_concluded"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:adjustViewBounds="true"

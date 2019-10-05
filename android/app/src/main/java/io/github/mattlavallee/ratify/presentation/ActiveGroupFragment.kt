@@ -1,5 +1,7 @@
 package io.github.mattlavallee.ratify.presentation
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
@@ -9,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import io.github.mattlavallee.ratify.R
 import io.github.mattlavallee.ratify.adapters.GroupVoteResultsAdapter
@@ -58,6 +61,12 @@ class ActiveGroupFragment : Fragment() {
 
         val executor = ScheduledThreadPoolExecutor(1)
         this.scheduleFuture = executor.scheduleWithFixedDelay(UserVoteTask(this.group), 0, 15000, TimeUnit.MILLISECONDS)
+
+        val yelpLogo = view.findViewById<ImageView>(R.id.yelp_logo_active_group)
+        yelpLogo.setOnClickListener {
+            val linkBackIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://yelp.com"))
+            startActivity(linkBackIntent)
+        }
     }
 
     override fun onDestroyView() {
