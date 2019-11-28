@@ -1,4 +1,4 @@
-package io.github.mattlavallee.ratify.presentation
+package io.github.mattlavalleedev.ratify.presentation
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -18,13 +18,13 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
-import io.github.mattlavallee.ratify.R
-import io.github.mattlavallee.ratify.adapters.GroupAdapter
-import io.github.mattlavallee.ratify.core.Constants
-import io.github.mattlavallee.ratify.core.DetailedGroup
-import io.github.mattlavallee.ratify.core.Group
-import io.github.mattlavallee.ratify.data.HomeViewModel
-import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
+import io.github.mattlavalleedev.ratify.R
+import io.github.mattlavalleedev.ratify.adapters.GroupAdapter
+import io.github.mattlavalleedev.ratify.core.Constants
+import io.github.mattlavalleedev.ratify.core.DetailedGroup
+import io.github.mattlavalleedev.ratify.core.Group
+import io.github.mattlavalleedev.ratify.data.HomeViewModel
+import io.github.mattlavalleedev.ratify.presentation.interfaces.UserAuthInterface
 
 class HomeFragment : Fragment(), UserAuthInterface {
     private var viewModel: HomeViewModel? = null

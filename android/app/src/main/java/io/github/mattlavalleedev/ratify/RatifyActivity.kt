@@ -1,4 +1,4 @@
-package io.github.mattlavallee.ratify
+package io.github.mattlavalleedev.ratify
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -23,13 +23,13 @@ import android.widget.LinearLayout
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
-import io.github.mattlavallee.ratify.core.Constants
-import io.github.mattlavallee.ratify.data.GroupViewModel
-import io.github.mattlavallee.ratify.presentation.CreateFragment
-import io.github.mattlavallee.ratify.presentation.HomeFragment
-import io.github.mattlavallee.ratify.presentation.JoinView
-import io.github.mattlavallee.ratify.presentation.interfaces.FragmentSwitchInterface
-import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
+import io.github.mattlavalleedev.ratify.core.Constants
+import io.github.mattlavalleedev.ratify.data.GroupViewModel
+import io.github.mattlavalleedev.ratify.presentation.CreateFragment
+import io.github.mattlavalleedev.ratify.presentation.HomeFragment
+import io.github.mattlavalleedev.ratify.presentation.JoinView
+import io.github.mattlavalleedev.ratify.presentation.interfaces.FragmentSwitchInterface
+import io.github.mattlavalleedev.ratify.presentation.interfaces.UserAuthInterface
 import kotlinx.android.synthetic.main.activity_ratify.*
 import java.util.Arrays
 

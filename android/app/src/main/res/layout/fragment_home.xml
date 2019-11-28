@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/quantum_white_100"
-    tools:context="io.github.mattlavallee.ratify.presentation.HomeFragment">
+    tools:context="io.github.mattlavalleedev.ratify.presentation.HomeFragment">
 
     <ProgressBar
         android:id="@+id/group_list_spinner"

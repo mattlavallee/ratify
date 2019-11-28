@@ -1,4 +1,4 @@
-package io.github.mattlavallee.ratify.adapters
+package io.github.mattlavalleedev.ratify.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
-import io.github.mattlavallee.ratify.R
-import io.github.mattlavallee.ratify.core.YelpResult
+import io.github.mattlavalleedev.ratify.R
+import io.github.mattlavalleedev.ratify.core.YelpResult
 
 class MatchImageAdapter(private val data: ArrayList<YelpResult>): RecyclerView.Adapter<MatchImageAdapter.ViewHolder>() {
     class ViewHolder(view: View): RecyclerView.ViewHolder(view) {

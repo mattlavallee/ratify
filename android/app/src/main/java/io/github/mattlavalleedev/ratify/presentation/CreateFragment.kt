@@ -1,4 +1,4 @@
-package io.github.mattlavallee.ratify.presentation
+package io.github.mattlavalleedev.ratify.presentation
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -23,7 +23,7 @@ import android.widget.Button
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.api.Status
-import io.github.mattlavallee.ratify.R
+import io.github.mattlavalleedev.ratify.R
 import android.widget.NumberPicker
 import android.widget.ProgressBar
 import com.google.android.libraries.places.api.Places
@@ -32,12 +32,12 @@ import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import io.github.mattlavallee.ratify.adapters.GroupVoteResultsAdapter
-import io.github.mattlavallee.ratify.core.Group
-import io.github.mattlavallee.ratify.core.YelpResult
-import io.github.mattlavallee.ratify.data.GroupViewModel
-import io.github.mattlavallee.ratify.presentation.interfaces.FragmentSwitchInterface
-import io.github.mattlavallee.ratify.presentation.interfaces.UserAuthInterface
+import io.github.mattlavalleedev.ratify.adapters.GroupVoteResultsAdapter
+import io.github.mattlavalleedev.ratify.core.Group
+import io.github.mattlavalleedev.ratify.core.YelpResult
+import io.github.mattlavalleedev.ratify.data.GroupViewModel
+import io.github.mattlavalleedev.ratify.presentation.interfaces.FragmentSwitchInterface
+import io.github.mattlavalleedev.ratify.presentation.interfaces.UserAuthInterface
 import java.text.SimpleDateFormat
 import java.util.*
 

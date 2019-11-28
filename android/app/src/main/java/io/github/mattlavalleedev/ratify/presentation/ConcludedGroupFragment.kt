@@ -1,4 +1,4 @@
-package io.github.mattlavallee.ratify.presentation
+package io.github.mattlavalleedev.ratify.presentation
 
 import android.content.Intent
 import android.net.Uri
@@ -11,13 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import io.github.mattlavallee.ratify.R
-import io.github.mattlavallee.ratify.adapters.GroupVoteResultsAdapter
-import io.github.mattlavallee.ratify.adapters.HorizontalOverlapDecoration
-import io.github.mattlavallee.ratify.adapters.MatchImageAdapter
-import io.github.mattlavallee.ratify.core.DetailedGroup
-import io.github.mattlavallee.ratify.core.UserVote
-import io.github.mattlavallee.ratify.core.YelpResult
+import io.github.mattlavalleedev.ratify.R
+import io.github.mattlavalleedev.ratify.adapters.GroupVoteResultsAdapter
+import io.github.mattlavalleedev.ratify.adapters.HorizontalOverlapDecoration
+import io.github.mattlavalleedev.ratify.adapters.MatchImageAdapter
+import io.github.mattlavalleedev.ratify.core.DetailedGroup
+import io.github.mattlavalleedev.ratify.core.UserVote
+import io.github.mattlavalleedev.ratify.core.YelpResult
 
 class ConcludedGroupFragment : Fragment() {
     private lateinit var group: DetailedGroup

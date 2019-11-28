@@ -1,4 +1,4 @@
-package io.github.mattlavallee.ratify.core
+package io.github.mattlavalleedev.ratify.core
 
 import java.io.Serializable
 import java.text.SimpleDateFormat

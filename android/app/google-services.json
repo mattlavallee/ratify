@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:954086363224:android:8b9ed8fd649c66bd",
         "android_client_info": {
-          "package_name": "io.github.mattlavallee.ratify"
+          "package_name": "io.github.mattlavalleedev.ratify"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "954086363224-iuhpio1k7nrhsl10pkcomj1v581hq6lv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "io.github.mattlavallee.ratify",
+            "package_name": "io.github.mattlavalleedev.ratify",
             "certificate_hash": "5be789860da171ecd7c29dd106ec162bfae6cd98"
           }
         },
@@ -26,7 +26,7 @@
           "client_id": "954086363224-obr9ehpd9vci6nhn54ptuo1h8bhojgfh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "io.github.mattlavallee.ratify",
+            "package_name": "io.github.mattlavalleedev.ratify",
             "certificate_hash": "0faa5803ba1050b3692c6ff7da6a5b720c0c8e3a"
           }
         },

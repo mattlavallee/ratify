@@ -1,10 +1,10 @@
-package io.github.mattlavallee.ratify.data
+package io.github.mattlavalleedev.ratify.data
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.google.firebase.functions.FirebaseFunctions
-import io.github.mattlavallee.ratify.core.Group
+import io.github.mattlavalleedev.ratify.core.Group
 
 class JoinViewModel : ViewModel {
     private val joinedGroup: MutableLiveData<Pair<String, Group?>> = MutableLiveData()

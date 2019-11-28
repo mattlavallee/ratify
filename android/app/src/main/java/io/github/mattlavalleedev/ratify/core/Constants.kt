@@ -1,4 +1,4 @@
-package io.github.mattlavallee.ratify.core
+package io.github.mattlavalleedev.ratify.core
 
 class Constants {
     companion object {

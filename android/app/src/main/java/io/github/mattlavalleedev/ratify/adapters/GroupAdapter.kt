@@ -1,4 +1,4 @@
-package io.github.mattlavallee.ratify.adapters
+package io.github.mattlavalleedev.ratify.adapters
 
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import io.github.mattlavallee.ratify.core.Group
-import io.github.mattlavallee.ratify.R
-import io.github.mattlavallee.ratify.data.HomeViewModel
+import io.github.mattlavalleedev.ratify.core.Group
+import io.github.mattlavalleedev.ratify.R
+import io.github.mattlavalleedev.ratify.data.HomeViewModel
 import java.text.SimpleDateFormat
 
 class GroupAdapter(private val data: ArrayList<Group>, private val viewModel: HomeViewModel?) : RecyclerView.Adapter<GroupAdapter.ViewHolder>() {

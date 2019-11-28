@@ -1,4 +1,4 @@
-package io.github.mattlavallee.ratify.presentation
+package io.github.mattlavalleedev.ratify.presentation
 
 import android.content.Intent
 import android.net.Uri
@@ -13,10 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import io.github.mattlavallee.ratify.R
-import io.github.mattlavallee.ratify.adapters.GroupVoteResultsAdapter
-import io.github.mattlavallee.ratify.core.DetailedGroup
-import io.github.mattlavallee.ratify.core.UserVoteTask
+import io.github.mattlavalleedev.ratify.R
+import io.github.mattlavalleedev.ratify.adapters.GroupVoteResultsAdapter
+import io.github.mattlavalleedev.ratify.core.DetailedGroup
+import io.github.mattlavalleedev.ratify.core.UserVoteTask
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit

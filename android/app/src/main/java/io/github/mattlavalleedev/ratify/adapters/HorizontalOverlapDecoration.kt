@@ -1,4 +1,4 @@
-package io.github.mattlavallee.ratify.adapters
+package io.github.mattlavalleedev.ratify.adapters
 
 import android.graphics.Rect
 import android.support.v7.widget.RecyclerView

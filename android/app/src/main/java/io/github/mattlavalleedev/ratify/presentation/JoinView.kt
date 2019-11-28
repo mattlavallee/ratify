@@ -1,4 +1,4 @@
-package io.github.mattlavallee.ratify.presentation
+package io.github.mattlavalleedev.ratify.presentation
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -9,9 +9,9 @@ import android.view.View
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
-import io.github.mattlavallee.ratify.R
-import io.github.mattlavallee.ratify.data.JoinViewModel
-import io.github.mattlavallee.ratify.presentation.interfaces.FragmentSwitchInterface
+import io.github.mattlavalleedev.ratify.R
+import io.github.mattlavalleedev.ratify.data.JoinViewModel
+import io.github.mattlavalleedev.ratify.presentation.interfaces.FragmentSwitchInterface
 
 class JoinView(view: View?, activity: AppCompatActivity) {
     private var joinCode: EditText? = null

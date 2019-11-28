@@ -1,4 +1,4 @@
-package io.github.mattlavallee.ratify.core
+package io.github.mattlavalleedev.ratify.core
 
 import com.google.android.libraries.places.api.model.Place
 import java.io.Serializable

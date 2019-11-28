@@ -1,6 +1,5 @@
-package io.github.mattlavallee.ratify.adapters
+package io.github.mattlavalleedev.ratify.adapters
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.support.v4.app.FragmentActivity
@@ -13,9 +12,9 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import com.squareup.picasso.Picasso
-import io.github.mattlavallee.ratify.R
-import io.github.mattlavallee.ratify.core.UserVote
-import io.github.mattlavallee.ratify.core.YelpResult
+import io.github.mattlavalleedev.ratify.R
+import io.github.mattlavalleedev.ratify.core.UserVote
+import io.github.mattlavalleedev.ratify.core.YelpResult
 
 class GroupVoteResultsAdapter(private val data: ArrayList<YelpResult>,
                               private val voteState: Map<String, UserVote>,
