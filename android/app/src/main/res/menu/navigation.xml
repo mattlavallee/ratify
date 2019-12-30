@@ -19,4 +19,10 @@
         android:background="@drawable/button_ripple"
         android:title="@string/nav_create" />
 
+    <item
+        android:id="@+id/navigation_info"
+        android:icon="@drawable/ic_info_outline_black_24dp"
+        android:background="@drawable/button_ripple"
+        android:title="@string/nav_info" />
+
 </menu>

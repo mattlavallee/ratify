@@ -1,6 +1,7 @@
 package io.github.mattlavalleedev.ratify
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -16,10 +17,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.app.ShareCompat
 import android.support.v7.app.AppCompatActivity
+import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
@@ -63,13 +67,18 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
                 R.id.navigation_create -> {
                     selectedFragment = CreateFragment()
                 }
+                R.id.navigation_info -> {
+                    this.launchInfoDialog()
+                }
             }
 
-            setFragmentTransitions(previousFragment, selectedFragment)
-            val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.content_container, selectedFragment!!)
-                    .addToBackStack(null)
-                    .commit()
+            if (item.itemId != R.id.navigation_info) {
+                setFragmentTransitions(previousFragment, selectedFragment)
+                val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.content_container, selectedFragment!!)
+                        .addToBackStack(null)
+                        .commit()
+            }
         }
 
         if (selectedFragment is CreateFragment) {
@@ -263,5 +272,16 @@ class RatifyActivity : AppCompatActivity(), FragmentSwitchInterface {
         transitionSet.addTransition(TransitionInflater.from(applicationContext).inflateTransition(android.R.transition.slide_left))
         transitionSet.duration = Constants.TRANSITION_DURATION
         current?.sharedElementEnterTransition = transitionSet
+    }
+
+    private fun launchInfoDialog() {
+        val view = View.inflate(this, R.layout.info_layout, null)
+        val textView = view.findViewById<TextView>(R.id.info_message)
+        textView.movementMethod = LinkMovementMethod.getInstance()
+        val builder = AlertDialog.Builder(this@RatifyActivity)
+                .setTitle("Ratify Information")
+                .setView(view)
+                .setNeutralButton("Close", null)
+        builder.show()
     }
 }
